@@ -1,0 +1,267 @@
+﻿
+   ********************************
+   Issues, references, todos, notes
+   ********************************
+
+
+   ref 20190323°0436 'MDN → The stacking context'
+   url : https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context
+   title :
+   tags : z-index
+   ܀
+
+   ref 20190323°0435 'MDN → Using z-index'
+   url : https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/Adding_z-index
+   title :
+   ܀
+
+   ref 20190323°0434 'MDN → Understanding z-index'
+   url : https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index
+   title :
+   ܀
+
+   ref 20190323°0433 'MDN → z-index'
+   url : https://developer.mozilla.org/en-US/docs/Web/CSS/z-index
+   title :
+   ܀
+
+   issue 20190323°0425 'unfolder button overlapped'
+   matter : The unfolder buttons are often concealed by overlapping other area.
+   finding : No solid system found yet
+   note : Some facts
+      • z-index works only with positioned elements
+      • stacking context is established ..
+   see : 'MDN → The stacking context' [ref 20190323°0436]
+   see : 'MDN → Using z-index' [ref 20190323°0435]
+   see : 'MDN → Understanding z-index' [ref 20190323°0434]
+   see : 'MDN → z-index' [ref 20190323°0433]
+   see : 'Smashing Magazine → Z-Index Management' [ref 20190314°0454]
+   see : 'CSS-Tricks → Stacking Contexts' [ref 20190314°0453]
+   see : 'stackoverflow → way to see stacking context' [ref 20190314°0452]
+   see : 'chrome web store → z-context → done' [ref 20190314°0444]
+   see : 'chrome web store → z-context' [ref 20190314°0443]
+   see : 'github → gwwar → z-context' [ref 20190314°0442]
+   status : Open
+   ܀
+
+   ref 20190323°0313 'css-tricks: absolute positioning'
+   url : https://css-tricks.com/absolute-positioning-inside-relative-positioning/
+   title :
+   ܀
+
+   issue 20190314°0527 'previous image persists'
+   matter : The old picuture persists while the new is fading in.
+   //note : I thought, it had to do with automatically having the
+   //   caption pane opened in the read-settings, and perhaps some
+   //   indirection (as seq 20190314°05259 could help. But no,
+   //   the error persists.
+   finding : I think, it has nothing to do with the caption panel,
+      but is something different. But why was it gone and reappears?
+      The issue did not exist in SlideGear v0.0.7
+   note : Compare issue 20190312°0821 'misguided image'
+   act : ✱ Fight against with line 20190314°0531 -- success
+   status : closed
+   ܀
+
+   ref 20190314°0454 'Smashing Magazine → Z-Index Management'
+   url : https://www.smashingmagazine.com/2014/06/sassy-z-index-management-for-complex-layouts/
+   title : Sassy Z-Index Management For Complex Layouts
+   author : Jackie Balzer
+   releasedate : 2014-June-12
+   tags : z-index
+   ܀
+
+   ref 20190314°0453 'CSS-Tricks → Stacking Contexts'
+   url : https://css-tricks.com/css-stacking-contexts/
+   title : CSS Stacking Contexts
+   author : Chris Coyer
+   releasedate : 2015-Oct-1
+   tags : z-index
+   ܀
+
+   ref 20190314°0452 'stackoverflow → way to see stacking context'
+   url : https://stackoverflow.com/questions/6800511/is-there-a-way-to-see-the-stacking-context-in-ie-firefox-chrome-etc
+   title : Is there a way to see the stacking context, in IE/Firefox/Chrome/etc.?
+   releasedate : 2011-Jul-23
+   tags : z-index
+   ܀
+
+   ref 20190314°0444 'chrome web store → z-context → done'
+   url : https://chrome.google.com/webstore/detail/z-context/jigamimbjojkdgnlldajknogfgncplbh/related
+   title : chrome web store → z-context → done
+   ܀
+
+   ref 20190314°0443 'chrome web store → z-context'
+   url : https://chrome.google.com/webstore/detail/z-context/jigamimbjojkdgnlldajknogfgncplbh
+   title : chrome web store → z-context
+   ܀
+
+   ref 20190314°0442 'github → gwwar → z-context'
+   url : https://github.com/gwwar/z-context
+   title : Project gwwar/z-context
+   tags : z-index
+   ܀
+
+   note 20190314°0131 'using unicode buttons'
+   text : Here some button characters ⇩ ⇦ ⯆ ⯇ ⛛ ▽ ◁.
+   matter : Using unicode characters as controls is very nice. But as
+      opposed to the images, the button characters have the disadvantage
+      of empty space around, the signs do not fill the character area.
+      This makes it difficult to see them overlap, so the outcome of one
+      click is not so predictable. This is why we switched to images.
+   status : This difference will remain a criteria about controls.
+   ܀
+
+   issue 20190312°0831 'wrong title on auto-sliding buttons'
+   matter : The Auto-Sliding buttons do not adjust their title after been pressed.
+   finding : Before fixing this, the href tags around this buttons need be
+       given an ID attribute, so on any action they can be found and adjusted.
+   todo : Make the button titles adjustable.
+   status : Open
+   ܀
+
+   issue 20190312°0821 'misguided image'
+   matter : Once the sliding is interrupted by using the single-step button
+      or one of the direct link in the info box, then the last sliding image
+      is remembered forever, and it appears in each fading phase.
+   finding : It looks like that one image has set visibility true forever.
+   todo : Find, were the visibility must be reset.
+   status : Seems solved by multiple small fixes [log 20190323°0227]
+   ܀
+
+   ref 20190210°0245 ''
+   url : https://stackoverflow.com/questions/1709442/make-divs-height-expand-with-its-content
+   title :
+   ܀
+
+   ref 20190210°0243 ''
+   url : https://www.thesitewizard.com/css/center-div-block.shtml
+   title :
+
+   note 20190209°0931 road map
+   Road map or vision
+   • Make it applicable for page header slider, as are frequent today
+   • Use as data source some webservice with image database
+   • Implement various fading algos (e.g. sliding left/right)
+   • ..
+   ܀
+
+   ref 20190108°0352 'on timers'
+   url : https://javascript.info/settimeout-setinterval
+   title : Scheduling: setTimeout and setInterval
+   note :
+
+   ref 20190108°0234 'mdn on image element'
+   url : https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image
+   title : MDN web docs — Image()
+   summary :
+
+   ref 20190108°0233 'js preload image object'
+   url : https://www.techrepublic.com/article/preloading-and-the-javascript-image-object/
+   title : Preloading and the JavaScript Image() object
+   summary : About using the JS Image() object
+
+   issue 20190108°0151 'ajdust image size'
+   text : All of a sudden, Chrome did not work anymore with the so far working
+      prop eImg.clientWidth, and wanted prop eImg.firstChild.naturalWidth instead.
+      After fixing it for Chrome/Edge/IE/Firefox, it worked no more in Opera.
+   todo : Find a reliable way for this two tasks
+      • Read the original image size
+      • Set the current image size
+   finding : On the image element we find the following properties
+      • clientHeight
+      • height
+      • naturalHeight
+   finding : Chrome seems has the image not yet loaded when image size
+      is read. Perhaps we should use the image onload event?
+   status : Solved for empirically for now, but image size setting
+        still seems like a permanent source of trouble.
+   ܀
+
+   ref 20190107°0853 'convert string to number'
+   url : https://gomakethings.com/converting-strings-to-numbers-with-vanilla-javascript/
+   title : Converting strings to numbers with vanilla JavaScript
+   releasedate : 2017-Nov-6
+   note : Nice. Describes 3 flavours.
+   usage :
+   ܀
+
+   ref 20190107°0753 'detect flexbox support'
+   url : https://stackoverflow.com/questions/16432465/detecting-flex-box-support-with-css3-supports
+   title : Detecting flex-box support with CSS3 @supports
+   usage : issue 20190107°0433 'center image vertically'
+   ܀
+
+   ref 20190107°0752 'browser detection'
+   url : https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
+   title : How to detect Safari, Chrome, IE, Firefox and Opera browser?
+   usage : None, because we make feature detection, but thread has nice code.
+   ܀
+
+   todo 20190107°0731 'use strict'
+   do : Clear, where exactly 'use strict' is applied best. What is best practice?
+   location : slidegear.js
+   status : open
+   ܀
+
+   todo 20190107°0413 'refactor stock array'
+   now : The stock array is an array of arrays with fields. To
+          access the fields, we use indices.
+   do : Possibly replace the fields array by a JS object. This might be
+        nicer for the following reasons. (1) We have a normal onedimensional
+        array of objects. (2) The syntax to access the fields is shorter
+        and nicer. (3) Perhaps the JS performance were better (not sure).
+   status : open
+   ܀
+
+   note 20190107°0351 'css display-table'
+   what : In a div style apply property display:table.
+   why : It is a trick to make the div (or other element) not overlap
+          with the following elements, as a plain div normally does.
+   note : Search 'display:table' to see where it is applied.
+   ܀
+
+   ref 20190107°0132 'css filter property'
+   url : https://developer.mozilla.org/en-US/docs/Web/CSS/filter
+   title : MDN web docs — CSS — filter
+   note : Very intersting property. Not supported by IE, but by Edge it is.
+   ܀
+
+   ref 20190107°0107 'javascript namespace aliases'
+   url : https://stackoverflow.com/questions/11760191/in-javascript-alias-namespace
+   title : In javascript, alias namespace?
+   note :
+   ܀
+
+   todo 20190106°1938 'alternative caller flag'
+   todo : Find out whether the following is a good idea or not.
+   text : issue 20190106°1937 is about a switch, whether slidegear.js shall
+      attatch itself to the onload handler or not. One other source of knowledge
+      were the handler itself. As in func 20190106°0321 windowOnloadDaisychain
+      the handler could be read, it is a string(!), and we can search this handler
+      to see whether our wanted function is already in it or not.
+   status : open 
+   ܀
+
+   issue 20190106°1937 'test for script caller'
+   todo : Test the following hypothesis and confirm or falsify it :
+    • If body does not exist (yet), script was probably loaded from script tag in page header.
+    • If body (already) does exist, script was probably loaded from Daftari via pull-behind.
+   ref : See discussion ref 20190105°0723 'has window.onload already fired?'
+   ref : todo 20190106°1938 'alternative caller flag'
+   location : Script level at the end, seq 20190106°1935 'test caller'
+               and seq 20190106°0235 flag loaded-by-Daftari
+   status : probably solved
+   ܀
+
+   note 20190106°1637 'about style display'
+   text : Display controls important element behaviour, e.g.:
+     • display:block will not grow but hide the lines below
+     • display:table will grow down as much lines are necessary
+   ܀
+
+   log 20190106°0131 start project SlideGear
+   ܀
+
+   ———————————————————————
+   [file 20190106°0134] ܀Ω

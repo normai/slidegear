@@ -1,0 +1,18 @@
+
+
+   version 0.1.0 — 20190323°0951
+   • No more dependencies, all images base64 embedded
+
+   version 0.0.7.e 20190323°0911 (intermediate)
+   • Unfold buttons work
+
+   version 0.0.6 — 20190311°1221
+   • Running with Daftari pull-behind
+
+   version 0.0.5 — 20190210°0221
+   • Initial version
+
+   log 20190106°0131 start project Slidegear
+
+   ———————————————————————
+   [file 20190106°0133] ܀Ω
