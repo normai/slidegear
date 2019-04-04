@@ -1,4 +1,4 @@
-# SlideGear <sup><sub><sub>v0.1.0</sub></sub></sup>
+﻿# SlideGear <sup><sub><sub>v0.1.0..</sub></sub></sup>
 
 **Slogan** : Yet another JavaScript slideshow
 
@@ -15,8 +15,8 @@
 
 **License** : GNU LGPL v3
 
-**Copyright** : � 2019 Norbert C. Maier
+**Copyright** : © 2019 Norbert C. Maier
 
 2019-Mar-28
 
-<sup><sub>O</sub></sup><!-- file 20190106�0132 -->
+<sup><sub>܀</sub></sup><!-- file 20190106°0132 -->
