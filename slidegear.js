@@ -4093,9 +4093,12 @@ Sldgr.Cnst.aControls_Shiny = new Array // revamped 20190315°0511
 Sldgr.Cnst.sPlate_DataSlidegearAttrib = 'data-slidegear';
 
 
-// 20190316°0155
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~✂~~~~~~~~✂~~~~~~~~✂~~~~~~~~✂~~~~~~~~✂~~~~~~~~✂~~~~~~
 //~~~~~~~~~~~~~~~~~~~~~~~~~ Schnippel ~~~~~~~~~~~~~~~~~~~~~~~~~
+// summary : This area is shared via cutnpaste by those:
+//            • dafutils.js • canvasgear.js • slidegear.js
+// version : 20190329°0221
+
 /**
  * This namespace shall be root namespace
  *
@@ -4115,7 +4118,7 @@ var Trekta = Trekta || {};
 Trekta.Utils = Trekta.Utils || {
 
    /**
-    * This function retrieves the filename of the file to be edited
+    * This function retrieves the filename of the page to be edited
     *
     * @id 20110820°1741
     * @note Remember issue 20110901°1741 'get self filename for default page'
@@ -4225,6 +4228,24 @@ Trekta.Utils = Trekta.Utils || {
    }
 
    /**
+    * This function escapes a string to be used as HTML output
+    *
+    * @id : 20140926°1431
+    * @callers : • Cvgr.Func.executeFrame
+    * @todo  In FadeInFiles seq 20151106°1822 and seq 20151106°1821
+    *            shall use this function here. [todo 20190328°0943]
+    * @param sHtml {String} The HTML fragment to be escaped 
+    * @returns {String} The wanted escaped HTML fragment
+    */
+   , htmlEscape : function(sHtml) // [Trekta.Utils.htmlEscape]
+   {
+      sHtml = sHtml.replace(/</g, '&lt;'); // g = replace all hits, not only the first
+      sHtml = sHtml.replace(/>/g, '&gt;');
+
+      return sHtml;
+   }
+
+   /**
     * This function tests, whether the given script is already loaded or not.
     *
     * @id 20160503°0231
@@ -4276,10 +4297,9 @@ Trekta.Utils = Trekta.Utils || {
     * @param callbackfunc The callback function for the script onload event
     * @returns Success flag (so far just a dummy always true) e.g. function(){ DafCanary.squeak(); }
     */
-   , pullScriptBehind : function // [Trekta.Utils.pullScriptBehind]
-                                  ( sScriptToLoad
-                                   , callbackfunc
-                                    )
+   , pullScriptBehind : function ( sScriptToLoad
+                                  , callbackfunc
+                                   )
    {
       // avoid multiple loading [seq 20110821°0122]
       if ( Trekta.Utils.isScriptAlreadyLoaded(sScriptToLoad) ) {
@@ -4290,12 +4310,20 @@ Trekta.Utils = Trekta.Utils || {
          return;
       }
 
-      // bad workaround for s_DaftariBaseFolderRel mismatch [seq 20190211°0131]
-      //  The reason we need it is, that s_DaftariBaseFolderRel is the folder
-      //    where the calling script resides, not the Daftari base folder.
-      var sScriptSource = DafStart.Conf.s_DaftariBaseFolderRel + sScriptToLoad;
-      if (sScriptToLoad.indexOf('showdown/showdown') > 0) {
-         sScriptSource = sScriptToLoad; // e.g. "http://localhost/workspaces/daftaridev/trunk/daftari/js.libs/showdown/showdown.min.js"
+      // workaround against workaround [condition 20190329°0151]
+      if ( typeof DafStart !== 'undefined' ) {
+
+         // bad workaround for s_DaftariBaseFolderRel mismatch [seq 20190211°0131]
+         //  The reason is, that s_DaftariBaseFolderRel is the folder where
+         //  the calling script resides, not the Daftari base folder.
+         var sScriptSource = DafStart.Conf.s_DaftariBaseFolderRel + sScriptToLoad;
+         if ( sScriptToLoad.indexOf('showdown/showdown' ) > 0) {
+            sScriptSource = sScriptToLoad; // e.g. "http://localhost/workspaces/daftaridev/trunk/daftari/js.libs/showdown/showdown.min.js"
+         }
+      }
+      else {
+         // call from CanvasGear [line 20190329°0152]
+         sScriptSource = sScriptToLoad;
       }
 
       // prepare the involved elements [seq 20110821°0123]
@@ -4413,7 +4441,7 @@ Trekta.Utils = Trekta.Utils || {
     *
     * @id 20110820°2041
     * @status working
-    * @callers •
+    * @callers • CanvasGear func 20140815°1221 executeFrame
     * @param sScriptName {String} The name of the canary script, e.g. 'sitmapdaf.js'.
     * @returns {String} The wanted path, where the given script resides, but
     *    there are browser differences, e.g.
@@ -4502,8 +4530,8 @@ Trekta.Utils = Trekta.Utils || {
       // (.1) get the DOM internal absolute path
       //  This is just for fun, not finally wanted.
       s = script.src;
-      s = s.substring(0, (s.length - sCanary.length));            // used as canary is '/js/daftaro/dafutils.js'
-      Trekta.Utils.s_DaftariBaseFolderAbs = s;                    // e.g. "file:///G:/work/downtown/daftaridev/trunk/daftari/"
+      s = s.substring(0, (s.length - sCanary.length));         // used as canary is '/js/daftaro/dafutils.js'
+      Trekta.Utils.s_DaftariBaseFolderAbs = s;                 // e.g. "file:///G:/work/downtown/daftaridev/trunk/daftari/"
 
       // (.2) get the script tag's literal path (algo 20111225°1251)
       var sPathLiteral = '';
@@ -4527,8 +4555,8 @@ Trekta.Utils = Trekta.Utils || {
     * This function daisychains the given function on the windows.onload events
     *
     * @id 20160614°0331
-    * @note This function is written after daisychain in be_slide.js (dl 20110425°0021).
-    * @callers :
+    * @note Remember ref 20190328°0953 'mdn → addEventListener'
+    * @callers
     * @param funczion {function} The function to be appended to the window.onload event
     * @returns nothing
     */
@@ -4609,7 +4637,7 @@ Trekta.Utils = Trekta.Utils || {
 
 };
 //~~~~~~~~~~~~~~~~~~~~~~~~~ Schnappel ~~~~~~~~~~~~~~~~~~~~~~~~~
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~✂~~~~~~~~✂~~~~~~~~✂~~~~~~~~✂~~~~~~~~✂~~~~~~~~✂~~~~~~
 
 // start mechanism [seq 20190106°0245]
 Trekta.Utils.windowOnloadDaisychain(Sldgr.Func.startup);

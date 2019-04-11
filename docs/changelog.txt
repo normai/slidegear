@@ -1,5 +1,4 @@
 
-   •
 
    version 0.1.0 — 20190323°0951
    • No more dependencies, all images base64 embedded
