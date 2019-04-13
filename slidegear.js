@@ -1,7 +1,7 @@
 /*!
  * This is SlideGear, a small standalone slider library
  *
- * version   : (See below, searching 'sVersion')
+ * version   : 0.1.0.b.. 20190323°0951..
  * license   : GNU LGPL v3 or later (https://www.gnu.org/licenses/lgpl.html)
  * copyright : (c) 2019 Norbert C. Maier (http://www.trilo.de)
  * note      : The minified flavour is made with Google Closure Compiler
@@ -4093,11 +4093,11 @@ Sldgr.Cnst.aControls_Shiny = new Array // revamped 20190315°0511
 Sldgr.Cnst.sPlate_DataSlidegearAttrib = 'data-slidegear';
 
 
-//~~~~~~✂~~~~~~~~✂~~~~~~~~✂~~~~~~~~✂~~~~~~~~✂~~~~~~~~✂~~~~~~
-//~~~~~~~~~~~~~~~~~~~~~~~~~ Schnippel ~~~~~~~~~~~~~~~~~~~~~~~~~
-// summary : This area is shared via cutnpaste by those:
+//~~~~~~✂~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// summary : This area is shared via cutnpaste by those scripts:
 //            • dafutils.js • canvasgear.js • slidegear.js
-// version : 20190329°0221
+// id : area 20190106°0307
+// version : 20190329°0913
 
 /**
  * This namespace shall be root namespace
@@ -4128,10 +4128,12 @@ Trekta.Utils = Trekta.Utils || {
     */
    getFileNameFull : function() // [Trekta.Utils.getFileNameFull]
    {
+      'use strict'; // [line 20190329°0847`12]
+
       // read URL of this page
       // Values are e.g.
       //    • 'http://localhost/eps/index.html?XDEBUG_SESSION_START=netbeans-xdebug#'
-      //    • 'file:///G:/work/downtown/daftaridev/trunk/daftari/moonbouncy.html' (not yet working)
+      //    • 'file:///G:/work/daftaridev/trunk/daftari/moonbouncy.html' (not yet working)
       var sUrl = document.location.href;
 
       // remove possible query after the file name
@@ -4152,6 +4154,8 @@ Trekta.Utils = Trekta.Utils || {
     */
    , getFilenamePlain : function() // [Trekta.Utils.getFileNameFull]
    {
+      'use strict'; // [line 20190329°0847`13]
+
       var sUrl = Trekta.Utils.getFileNameFull(); // e.g 'daftari/daftari/login.html' (in FF)
 
       // fix issue 20181228°0931 'slideshow fails' [seq 20181228°0935]
@@ -4176,6 +4180,8 @@ Trekta.Utils = Trekta.Utils || {
     */
    , getXMLHttp : function() // [Trekta.Utils.getFileNameFull]
    {
+      'use strict'; // [line 20190329°0847`14]
+
       var xmlHttp;
 
       // () seqence 20150515°1612 'browser switch'
@@ -4234,11 +4240,13 @@ Trekta.Utils = Trekta.Utils || {
     * @callers : • Cvgr.Func.executeFrame
     * @todo  In FadeInFiles seq 20151106°1822 and seq 20151106°1821
     *            shall use this function here. [todo 20190328°0943]
-    * @param sHtml {String} The HTML fragment to be escaped 
+    * @param sHtml {String} The HTML fragment to be escaped
     * @returns {String} The wanted escaped HTML fragment
     */
    , htmlEscape : function(sHtml) // [Trekta.Utils.htmlEscape]
    {
+      'use strict'; // [line 20190329°0847`15]
+
       sHtml = sHtml.replace(/</g, '&lt;'); // g = replace all hits, not only the first
       sHtml = sHtml.replace(/>/g, '&gt;');
 
@@ -4256,6 +4264,8 @@ Trekta.Utils = Trekta.Utils || {
     */
    , isScriptAlreadyLoaded : function (sWantedScript) // [Trekta.Utils.isScriptAlreadyLoaded]
    {
+      'use strict'; // [line 20190329°0847`16]
+
       var regexp = null;
 
       // build the appropriate regex variable [seq 20160623°0311]
@@ -4301,6 +4311,8 @@ Trekta.Utils = Trekta.Utils || {
                                   , callbackfunc
                                    )
    {
+      'use strict'; // [line 20190329°0847`17]
+
       // avoid multiple loading [seq 20110821°0122]
       if ( Trekta.Utils.isScriptAlreadyLoaded(sScriptToLoad) ) {
          if ( Trekta.Utils.bShow_Debug_Dialogs ) {
@@ -4370,6 +4382,8 @@ Trekta.Utils = Trekta.Utils || {
     */
    , readTextFile1 : function(sFilename, bAsync) // [Trekta.Utils.readTextFile1]
    {
+      'use strict'; // [line 20190329°0847`18]
+
       // () preparation
       var sRead = '';
 
@@ -4450,6 +4464,8 @@ Trekta.Utils = Trekta.Utils || {
     */
    , retrieveScriptFolderAbs : function (sScriptName) // [Trekta.Utils.retrieveScriptFolderAbs]
    {
+      'use strict'; // [line 20190329°0847`22]
+
       var s = '';
 
       // () prepare regex [seq 20160621°0142]
@@ -4500,6 +4516,8 @@ Trekta.Utils = Trekta.Utils || {
     */
    , retrieveScriptFolderRel : function (sCanary)
    {
+      'use strict'; // [line 20190329°0847`23]
+
       var s = '';
 
       // () get the script tags list
@@ -4562,6 +4580,8 @@ Trekta.Utils = Trekta.Utils || {
     */
    , windowOnloadDaisychain : function(funczion) // [Trekta.Utils.windowOnloadDaisychain]
    {
+      'use strict'; // [line 20190329°0847`24]
+
       // is the onload handler already used?
       if ( window.onload ) {
          // preserve existing function(s) and append our additional function
@@ -4636,8 +4656,7 @@ Trekta.Utils = Trekta.Utils || {
    , bShow_Debug_Dialogs : false // [Trekta.Utils.bShow_Debug_Dialogs]
 
 };
-//~~~~~~~~~~~~~~~~~~~~~~~~~ Schnappel ~~~~~~~~~~~~~~~~~~~~~~~~~
-//~~~~~~✂~~~~~~~~✂~~~~~~~~✂~~~~~~~~✂~~~~~~~~✂~~~~~~~~✂~~~~~~
+//~~~~~~✂~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // start mechanism [seq 20190106°0245]
 Trekta.Utils.windowOnloadDaisychain(Sldgr.Func.startup);
