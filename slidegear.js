@@ -1,7 +1,7 @@
 /*!
  * This is SlideGear, a small standalone slider library
  *
- * version   : 0.1.0.b.. 20190323°0951..
+ * version   : 0.1.0.g — 20190402°0815
  * license   : GNU LGPL v3 or later (https://www.gnu.org/licenses/lgpl.html)
  * copyright : (c) 2019 Norbert C. Maier (http://www.trilo.de)
  * note      : The minified flavour is made with Google Closure Compiler
@@ -755,9 +755,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
          //
 
          // center [seq 20190106°1621]
-         // note : See issue 20190107°0433 'center image vertically'
-         // note : See ref 20190107°0753 'detect flexbox support'
-         // see : ref 20190107°0435 'bert bos : centering things'
+         // note : Remember issue 20190107°0433 'center image vertically'
          var sCenter = 'display:flex; align-items:center; justify-content:center;';
 
          // build one image div [seq 20190106°1622]
@@ -2048,10 +2046,12 @@ Sldgr.Func.pgOutDebug = function(sMsg, sDbgId, iSlidrId)
 
    // build line [seq 20190106°0514]
    var sLine = Sldgr.Vars.iOutputLineCounter + ' [';
-   if ( typeof iSlidrId !== undefined ) {
+   ////if ( typeof iSlidrId !== undefined ) {
+   if ( typeof iSlidrId !== 'undefined' ) { // fix 20190402°0723`23
       sLine += 'Gear ' + (iSlidrId + 1);
    }
-   if ( typeof sDbgId !== undefined ) {
+   ////if ( typeof sDbgId !== undefined ) {
+   if ( typeof sDbgId !== 'undefined' ) { // fix 20190402°0723`24
       sLine += ' ' + sDbgId;
    }
    sLine += ']';
@@ -4093,11 +4093,11 @@ Sldgr.Cnst.aControls_Shiny = new Array // revamped 20190315°0511
 Sldgr.Cnst.sPlate_DataSlidegearAttrib = 'data-slidegear';
 
 
-//~~~~~~✂~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// summary : This area is shared via cutnpaste by those scripts:
-//            • dafutils.js • canvasgear.js • slidegear.js
+// ~ ~ ~ ✂ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+// summary : This area is shared via cut-n-paste by the following scripts:
+//               • dafutils.js • canvasgear.js • slidegear.js
 // id : area 20190106°0307
-// version : 20190329°0913
+// version : 20190402°0755 // 20190331°0242 20190329°0913
 
 /**
  * This namespace shall be root namespace
@@ -4171,12 +4171,12 @@ Trekta.Utils = Trekta.Utils || {
    /**
     * This helper function delivers an XMLHttp object
     *
-    * id : 20110816°1622
-    * ref : 20110816°1421 'first simple ajax example'
-    * note 20150515°173101 : This function seems to work even with IE8
-    * note : Any AJAX request might be easier done with jQuery, e.g. like $.ajax()
-    * callers : • readTextFile1 • MakeRequest
-    * note :
+    * @id : 20110816°1622
+    * @ref : 20110816°1421 'first simple ajax example'
+    * @note 20150515°173101 : This function seems to work even with IE8
+    * @note : Any AJAX request might be easier done with jQuery, e.g. like $.ajax()
+    * @callers : • readTextFile1 • MakeRequest
+    * @note :
     */
    , getXMLHttp : function() // [Trekta.Utils.getFileNameFull]
    {
@@ -4293,23 +4293,21 @@ Trekta.Utils = Trekta.Utils || {
     * This function loads the given script then calls the given function
     *
     * @id 20110821°0121
+    * @version 20190331°0241 added parameter for onError callback
     * @version 20181229°1941 now with parameter for onload callback function
     * @status works
     * @chain project 20181230°0211 http://www.trekta.biz/svn/demosjs/trunk/pullbehind
     * @note About how exactly to call function(s) in the loaded script, see
-    *     issue 20160503°0211 and seq 20160624°0411 'pull-behind fancytree'.
+    *    e.g. issue 20160503°0211 and seq 20160624°0411 'pull-behind fancytree'.
     * @note See howto 20181229°1943 'summary on pullbehind'
-    * @callers
-    *    • dafstart.js::callCanarySqueak()
-    *    • daftari.js seq 20160623°0251 'pull-behind slides'
-    *    • daftari.js seq 20160624°0411 'pull-behind fancytree'
-    * @param sScriptToLoad The path from page to script, e.g. "./../../daftari/js/daftaro/dafcanary.js", 'js/daftaro/dafcanary.js'
-    * @param callbackfunc The callback function for the script onload event
-    * @returns Success flag (so far just a dummy always true) e.g. function(){ DafCanary.squeak(); }
+    * @callers • dafstart.js::callCanarySqueak • daftari.js::pull-behind slides
+    *    • daftari.js::pull-behind fancytree • canvasgear.js::..
+    * @param {String} sScriptToLoad The path from page to script, e.g. "./../../daftari/js/daftaro/dafcanary.js", 'js/daftaro/dafcanary.js'
+    * @param {Function} callbackOnload The callback function for the script onload event
+    * @param {Function} callbackOnerror The callback function for the script onerror event
+    * @returns {Boolean}  Success flag (just a dummy always true)
     */
-   , pullScriptBehind : function ( sScriptToLoad
-                                  , callbackfunc
-                                   )
+   , pullScriptBehind : function ( sScriptToLoad, callbackOnload, callbackOnerror )
    {
       'use strict'; // [line 20190329°0847`17]
 
@@ -4318,7 +4316,7 @@ Trekta.Utils = Trekta.Utils || {
          if ( Trekta.Utils.bShow_Debug_Dialogs ) {
             alert ("[Debug]\n\nScript is already loaded:\n\n" + sScriptToLoad);
          }
-         callbackfunc();
+         callbackOnload();
          return;
       }
 
@@ -4334,7 +4332,7 @@ Trekta.Utils = Trekta.Utils || {
          }
       }
       else {
-         // call from CanvasGear [line 20190329°0152]
+         // call from • CanvasGear
          sScriptSource = sScriptToLoad;
       }
 
@@ -4348,7 +4346,12 @@ Trekta.Utils = Trekta.Utils || {
 
       // set the non-trivial but crucial property [line 20181229°1932]
       // note : Remember todo 20181229°1931 'make pullbehind state-of-the-art'
-      script.onload = callbackfunc;
+      script.onload = callbackOnload;
+
+      // [condition 20190331°0242]
+      if ((typeof callbackOnerror !== 'undefined') && (callbackOnerror !== null)) {
+         script.onerror = callbackOnerror;
+      }
 
       // ignit the pulling [seq 20110821°0125]
       head.appendChild(script);
@@ -4485,7 +4488,7 @@ Trekta.Utils = Trekta.Utils || {
             //    • FF etc : scripts[i].src = 'http://localhost/manual/daftari/daftari.js'
             //    • IE     : scripts[i].src = '../daftari/daftari.js'
             if (scripts[i].src) {
-               if (scripts[i].src.match(regexMatch)) {                    // e.g. /dafstart\.js$/
+               if ( scripts[i].src.match(regexMatch) ) {                  // e.g. /dafstart\.js$/
                   path = scripts[i].src.replace(regexReplace, '$1');      // e.g. /(.*)dafstart.js$/
                }
             }
@@ -4495,79 +4498,79 @@ Trekta.Utils = Trekta.Utils || {
       return path; // e.g. "http://localhost/daftaridev/trunk/daftari/js/daftaro/"
    }
 
-   /**
-    * This function tells the relative path from the page to the given given script
-    *
-    * This function is useful if the script uses resources, e.g. images,
-    *  which are located relative to the script, as typically is the case
-    *  within a project folder structure.
-    *
-    * @id 20160501°1611
-    * @ref See howto 20190209°0131 'retrieve this script path'
-    * @todo 20190316°0141 'call retrieveScriptFolderRel without canary'
-    *     Implement the possibility to call the function
-    *     without parameter. Then we have no canary to seach for in the script
-    *     tags, but we use the last from the list. This is the last one loaded,
-    *     and mostly means the calling script itself.
-    * @callers • dafstart.js from scriptlevel
-    * @param sCanary {String} Trailing part of the wanted script, e.g. '/js/daftaro/dafutils.js'
-    * @returns {String} The path to the folder where the given script resides
-                *           , e.g. "'/js/daftaro/dafutils.js'"
-    */
-   , retrieveScriptFolderRel : function (sCanary)
-   {
-      'use strict'; // [line 20190329°0847`23]
-
-      var s = '';
-
-      // () get the script tags list
-      var scripts = document.getElementsByTagName('script');
-
-      // () find the canary script tag
-      var script = null;
-      var bFound = false;
-      for (var i = 0; i < scripts.length; i++) {
-         if (scripts[i].src.indexOf(sCanary) > 0) {
-            script = scripts[i];
-            bFound = true;
-            break;
-         }
-      }
-
-      // paranoia
-      if (! bFound) {
-         s = '[20160501°1631] Fatal error'
-            + '\n' + 'The wanted script could not be found.'
-             + '\n' + 'It looks like the search string is wrong.'
-              + '\n\n' + 'search string = ' + sCanary
-               ;
-         alert(s);
-         return '';
-      }
-
-      // (.1) get the DOM internal absolute path
-      //  This is just for fun, not finally wanted.
-      s = script.src;
-      s = s.substring(0, (s.length - sCanary.length));         // used as canary is '/js/daftaro/dafutils.js'
-      Trekta.Utils.s_DaftariBaseFolderAbs = s;                 // e.g. "file:///G:/work/downtown/daftaridev/trunk/daftari/"
-
-      // (.2) get the script tag's literal path (algo 20111225°1251)
-      var sPathLiteral = '';
-      for (var i = 0; i < script.attributes.length; i++) {
-         if (script.attributes[i].name === 'src') {
-            sPathLiteral = script.attributes[i].value;
-            break;
-         }
-      }
-
-      // reduce from canary script path to folder only path [seq 20190316°0131]
-      // E.g. for sCanary "/js/daftaro/dafutils.js" :
-      //    • "./../../daftari/js/daftaro/dafutils.js" ⇒ "./../../daftari/"
-      //    • "./daftari/js/daftaro/dafutils.js"       ⇒ "./daftari/"
-      var sPathOnly = sPathLiteral.substring ( 0 , ( sPathLiteral.length - sCanary.length + 1 ) );
-
-      return sPathOnly;
-   }
+   /////**
+   //// * This function tells the relative path from the page to the given given script
+   //// *
+   //// * This function is useful if the script uses resources, e.g. images,
+   //// *  which are located relative to the script, as typically is the case
+   //// *  within a project folder structure.
+   //// *
+   //// * @id 20160501°1611
+   //// * @ref See howto 20190209°0131 'retrieve this script path'
+   //// * @todo 20190316°0141 'call retrieveScriptFolderRel without canary'
+   //// *     Implement the possibility to call the function
+   //// *     without parameter. Then we have no canary to seach for in the script
+   //// *     tags, but we use the last from the list. This is the last one loaded,
+   //// *     and mostly means the calling script itself.
+   //// * @callers • dafstart.js from scriptlevel
+   //// * @param sCanary {String} Trailing part of the wanted script, e.g. '/js/daftaro/dafutils.js'
+   //// * @returns {String} The path to the folder where the given script resides
+   ////             *           , e.g. "'/js/daftaro/dafutils.js'"
+   //// */
+   ////, retrieveScriptFolderRel : function (sCanary)
+   ////{
+   ////   'use strict'; // [line 20190329°0847`23]
+   ////
+   ////   var s = '';
+   ////
+   ////   // () get the script tags list
+   ////   var scripts = document.getElementsByTagName('script');
+   ////
+   ////   // () find the canary script tag
+   ////   var script = null;
+   ////   var bFound = false;
+   ////   for (var i = 0; i < scripts.length; i++) {
+   ////      if (scripts[i].src.indexOf(sCanary) > 0) {
+   ////         script = scripts[i];
+   ////         bFound = true;
+   ////         break;
+   ////      }
+   ////   }
+   ////
+   ////   // paranoia
+   ////   if (! bFound) {
+   ////      s = '[20160501°1631] Fatal error'
+   ////         + '\n' + 'The wanted script could not be found.'
+   ////          + '\n' + 'It looks like the search string is wrong.'
+   ////           + '\n\n' + 'search string = ' + sCanary
+   ////            ;
+   ////      alert(s);
+   ////      return '';
+   ////   }
+   ////
+   ////   // (.1) get the DOM internal absolute path
+   ////   //  This is just for fun, not finally wanted.
+   ////   s = script.src;
+   ////   s = s.substring(0, (s.length - sCanary.length));         // used as canary is '/js/daftaro/dafutils.js'
+   ////   Trekta.Utils.s_DaftariBaseFolderAbs = s;                 // e.g. "file:///G:/work/downtown/daftaridev/trunk/daftari/"
+   ////
+   ////   // (.2) get the script tag's literal path (algo 20111225°1251)
+   ////   var sPathLiteral = '';
+   ////   for (var i = 0; i < script.attributes.length; i++) {
+   ////      if (script.attributes[i].name === 'src') {
+   ////         sPathLiteral = script.attributes[i].value;
+   ////         break;
+   ////      }
+   ////   }
+   ////
+   ////   // reduce from canary script path to folder only path [seq 20190316°0131]
+   ////   // E.g. for sCanary "/js/daftaro/dafutils.js" :
+   ////   //    • "./../../daftari/js/daftaro/dafutils.js" ⇒ "./../../daftari/"
+   ////   //    • "./daftari/js/daftaro/dafutils.js"       ⇒ "./daftari/"
+   ////   var sPathOnly = sPathLiteral.substring ( 0 , ( sPathLiteral.length - sCanary.length + 1 ) );
+   ////
+   ////   return sPathOnly;
+   ////}
 
    /**
     * This function daisychains the given function on the windows.onload events
@@ -4656,7 +4659,7 @@ Trekta.Utils = Trekta.Utils || {
    , bShow_Debug_Dialogs : false // [Trekta.Utils.bShow_Debug_Dialogs]
 
 };
-//~~~~~~✂~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~ ~ ~ ✂ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 // start mechanism [seq 20190106°0245]
 Trekta.Utils.windowOnloadDaisychain(Sldgr.Func.startup);

@@ -204,6 +204,20 @@
    status : open
    ܀
 
+   issue 20190107°0433 'center image vertically'
+   prob : Centering the image horizontally in the div is simple with
+      'text-align:center', centering vertically is tricky and browser specific.
+   location : seq 20190106°1622 build one image div
+   see : ref 20190107°0434 'stackoverflow : vertically align image inside div'
+   see : ref 20190107°0753 'detect flexbox support'
+   see : ref 20190107°0435 'bert bos : centering things'
+   finding : The situation as of now with display:flex
+      • Chrome 63 : Works • Edge : Works
+      • Firefox 64 : No image at all (issue 20190107o0441 'firefox shows no images')
+      • IE 9 : ? • IE 11 : Works • Opera 10 : does not work, image is left top
+   status : Should be finised by using 'flex'
+   ܀
+
    todo 20190107°0413 'refactor stock array'
    now : The stock array is an array of arrays with fields. To
           access the fields, we use indices.
