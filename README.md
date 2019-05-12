@@ -1,4 +1,4 @@
-﻿# SlideGear <sup><sub><sub>v0.1.0</sub></sub></sup>
+﻿# SlideGear <sup><sub><sub>v0.1.0.h</sub></sub></sup>
 
 **Slogan** : Yet another JavaScript slideshow
 

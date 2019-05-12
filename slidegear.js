@@ -1,7 +1,7 @@
 /*!
  * This is SlideGear, a small standalone slider library
  *
- * version   : 0.1.0.g.... — 20190402°0815..
+ * version   : 0.1.0.h — 20190408°0214
  * license   : GNU LGPL v3 or later (https://www.gnu.org/licenses/lgpl.html)
  * copyright : (c) 2019 Norbert C. Maier (http://www.trilo.de)
  * note      : The minified flavour is made with Google Closure Compiler
@@ -11,13 +11,6 @@
  * encoding  : UTF-8-with-BOM
  * note      : ⇩ ⇦ ⯆ ⯇ △ ▽ ◁ ▷ ◈ ☼ ۞ ✂
  */
-
-// [line 20190315°0731]
-// Setting strict mode as the first code line makes the whole script run in
-//  strict mode. The function level strict mode directives actually superfluous.
-// note : About compatibility. E.g. IE10 does not yet understand strict
-//    mode. SlideGear is not yet tested with IE10.
-'use strict';
 
 /**
  * This namespace contains the SlideGear code
@@ -40,8 +33,8 @@ Sldgr.Cnst = Sldgr.Cnst || {};
  * @var {String}
  */
 Sldgr.Cnst.info = {
-   sVersion : '0.1.0'                                          // 20190315°0543
-   , sTimestamp : '20190323°0951'                              // 20190315°0545
+   sVersion : '0.1.0.h'                                          // 20190315°0543
+   , sTimestamp : '20190408°0214'                              // 20190315°0545
 };
 
 /**
@@ -105,6 +98,8 @@ Sldgr.Func.dSlide = function()
  */
 Sldgr.Func.imageOnloadHandler = function (elImg)
 {
+   'use strict';
+
    // get target [seq 20190108°0222]
    var eDivSlid = elImg.parentNode;
    var iOrgNaturalHi = elImg.naturalHeight;
@@ -151,6 +146,8 @@ Sldgr.Func.imageOnloadHandler = function (elImg)
  */
 Sldgr.Func.injectStyleRules = function ()
 {
+   'use strict';
+
    // define the rules [seq 20190323°0111]
    var sRuls = '';
 
@@ -322,7 +319,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
    var oVr = {
 
       // the button set [line 20190106°1725]
-      aCtrBtns : new Array()
+      aCtrBtns : []
 
       /**
        * This object controls the beamers activity
@@ -356,7 +353,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
        * @summary : This is a multidimensional array consisting of the following
        * @type {Array}
        */
-      , aMag : new Array()
+      , aMag : []
 
       // prop 20190106°1721 slider panel height
       // note : Remember the difference
@@ -391,16 +388,14 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     */
    this.o1Slideshow_Code = function()
    {
-      'use strict';
-
       // provide the primordial button set [seq 20190106°1855]
       // note : Note the difference between cloning the array with slice vs. assigning it.
       oVr.aCtrBtns = Sldgr.Cnst.aControls_Shiny.slice(0); // zero means 'clone complete'
 
       // generate multidim array with button IDs and image URLs [seq 20190106°1745]
       var ar = new Array(5);
-      for (var i = 0; i < oVr.aCtrBtns[0].length; i++) {
-         ar[i] = 'Button_' + iSliderId + '_' + i;
+      for (var i1 = 0; i1 < oVr.aCtrBtns[0].length; i1++) {
+         ar[i1] = 'Button_' + iSliderId + '_' + i1;
       }
       oVr.aCtrBtns.push(ar);                                           // the IDs array
 
@@ -409,16 +404,16 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
       // achieve random order [seq 20190106°1921]
       // todo : Test and fix
       if ( oSt.bRandomOrder ) {
-         var iRand = Math.floor( Math.random() * oVr.aMag.length ) ;
-         for (var i = 0; i <= (iRand * oVr.aMag.length) ; i++ ) {
+         var iRand1 = Math.floor( Math.random() * oVr.aMag.length ) ;
+         for (var i2 = 0; i2 <= (iRand1 * oVr.aMag.length) ; i2++ ) {
             aMag.push(oVr.aMag.shift());
          }
       }
 
       // do random start [seq 20190106°1923]
       if ( oSt.bRandomStart ) {
-         var iRand = Math.floor( Math.random() * oVr.aMag.length ) ;
-         oVr.Stage.iNdxCurr = iRand;
+         var iRand2 = Math.floor( Math.random() * oVr.aMag.length ) ;
+         oVr.Stage.iNdxCurr = iRand2;
       }
 
       // debug print all image pathes [debug 20190106°2014]
@@ -436,8 +431,6 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     */
    this.o2ReadSetup = function()
    {
-      'use strict';
-
       // retrieve setup command [seq 20190107°0611]
       var oProps = {};
       var e = Sldgr.Vars.arDivSliders[iSliderId];
@@ -484,8 +477,6 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     */
    this.o2ReadSetup_EvalKeys = function(sKey, sVal)
    {
-      'use strict';
-
       // debug [seq 20190107°0832]
       if ( Sldgr.Vars.bDbgOut_3_read_setup ) {
          var s = 'process setting ' + sKey + ' = ' + sVal;
@@ -590,7 +581,6 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     */
    this.o2ReadSetup_ImageList = function()
    {
-      'use strict';
 
       // pessimistic predetermination
       var bUseFallback = false;
@@ -608,10 +598,10 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
                Sldgr.Func.pgOutDebug(s, 'f.x1', iSliderId);
 
                for (var i = 0; i < oSt.aImgListFromAttrib.length; i += 3) {
-                  var s = " — " + oSt.aImgListFromAttrib[i]
-                         +  " : " + oSt.aImgListFromAttrib[i + 2]
-                          ;
-                  Sldgr.Func.pgOutDebug(s, 'f.x2', iSliderId);
+                  var s2 = " — " + oSt.aImgListFromAttrib[i]
+                          +  " : " + oSt.aImgListFromAttrib[i + 2]
+                           ;
+                  Sldgr.Func.pgOutDebug(s2, 'f.x2', iSliderId);
                }
 
                // provide list as below known variable
@@ -656,11 +646,11 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
          // // }
       }
       // () create and fill the Magazine from the flat user input array [seq 20190106°1521]
-      oVr.aMag = new Array();
+      oVr.aMag = [];
       // note : Here the Magazine array is built and filled, except for fields
       //    slid.eSliDiv and slid.sSizeFactor, which can be filled only later.
-      for (var i = 0; i < ( Sldgr.Vars.arImgImport.length / Sldgr.Cnst.iRecordWidth_Input ); i++) {
-         var iNdxImpo = i * Sldgr.Cnst.iRecordWidth_Input;
+      for (var i2 = 0; i2 < ( Sldgr.Vars.arImgImport.length / Sldgr.Cnst.iRecordWidth_Input ); i2++) {
+         var iNdxImpo = i2 * Sldgr.Cnst.iRecordWidth_Input;
          var slid = new Sldgr.Func.dSlide();
          slid.sImgPath = Sldgr.Vars.arImgImport[iNdxImpo + Sldgr.Cnst.iStkFld_Path];
          slid.nDurationFactor = Sldgr.Vars.arImgImport[iNdxImpo + Sldgr.Cnst.iStkFld_Factor];
@@ -677,7 +667,6 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     */
    this.o3Build0Html = function()
    {
-      'use strict';
 
       // build top level div fragmen [seq 20190106°1551]
       //  • It stretches down with all other panels (by display:table)
@@ -696,20 +685,20 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
       sDiv += sFrg;
 
       // add caption box [seq 20190323°0411]
-      var sFrg = oSelf.o3Build2CaptionPanel();
-      sDiv += sFrg;
+      var sFrg2 = oSelf.o3Build2CaptionPanel();
+      sDiv += sFrg2;
 
       // add navigation box [seq 20190323°0413]
-      var sFrg = oSelf.o3Build3NaviPanel();
-      sDiv += sFrg;
+      var sFrg3 = oSelf.o3Build3NaviPanel();
+      sDiv += sFrg3;
 
       // add buttons box [seq 20190106°1553]
-      sFrg = oSelf.o3Build4ToolsPanel();
-      sDiv += sFrg;
+      var sFrg4 = oSelf.o3Build4ToolsPanel();
+      sDiv += sFrg4;
 
       // add debug box [seq 20190106°1554] this is a table
-      sFrg = oSelf.o3Build50DebugPanel();
-      sDiv += sFrg;
+      var sFrg5 = oSelf.o3Build50DebugPanel();
+      sDiv += sFrg5;
 
       // close the HTML fragment [seq 20190106°1555]
       sDiv += '</div>';
@@ -733,7 +722,6 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     */
    this.o3Build1ImgPanel = function()
    {
-      'use strict';
 
       var sDiv = '';
 
@@ -843,7 +831,6 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     */
    this.o3Build2CaptionPanel = function()
    {
-      'use strict';
 
       // open div [seq 20190106°1631]
       var sHt = '';
@@ -909,8 +896,8 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
       sHt += sDv;
 
       // caption box close button [seq 20190314°0421]
-      var sDv = '<div';
-      sDv += 'id="CaptionBox_CloseButton_Div_' + iSliderId + '"'
+      var sDv2 = '<div';
+      sDv2 += 'id="CaptionBox_CloseButton_Div_' + iSliderId + '"'
            + ' style="'
            + ' position:absolute; top:3px; right:-26px;'               // [closebutton-position]
           + ' z-index:1;'                                              // [zindex]
@@ -933,7 +920,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
            + '</div>'
             ;
       if ( Sldgr.Cnst.bShow_GrowPanels_CloseButtons ) {
-         sHt += sDv;
+         sHt += sDv2;
       }
 
       // close div [seq 20190106°1635]
@@ -950,7 +937,6 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     */
    this.o3Build3NaviPanel = function()
    {
-      'use strict';
 
       // [line 20190314°0621]
       var iSome_Offset_12 = 12;
@@ -971,44 +957,44 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
              ;
 
       // prepend button auto-backward [seq 20190314°0551]
-      var sFrg = '<a'
-                + ' style="'
-                + ' border:1px solid SlateGray;'
-                + ' border-radius:33%;'
-                + ' font-weight:bold;'
-                + ' padding-left:0.1em; padding-right:0.3em;'
-                + ' text-decoration:none;'
-                + '"'
-             // + ' class="DirectNavNormal"'
-                + ' href="'
-                + 'javascript:Sldgr.Vars.arObSliders[' + iSliderId + '].oClickAutoGoLeft();'
-                + '" title="Auto Slide Backward"'
-                + ' id="NaviPanelButton_AutoBackward_' + iSliderId + '"'
-                + '>◁</a>&nbsp;'
-                 ;
-      sHt += sFrg;
+      var sFrg1 = '<a'
+                 + ' style="'
+                  + ' border:1px solid SlateGray;'
+                  + ' border-radius:33%;'
+                  + ' font-weight:bold;'
+                  + ' padding-left:0.1em; padding-right:0.3em;'
+                  + ' text-decoration:none;'
+                  + '"'
+               // + ' class="DirectNavNormal"'
+                  + ' href="'
+                  + 'javascript:Sldgr.Vars.arObSliders[' + iSliderId + '].oClickAutoGoLeft();'
+                  + '" title="Auto Slide Backward"'
+                  + ' id="NaviPanelButton_AutoBackward_' + iSliderId + '"'
+                   + '>◁</a>&nbsp;'
+                    ;
+      sHt += sFrg1;
 
       // build the single images direct links [seq 20190106°1653]
-      var sFrg = '';
+      var sFrg2 = '';
       for ( var iNum = 1; iNum <= oVr.aMag.length; iNum++ ) {
-         sFrg += '<a href="' + 'javascript:Sldgr.Vars.arObSliders['
-               + iSliderId + '].oClickGoSelected(' + iNum + ');"'
-                + ' style="'
-                + ' border:1px solid SlateGray;'
-                + ' border-radius:33%;'
-                + ' font-size:small;'
-                + ' line-height:1.5em;'
-                + ' text-decoration:none;'
-                + '"'
-                + ' class="DirectNavNormal"'
-                + ' title="' + 'Goto Image No ' + iNum + '"'
-                + ' id="DirectNav_' + iSliderId + '_' + iNum + '"'     // [line 20190323°0123]
-                + '>&nbsp;' + iNum + '&nbsp;'
-                + '</a>&#8203;'                                        // zero-width space
-                 + ' '                                                 // optional
-                  ;
+         sFrg2 += '<a href="' + 'javascript:Sldgr.Vars.arObSliders['
+                + iSliderId + '].oClickGoSelected(' + iNum + ');"'
+                 + ' style="'
+                 + ' border:1px solid SlateGray;'
+                 + ' border-radius:33%;'
+                 + ' font-size:small;'
+                 + ' line-height:1.5em;'
+                 + ' text-decoration:none;'
+                 + '"'
+                 + ' class="DirectNavNormal"'
+                 + ' title="' + 'Goto Image No ' + iNum + '"'
+                 + ' id="DirectNav_' + iSliderId + '_' + iNum + '"'    // [line 20190323°0123]
+                 + '>&nbsp;' + iNum + '&nbsp;'
+                 + '</a>&#8203;'                                       // zero-width space
+                  + ' '                                                // optional
+                   ;
       }
-      sHt += sFrg;
+      sHt += sFrg2;
 
       // append button auto-foward [seq 20190314°0551]
       var sFrg = '<a'
@@ -1028,60 +1014,60 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
 
       // navibox unfolder button [seq 20190323°0423]
       var iPositionRight = -5 - iSome_Offset_12;
-      var sDv = '<div';
-      sDv += ' id="Div_UnfolderForNaviBox_' + iSliderId + '"'
-           + ' style="'
-           + ' border:0px dotted Gray;' // [DbgBrdr 8]
-           + ' position:absolute; bottom:-29px; right:' + iPositionRight + 'px;' // [unfolderbutton-position]
-           + '">'
-           + '<a href='
-           + '"javascript:Sldgr.Vars.arObSliders[' + iSliderId + '].oClickUnfolderBtns(\'navibox_button\');"'
-           + ' style="'
-           + ' text-decoration:none;'
-           + '"'
-           + ' id="' + oCs.sId_Href_Unfold_3_ButtonsBox + '"'
-           + ' title="Open/Close Tools Panel"'
-           + '>'
-           + '<img src="'
-           + ( oSt.bIsVisible03ToolsBox
-              ? Sldgr.Cnst.sData_Btn_Left_DarkSeaGreen
-               : Sldgr.Cnst.sData_Btn_Down_DarkSeaGreen
-                )
-           + '" width="18" height="18"'
-           + ' alt="Open/Close Tools Panel"'
-           + ' title="Open/Close Tools Panel"'
-           + ' id="' + oCs.sIdImg_Unfolder3_ForToolsBox + '"'
-           + ' />'
-           + '</a>'
-           + '</div>'
-            ;
-      sHt += sDv;
+      var sDv1 = '<div';
+      sDv1 += ' id="Div_UnfolderForNaviBox_' + iSliderId + '"'
+            + ' style="'
+             + ' border:0px dotted Gray;' // [DbgBrdr 8]
+             + ' position:absolute; bottom:-29px; right:' + iPositionRight + 'px;' // [unfolderbutton-position]
+             + '">'
+             + '<a href='
+             + '"javascript:Sldgr.Vars.arObSliders[' + iSliderId + '].oClickUnfolderBtns(\'navibox_button\');"'
+             + ' style="'
+             + ' text-decoration:none;'
+             + '"'
+             + ' id="' + oCs.sId_Href_Unfold_3_ButtonsBox + '"'
+             + ' title="Open/Close Tools Panel"'
+             + '>'
+             + '<img src="'
+             + ( oSt.bIsVisible03ToolsBox
+                ? Sldgr.Cnst.sData_Btn_Left_DarkSeaGreen
+                 : Sldgr.Cnst.sData_Btn_Down_DarkSeaGreen
+                  )
+             + '" width="18" height="18"'
+             + ' alt="Open/Close Tools Panel"'
+             + ' title="Open/Close Tools Panel"'
+             + ' id="' + oCs.sIdImg_Unfolder3_ForToolsBox + '"'
+             + ' />'
+             + '</a>'
+              + '</div>'
+               ;
+      sHt += sDv1;
 
       // navibox close button [seq ]
-      var sDv = '<div';
-      sDv += ' id="NaviBox_CloseButton_Div_' + iSliderId + '"'
-           + ' style="'
-           + ' position:absolute; top:3px; right:-28px;'               // [closebutton-position]
-           + '">'
-           + '<a href='
-           + '"javascript:Sldgr.Vars.arObSliders[' + iSliderId + '].oClickUnfolderBtns(\'captionbox_button\');"'
-           + ' style="'
-           + '"'
-           + '" id="NaviBox_CloseButton_Href ' + iSliderId + '"'
-           + ' title="Open/Close Navigation Panel"'
-           + '>'
-           + '<img src="'
-           + Sldgr.Cnst.sData_Btn_Cross_SteelBlue
-           + '" width="18px" height="18px"'
-           + ' alt="Open/Close Navigation Panel"'
-           + ' id="' + oCs.sIdImg_Unfolder2_ForNaviBox + '"'
-           + ' id="NaviBox_CloseButton_ImgSrc"'
-           + ' />'
-           + '</a>'
-           + '</div>'
-            ;
+      var sDv2 = '<div';
+      sDv2 += ' id="NaviBox_CloseButton_Div_' + iSliderId + '"'
+            + ' style="'
+             + ' position:absolute; top:3px; right:-28px;'             // [closebutton-position]
+             + '">'
+             + '<a href='
+             + '"javascript:Sldgr.Vars.arObSliders[' + iSliderId + '].oClickUnfolderBtns(\'captionbox_button\');"'
+             + ' style="'
+             + '"'
+             + '" id="NaviBox_CloseButton_Href ' + iSliderId + '"'
+             + ' title="Open/Close Navigation Panel"'
+             + '>'
+             + '<img src="'
+             + Sldgr.Cnst.sData_Btn_Cross_SteelBlue
+             + '" width="18px" height="18px"'
+             + ' alt="Open/Close Navigation Panel"'
+             + ' id="' + oCs.sIdImg_Unfolder2_ForNaviBox + '"'
+             + ' id="NaviBox_CloseButton_ImgSrc"'
+             + ' />'
+             + '</a>'
+              + '</div>'
+               ;
       if ( Sldgr.Cnst.bShow_GrowPanels_CloseButtons ) {
-         sHt += sDv;
+         sHt += sDv2;
       }
 
       // [seq 20190323°0355]
@@ -1098,7 +1084,6 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     */
    this.o3Build4ToolsPanel = function()
    {
-      'use strict';
 
       var sHt = '';
 
@@ -1234,63 +1219,63 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
       sHt += '</div>';
 
       // toolsbox unfolder button [seq 20190323°0451]
-      var sDv = '<div';
-      sDv += ' id="Div_UnfolderForButtonBox_' + iSliderId + '"'
-           + ' style="'
-           + ' border:0px dotted Gray;'                                // [DbgBrdr 11]
-           + ' font-size:177%;'
-           + ' font-weight:bold;'
-           + ' position:absolute; bottom:-29px; right:-5px;'           // [unfolderbutton-position] !!!
-           + '">'
-           + '<a href='
-           + '"javascript:Sldgr.Vars.arObSliders[' + iSliderId + '].oClickUnfolderBtns(\'buttonsbox_button\');"'
-           + ' style="'
-           + ' color:RosyBrown;'                                       // CadetBlue Fuchsia RosyBrown SteelBlue
-           + ' text-decoration:none;'
-           + '"'
-           + ' id="' + oCs.sId_Href_Unfold_4_DebugBox + '"'
-           + ' title="Open/close Debug Panel"'
-           + '>'
-           + '<img'
-           + ' src="'
-           + ( oSt.bIsVisible04DebugBox
-              ? Sldgr.Cnst.sData_Btn_Left_Tomato
-               : Sldgr.Cnst.sData_Btn_Down_Tomato
-                )
-           + '"'
-           + ' width="18" height="18"'
-           + ' alt="Open/Close Debug Panel"'
-           + ' title="Open/Close Debug Panel"'
-           + ' id="' + oCs.sIdImg_Unfolder4_ForDebugBox + '"'
-           + ' />'
-           + '</a>'
-           + '</div>'
-            ;
-      sHt += sDv;
+      var sDv1 = '<div';
+      sDv1 += ' id="Div_UnfolderForButtonBox_' + iSliderId + '"'
+            + ' style="'
+             + ' border:0px dotted Gray;'                                // [DbgBrdr 11]
+             + ' font-size:177%;'
+             + ' font-weight:bold;'
+             + ' position:absolute; bottom:-29px; right:-5px;'           // [unfolderbutton-position] !!!
+             + '">'
+             + '<a href='
+             + '"javascript:Sldgr.Vars.arObSliders[' + iSliderId + '].oClickUnfolderBtns(\'buttonsbox_button\');"'
+             + ' style="'
+             + ' color:RosyBrown;'                                       // CadetBlue Fuchsia RosyBrown SteelBlue
+             + ' text-decoration:none;'
+             + '"'
+             + ' id="' + oCs.sId_Href_Unfold_4_DebugBox + '"'
+             + ' title="Open/close Debug Panel"'
+             + '>'
+             + '<img'
+             + ' src="'
+             + ( oSt.bIsVisible04DebugBox
+                ? Sldgr.Cnst.sData_Btn_Left_Tomato
+                 : Sldgr.Cnst.sData_Btn_Down_Tomato
+                  )
+             + '"'
+             + ' width="18" height="18"'
+             + ' alt="Open/Close Debug Panel"'
+             + ' title="Open/Close Debug Panel"'
+             + ' id="' + oCs.sIdImg_Unfolder4_ForDebugBox + '"'
+             + ' />'
+             + '</a>'
+              + '</div>'
+               ;
+      sHt += sDv1;
 
       // toolsbox close button [seq 20190314°0425]
-      var sDv = '<div';
-      sDv += ' id="ToolsBox_CloseButton_Div_' + iSliderId + '"'
-           + ' style="'
-           + ' position:absolute; top:3px; right:-28px;'               // [closebutton-position]
-           + '">'
-           + '<a href='
-           + '"javascript:Sldgr.Vars.arObSliders[' + iSliderId + '].oClickUnfolderBtns(\'navibox_button\');"'
-           + ' style="'
-           + '"'
-           + ' id="ToolsBox_CloseButton_Href_"' + iSliderId
-           + ' title="Open/close Debug Panel"'
-           + '>'
-           + '<img src="' + Sldgr.Cnst.sData_Btn_Cross_DarkSeaGreen + '" width="18px" height="18px"'
-           + ' alt="Open/Close Debug Panel"'
-           + ' title="Open/Close Debug Panel"'
-           + ' id="ToolsBox_CloseButton_ImgSrc_"' + iSliderId
-           + ' />'
-           + '</a>'
-           + '</div>'
-            ;
+      var sDv2 = '<div';
+      sDv2 += ' id="ToolsBox_CloseButton_Div_' + iSliderId + '"'
+            + ' style="'
+             + ' position:absolute; top:3px; right:-28px;'               // [closebutton-position]
+             + '">'
+             + '<a href='
+             + '"javascript:Sldgr.Vars.arObSliders[' + iSliderId + '].oClickUnfolderBtns(\'navibox_button\');"'
+             + ' style="'
+             + '"'
+             + ' id="ToolsBox_CloseButton_Href_"' + iSliderId
+             + ' title="Open/close Debug Panel"'
+             + '>'
+             + '<img src="' + Sldgr.Cnst.sData_Btn_Cross_DarkSeaGreen + '" width="18px" height="18px"'
+             + ' alt="Open/Close Debug Panel"'
+             + ' title="Open/Close Debug Panel"'
+             + ' id="ToolsBox_CloseButton_ImgSrc_"' + iSliderId
+             + ' />'
+             + '</a>'
+              + '</div>'
+               ;
       if ( Sldgr.Cnst.bShow_GrowPanels_CloseButtons ) {
-         sHt += sDv;
+         sHt += sDv2;
       }
 
       // complete controls div [line 20190107°0427]
@@ -1307,7 +1292,6 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     */
    this.o3Build50DebugPanel = function()
    {
-      'use strict';
 
       // open div [seq 20190314°0431]
       var sHt = '';
@@ -1408,7 +1392,6 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     */
    this.o3Build51DebugPanel_2 = function()
    {
-      'use strict';
 
       // open fragment [line 20190323°0143]
       var sHt = '<table style="font-size:small;">';
@@ -1435,7 +1418,6 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     */
    this.o4FillMagazine = function()
    {
-      'use strict';
 
       // [seq 20190106°1943]
       for ( var iImg = 0; iImg < oVr.aMag.length; iImg++ ) {
@@ -1453,7 +1435,6 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     */
    this.o5Autostart = function()
    {
-      'use strict';
 
       // preparation [seq 20190106°0712]
       oVr.Stage.iNdxCurr = oSelf.iStartImageNdx;
@@ -1482,8 +1463,6 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     */
    this.oClickAutoGoLeft = function()
    {
-      'use strict';
-
       // [seq 20190106°0813]
       if ( oVr.Stage.iMode === Sldgr.Cnst.Mode.Left ) {
          oVr.Stage.iMode = Sldgr.Cnst.Mode.Single;
@@ -1503,8 +1482,6 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     */
    this.oClickAutoGoRight = function()
    {
-      'use strict';
-
       // [seq 20190106°0753]
       if ( oVr.Stage.iMode === Sldgr.Cnst.Mode.Right ) {
          oVr.Stage.iMode = Sldgr.Cnst.Mode.Single;
@@ -1524,8 +1501,6 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     */
    this.oClickGoOneLeft = function()
    {
-      'use strict';
-
       // [seq 20190106°0723]
       oVr.Stage.iMode = Sldgr.Cnst.Mode.Single;
       oSelf.oUpdateButtons();
@@ -1542,8 +1517,6 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     */
    this.oClickGoOneRight = function()
    {
-      'use strict';
-
       // [seq 20190106°0733]
       oVr.Stage.iMode = Sldgr.Cnst.Mode.Single;
       oSelf.oUpdateButtons();
@@ -1559,8 +1532,6 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     */
    this.oClickGoSelected = function(iNumSelected)
    {
-      'use strict';
-
       // [seq 20190106°0743]
       oVr.Stage.iMode = Sldgr.Cnst.Mode.Single;
       oSelf.oUpdateButtons();
@@ -1577,8 +1548,6 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     */
    this.oClickUnfolderBtns = function(sButtonName)
    {
-      'use strict';
-
       // proglogue [seq 20190323°0511]
       //
 
@@ -1641,40 +1610,40 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
       var sImgSrc = ( oSt.bIsVisible01CaptionBox
                    ? Sldgr.Cnst.sData_Btn_Left_SlateGray
                     : Sldgr.Cnst.sData_Btn_Down_SlateGray
-                     )
+                     );
 
       // process caption panel unfolder button [seq 20190314°0611]
-      var eButImg = document.getElementById(oCs.sIdImg_Unfolder1_ForCaptionBox);
-      eButImg.src = sImgSrc;
-      var ePanel = document.getElementById(oCs.sId_Panel2_Caption);
-      ePanel.style.display = oSt.bIsVisible01CaptionBox ? 'block' : 'none';
+      var eButImg1 = document.getElementById(oCs.sIdImg_Unfolder1_ForCaptionBox);
+      eButImg1.src = sImgSrc;
+      var ePanel1 = document.getElementById(oCs.sId_Panel2_Caption);
+      ePanel1.style.display = oSt.bIsVisible01CaptionBox ? 'block' : 'none';
 
       // process navigatino panel unfolder button [seq 20190314°0613]
-      var eButImg = document.getElementById(oCs.sIdImg_Unfolder2_ForNaviBox);
-      eButImg.src = ( oSt.bIsVisible02NaviBox
+      var eButImg2 = document.getElementById(oCs.sIdImg_Unfolder2_ForNaviBox);
+      eButImg2.src = ( oSt.bIsVisible02NaviBox
                      ? Sldgr.Cnst.sData_Btn_Left_SteelBlue
                       : Sldgr.Cnst.sData_Btn_Down_SteelBlue
                        );
-      var ePanel = document.getElementById(oCs.sId_Panel3_Navigation);
-      ePanel.style.display = oSt.bIsVisible02NaviBox ? 'block' : 'none';
+      var ePanel2 = document.getElementById(oCs.sId_Panel3_Navigation);
+      ePanel2.style.display = oSt.bIsVisible02NaviBox ? 'block' : 'none';
 
       // process tools panel unfolder button [seq 20190314°0615]
-      var eButImg = document.getElementById(oCs.sIdImg_Unfolder3_ForToolsBox);
-      eButImg.src = ( oSt.bIsVisible03ToolsBox
+      var eButImg3 = document.getElementById(oCs.sIdImg_Unfolder3_ForToolsBox);
+      eButImg3.src = ( oSt.bIsVisible03ToolsBox
                      ? Sldgr.Cnst.sData_Btn_Left_DarkSeaGreen
                       : Sldgr.Cnst.sData_Btn_Down_DarkSeaGreen
                        );
-      var ePanel = document.getElementById(oCs.sId_Panel4_Tools);
-      ePanel.style.display = oSt.bIsVisible03ToolsBox ? 'table' : 'none';
+      var ePanel3 = document.getElementById(oCs.sId_Panel4_Tools);
+      ePanel3.style.display = oSt.bIsVisible03ToolsBox ? 'table' : 'none';
 
       // process debug panel unfolder button [seq 20190314°0617]
-      var eButImg = document.getElementById(oCs.sIdImg_Unfolder4_ForDebugBox);
-      eButImg.src = ( oSt.bIsVisible04DebugBox
+      var eButImg4 = document.getElementById(oCs.sIdImg_Unfolder4_ForDebugBox);
+      eButImg4.src = ( oSt.bIsVisible04DebugBox
                      ? Sldgr.Cnst.sData_Btn_Left_Tomato
                       : Sldgr.Cnst.sData_Btn_Down_Tomato
                        );
-      var ePanel = document.getElementById(oCs.sId_Panel5_Debug);
-      ePanel.style.display = oSt.bIsVisible04DebugBox ? 'table' : 'none';
+      var ePanel4 = document.getElementById(oCs.sId_Panel5_Debug);
+      ePanel4.style.display = oSt.bIsVisible04DebugBox ? 'table' : 'none';
 
       // actualize Toggle-Info-Panel Button [line 20190323Â°0519]
       oSelf.oUpdateButtons();
@@ -1694,8 +1663,6 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     */
    this.oSlideProject = function()
    {
-      'use strict';
-
       // prologue [seq 20190106°2011]
       oSelf.iDebugProjectCounter += 1;
 
@@ -1769,8 +1736,6 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     */
    this.oSlideProjectNext = function(iNdxTarget, bGoHard)
    {
-      'use strict';
-
       // if a next image is ordered, any possible fading ends [line 20190108°0332]
       // todo 20190323°0215 : If fading is interrupted, its important final
       //    cycle in condition 20190106°2025 is not executed. That needs to
@@ -1845,8 +1810,6 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     */
    this.oSlideProject_Output = function()
    {
-      'use strict';
-
       // optional debug [seq 20190106°2016]
       if ( Sldgr.Vars.bDbgOut_6_slide_trigger ) {
          var el = document.getElementById(oCs.sId_Src_Image + oVr.Stage.iNdxCurr);
@@ -1898,8 +1861,6 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     */
    this.oUpdateBorders = function()
    {
-      'use strict';
-
       // [seq 20190323°0553]
       var aEls = Array();
       aEls.push('Sg_SliderPanelOuterDiv_' + iSliderId);   // [DbgBrdr 1] border:3px dotted Tomato;
@@ -1934,8 +1895,6 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     */
    this.oUpdateButtons = function()
    {
-      'use strict';
-
       // get target elements [seq 0190106°0853]
       var el1 = document.getElementById(oVr.aCtrBtns[oCs.iBtAr_Ids][oCs.iBtn_AutoRight]);   // "Button_0_1"
       var el2 = document.getElementById(oVr.aCtrBtns[oCs.iBtAr_Ids][oCs.iBtn_AutoLeft]);    // "Button_0_2"
@@ -1984,8 +1943,6 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     */
    this.oUpdateImageCaption = function()
    {
-      'use strict';
-
       // [seq 20190106°0913]
       var ele = document.getElementById(oCs.sId_Caption_Text);
       ele.innerHTML = "<small>(" + (oVr.Stage.iNdxCurr + 1) + "<small>/"
@@ -2027,10 +1984,10 @@ Sldgr.Func.pgOutDebug = function(sMsg, sDbgId, iSlidrId)
    // output is only possible with the area [seq 20190106°0513]
    if (elOut === null) {
 
-      var elOut = document.createElement("pre");
+      elOut = document.createElement("pre");
       elOut.id = 'SG_Debug_Output_Pane';
       elOut.innerHTML = '0 [] Creating the Debug Pane.';
-      elOut.style.backgroundColor = 'Khaki'; // Khaki Moccasin
+      elOut.style.backgroundColor = 'Khaki';                           // Khaki Moccasin
       elOut.style.clear = 'both';
       elOut.style.margin = '1.7em';
       elOut.style.padding = '0.7em';
@@ -4091,18 +4048,16 @@ Sldgr.Cnst.aControls_Shiny = new Array // revamped 20190315°0511
 Sldgr.Cnst.sPlate_DataSlidegearAttrib = 'data-slidegear';
 
 // ~ ~ ~ ✂ ~ ~ ~ ~ ~ ~ area 20190106°0307 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-/**
- *  This area 'Trekta.Utils' holds low level functions for standalone
- *  scripts. This area is shared via cut-n-paste by the following scripts
- *   • daftari.js • canvasgear.js • fadeinfiles.js • slidegear.js
+/*!
+ * This area Trekta.Utils holds low level functions for standalone scripts
  *
- * version : 20190407°0351..
+ * version : 20190408°0212
+ * copyright : © 2019 Norbert C. Maier
+ * license : GNU AGPL v3
  */
 /**
- * changelog
- *  - version 20190405°0521 Add and refine CmdlinParser
- *  - version 20190405°0349 Refine pullScriptBehind
- *  - version 20190404°0941 Start versioning
+ * This area is shared via cut-n-paste by the following scripts
+ *   • daftari.js • canvasgear.js • fadeinfiles.js • slidegear.js
  */
 
 /**
@@ -4132,7 +4087,7 @@ Trekta.Utils = Trekta.Utils || {
     *      • 20150515°1241 sitmapWorkoff_process_Cakecrumbs1 • 20120830°0451 editFinishTransmit
     * @returns {String} e.g. 'daftari/daftari/login.html' (with Firefox)
     */
-   getFileNameFull : function() // Trekta.Utils.getFileNameFull
+   getFileNameFull : function() // (fullyqualified = Trekta.Utils.getFileNameFull)
    {
       'use strict'; // [line 20190329°0847]
 
@@ -4157,7 +4112,7 @@ Trekta.Utils = Trekta.Utils || {
     * @callers E.g. • dafdispatch.js::workoff_Cake_0_go
     * @returns {String} The plainfilename, e.g. 'help.html'
     */
-   , getFilenamePlain : function() // Trekta.Utils.getFilenamePlain
+   , getFilenamePlain : function() // (fullyqualified = Trekta.Utils.getFilenamePlain)
    {
       'use strict';
 
@@ -4183,7 +4138,7 @@ Trekta.Utils = Trekta.Utils || {
     * @callers : • readTextFile1 • MakeRequest
     * @note :
     */
-   , getXMLHttp : function() // Trekta.Utils.getXMLHttp
+   , getXMLHttp : function() // (fullyqualified = Trekta.Utils.getXMLHttp)
    {
       'use strict';
 
@@ -4247,7 +4202,7 @@ Trekta.Utils = Trekta.Utils || {
     * @param sHtml {String} The HTML fragment to be escaped
     * @returns {String} The wanted escaped HTML fragment
     */
-   , htmlEscape : function(sHtml) // Trekta.Utils.htmlEscape
+   , htmlEscape : function(sHtml) // (fullyqualified = Trekta.Utils.htmlEscape)
    {
       'use strict';
 
@@ -4268,7 +4223,7 @@ Trekta.Utils = Trekta.Utils || {
     * @param {string} sWantedScript — The plain name of the wanted script (not a complete path)
     * @returns {boolean} Flag telling whether the script is loaded or not.
     */
-   , isScriptAlreadyLoaded : function (sWantedScript) // Trekta.Utils.isScriptAlreadyLoaded
+   , isScriptAlreadyLoaded : function (sWantedScript) // (fullyqualified = Trekta.Utils.isScriptAlreadyLoaded)
    {
       'use strict';
 
@@ -4299,14 +4254,10 @@ Trekta.Utils = Trekta.Utils || {
     * This function loads the given script then calls the given function
     *
     * @id 20110821°0121
-    * @version 20190405°0347 Refine onload callback (see issue 20190405°0333)
+    * @version 20190405°0347 Refine onload callback (finished issue 20190405°0333)
     * @version 20190331°0241 Added parameter for onError callback
     * @version 20181229°1941 Now with parameter for onload callback function
-    * @status works
-    * @chain project 20181230°0211 http://www.trekta.biz/svn/demosjs/trunk/pullbehind
-    * @note About how exactly to call function(s) in the loaded script, see
-    *    e.g. issue 20160503°0211 and seq 20160624°0411 'pull-behind fancytree'.
-    * @note See howto 20181229°1943 'summary on pullbehind'
+    * @see howto 20181229°1943 'summary on pullbehind'
     * @callers • dafstart.js::callCanarySqueak • daftari.js::pull-behind slides
     *    • daftari.js::pull-behind fancytree • canvasgear.js::..
     * @param sScLoad {string} The path from page to script, e.g. "./../../daftari/js/daftaro/dafcanary.js", 'js/daftaro/dafcanary.js'
@@ -4316,14 +4267,24 @@ Trekta.Utils = Trekta.Utils || {
     *     from initiator to the callbacks (experimentally introduced 20190403°0215)
     * @returns {boolean} Success flag (just a dummy, always true)
     */
-   , pullScriptBehind : function ( sScLoad, callbackOnLoad, callbackOnError, oJobs ) // Trekta.Utils.pullScriptBehind
+   , pullScriptBehind : function ( sScLoad, callbackOnLoad, callbackOnError, oJobs ) // (fullyqualified = Trekta.Utils.pullScriptBehind)
    {
       'use strict';
 
+      // remedy when using minified scripts [seq 20190408°0135]
+      // note : Three identical seqences 20190408°0131, 20190408°0133 and 20190408°0135
+      if ( Trekta.Utils.bUseMinified ) {                               // [mark 20190408°0147`01]
+         var b1 = /.*\/highlight.pack.js$/.test(sScLoad);
+         var b2 = /.*\/showdown.min.js$/.test(sScLoad);
+         var b3 = /.*\/sitmapdaf.js$/.test(sScLoad);
+         var b4 = /.*\/tree.js$/.test(sScLoad);
+         if ( ! (b1 || b2 || b3 || b4 )) {
+            sScLoad = sScLoad.replace(/\.js$/, '.min.js');
+         }
+      }
+
       // avoid multiple loading [seq 20110821°0122]
       // Remember issue 20190405°0331 'isScriptAlreadyLoaded unfaithful'
-      // note : Compatibility — array.indexOf is not available below IE9, we
-      //    workaround this with seq 20190407°0313 'polyfill for array.indexOf'
       if ( Trekta.Utils.aPulled.indexOf(sScLoad) >= 0 ) {
          callbackOnLoad(sScLoad, oJobs, true);
          return;
@@ -4352,7 +4313,9 @@ Trekta.Utils = Trekta.Utils || {
 
       // attach onerror handler [condition 20190331°0242]
       callbackOnError = callbackOnError || null;
-      script.onerror =  ( function () { callbackOnError (sScLoad, oJobs); } );
+      if ( callbackOnError !== null) {
+         script.onerror =  ( function () { callbackOnError (sScLoad, oJobs); } );
+      }
 
       // ignit the pulling [seq 20110821°0125]
       head.appendChild(script);
@@ -4367,8 +4330,9 @@ Trekta.Utils = Trekta.Utils || {
     * @summary This method is introduced to fix issue 20190405°0331 'isScriptAlreadyLoaded unfaithful'
     * @callers Onyl • onload event from pullScriptBehind
     */
-   , pullScript_onload : function ( sScript, cbkCustom ) // Trekta.Utils.pullScript_onload
+   , pullScript_onload : function ( sScript, cbkCustom ) // (fullyqualified = Trekta.Utils.pullScript_onload)
    {
+      'use strict';
       Trekta.Utils.aPulled.push(sScript);
       cbkCustom();
    }
@@ -4397,7 +4361,7 @@ Trekta.Utils = Trekta.Utils || {
     * @param bAsync {Boolean} — Request flavour flag (prefere asynchronous)
     * @returns {String} The content of the wanted file
     */
-   , readTextFile1 : function(sFilename, bAsync) // Trekta.Utils.readTextFile1
+   , readTextFile1 : function(sFilename, bAsync) // (fullyqualified = Trekta.Utils.readTextFile1)
    {
       'use strict';
 
@@ -4485,7 +4449,7 @@ Trekta.Utils = Trekta.Utils || {
     * @param cbk {function} — Either missing or null or the callback function
     * @returns {string} The content of the wanted file
     */
-   , readTextFile2 : function(sFilename, cbk) // Trekta.Utils.readTextFile2
+   , readTextFile2 : function(sFilename, cbk) // (fullyqualified = Trekta.Utils.readTextFile2)
    {
       'use strict';
 
@@ -4569,9 +4533,21 @@ Trekta.Utils = Trekta.Utils || {
     * @param sCanary {String} The name of the canary script, e.g. '/sitmapdaf.js'.
     * @returns {String} The wanted path, where the given script resides or empty string
     */
-   , retrieveScriptFolderAbs : function (sCanary) // Trekta.Utils.retrieveScriptFolderAbs
+   , retrieveScriptFolderAbs : function (sCanary) // (fullyqualified = Trekta.Utils.retrieveScriptFolderAbs)
    {
       'use strict';
+
+      // remedy when using minified scripts [seq 20190408°0133]
+      // note : Three identical seqences 20190408°0131, 20190408°0133 and 20190408°0135
+      if ( Trekta.Utils.bUseMinified ) {                               //  [mark 20190408°0147`02 'minification']
+         var b1 = /.*\/highlight.pack.js$/.test(sCanary);
+         var b2 = /.*\/showdown.min.js$/.test(sCanary);
+         var b3 = /.*\/sitmapdaf.js$/.test(sCanary);
+         var b4 = /.*\/tree.js$/.test(sCanary);
+         if ( ! (b1 || b2 || b3 || b4 )) {
+            sCanary = sCanary.replace(/\.js$/, '.min.js');
+         }
+      }
 
       // () prepare regex [seq 20160621°0142]
       var regexMatch = / /;                                            // space between slashes prevents a syntax error
@@ -4601,57 +4577,6 @@ Trekta.Utils = Trekta.Utils || {
    }
 
    /**
-    * This function returns the path to the given script .. using indexOf
-    *
-    * @id 20160501°1611
-    * @chg 20190407°0245 Former func 20160501°1611 retrieveScriptFolderRel_ELIM
-    *    is shifted here. The reason to preserve this code is, that above regex
-    *    usage may be elegant and short, but the regex is not immediately to
-    *    understand. The code here is a bit bulkier, but easier to understand.
-    * @status working
-    */
-   , retrieveScriptFolderRel : function (sCanary) // Trekta.Utils.retrieveScriptFolderRel
-   {
-      'use strict';
-
-      // () get the script tags list
-      var scripts = document.getElementsByTagName('script');
-
-      // () find the canary script tag
-      var script = null;
-      var bFound = false;
-      for (var i = 0; i < scripts.length; i++) {
-         if (scripts[i].src.indexOf(sCanary) > 0) {
-            script = scripts[i];
-            bFound = true;
-            break;
-         }
-      }
-
-      // paranoia
-      if (! bFound) {
-         var s = '[Error 20160501°1631] Fatal.\nScript tag not found: "' + sCanary + '"';
-         alert(s);
-         return '';
-      }
-
-      // (.2) get the script tag's literal path (algo 20111225°1251)
-      var sPathToCanary = '';
-      for (var i = 0; i < script.attributes.length; i++) {
-         if ( script.attributes[i].name === 'src' ) {
-            sPathToCanary = script.attributes[i].value;
-            break;
-         }
-      }
-
-      // reduce from canary script path to folder only path [seq 20190316°0131]
-      var sWantedPath = sPathToCanary.substring ( 0 , ( sPathToCanary.length - sCanary.length ) );
-
-      return sWantedPath;
-
-   }
-
-   /**
     * This function daisychains the given function on the windows.onload events
     *
     * @id 20160614°0331
@@ -4660,7 +4585,7 @@ Trekta.Utils = Trekta.Utils || {
     * @param funczion {function} The function to be appended to the window.onload event
     * @returns nothing
     */
-   , windowOnloadDaisychain : function(funczion) // Trekta.Utils.windowOnloadDaisychain
+   , windowOnloadDaisychain : function(funczion) // (fullyqualified = Trekta.Utils.windowOnloadDaisychain)
    {
       'use strict';
 
@@ -4688,7 +4613,7 @@ Trekta.Utils = Trekta.Utils || {
     * @note This flags solves issue 20190405°0331 'isScriptAlreadyLoaded unfaithful'
     * @type Array
     */
-   , aPulled : [] // Trekta.Utils.aPulled
+   , aPulled : [] // (fullyqualified = Trekta.Utils.aPulled)
 
 
    /**
@@ -4704,7 +4629,7 @@ Trekta.Utils = Trekta.Utils || {
     * @id 20160622°0221
     * @type Boolean
     */
-   , bIs_Browser_Chrome : ( navigator.userAgent.match(/Chrome/) ? true : false ) // Trekta.Utils.bIs_Browser_Chrome
+   , bIs_Browser_Chrome : ( navigator.userAgent.match(/Chrome/) ? true : false ) // (fullyqualified = Trekta.Utils.bIs_Browser_Chrome)
 
    /**
     * This ~constant provides a flag whether the browser is Internet Exporer or not
@@ -4716,7 +4641,7 @@ Trekta.Utils = Trekta.Utils || {
     *    For code, compare function getIEVersion() in canvasgearexcanvas.js.
     * @type Boolean
     */
-   , bIs_Browser_Explorer : ( navigator.appName.match(/Explorer/) ? true : false ) // Trekta.Utils.bIs_Browser_Explorer
+   , bIs_Browser_Explorer : ( navigator.appName.match(/Explorer/) ? true : false ) // (fullyqualified = Trekta.Utils.bIs_Browser_Explorer)
 
    /**
     * This ~constant provides a flag whether the browser is Firefox or not
@@ -4724,7 +4649,7 @@ Trekta.Utils = Trekta.Utils || {
     * @id 20160624°0121
     * @type Boolean
     */
-   , bIs_Browser_Firefox : ( navigator.userAgent.match(/Firefox/) ? true : false ) // Trekta.Utils.bIs_Browser_Firefox
+   , bIs_Browser_Firefox : ( navigator.userAgent.match(/Firefox/) ? true : false ) // (fullyqualified = Trekta.Utils.bIs_Browser_Firefox)
 
    /**
     * This property provides a flag whether the browser is Opera or not.
@@ -4737,7 +4662,7 @@ Trekta.Utils = Trekta.Utils || {
     * @id 20190107°0821
     * @type Boolean
     */
-   , bIs_Browser_Opera : ( navigator.userAgent.match(/(Opera)|(OPR)/) ? true : false ) // Trekta.Utils.bIs_Browser_Opera
+   , bIs_Browser_Opera : ( navigator.userAgent.match(/(Opera)|(OPR)/) ? true : false ) // (fullyqualified = Trekta.Utils.bIs_Browser_Opera)
 
    /**
     * This ~constant tells whether to pop up debug messages or not
@@ -4745,7 +4670,7 @@ Trekta.Utils = Trekta.Utils || {
     * @id 20190311°1521
     * @type Boolean
     */
-   , bShow_Debug_Dialogs : false // [Trekta.Utils.bShow_Debug_Dialogs]
+   , bShow_Debug_Dialogs : false // (fullyqualified = Trekta.Utils.bShow_Debug_Dialogs)
 
    /**
     * This constant provides a constant false value
@@ -4753,7 +4678,7 @@ Trekta.Utils = Trekta.Utils || {
     * @id 20190407°0121
     * @type Boolean
     */
-   , bToggle_FALSE : false // Trekta.Utils.bToggle_FALSE
+   , bToggle_FALSE : false // (fullyqualified = Trekta.Utils.bToggle_FALSE)
 
    /**
     * This constant provides a constant false value
@@ -4761,7 +4686,15 @@ Trekta.Utils = Trekta.Utils || {
     * @id 20190407°0122
     * @type Boolean
     */
-   , bToggle_TRUE : true // Trekta.Utils.bToggle_TRUE
+   , bToggle_TRUE : true // (fullyqualified = Trekta.Utils.bToggle_TRUE)
+
+   /**
+    * This flag tells whether to pull-behind minified scripts or not
+    *
+    * @id 20190408°0115
+    * @callers
+    */
+   , bUseMinified : false // (fullyqualified = Trekta.Utils.bUseMinified)
 
 };
 
@@ -4802,10 +4735,10 @@ Trekta.Utils.CmdlinParser = ( function()
       var sToken = ''; // this accumulates characters to one token
 
       // scan characters [loop 20140926°0643]
-      for ( var i = 0; i < sCmdlin.length; i++ )
+      for ( var i1 = 0; i1 < sCmdlin.length; i1++ )
       {
          // convenience [line 20190405°0512]
-         var sChar = sCmdlin.charAt(i);
+         var sChar = sCmdlin.charAt(i1);
 
          // process blank [condition 20140926°0644]
          if ( (sChar === ' ') && (sQuoting === '') ) {
@@ -4859,29 +4792,29 @@ Trekta.Utils.CmdlinParser = ( function()
 
       // (B.1) loop over the token array  [seq 20140926°1113]
       //  Assemble key/value pairs from the equal signs
-      for (var i = 0; i < args.length; i++) {
+      for (var i2 = 0; i2 < args.length; i2++) {
 
          // (B.2) possibly skip empty elements [seq 20140926°1114]
          // note : This cleaning could be done separately before the loop. As
          //    well it is not yet exactly clear, what happens with blank values.
-         if (args[i] === '') {                                         // experimental
+         if (args[i2] === '') {                                        // experimental
             continue;
          }
 
          // (B.3) read key name and create key with empty value [seq 20140926°1115]
-         sCurrKey = args[i];
+         sCurrKey = args[i2];
          oKvps[sCurrKey] = '<n/a>';                                    // '<n/a>' is a maker, may be replaced by null or the like
 
          // (B.4) is next token an equal sign? [seq 20140926°1116]
-         if ( args[i + 1] === '=' ) {
+         if ( args[i2 + 1] === '=' ) {
 
             // complete current key/value pair with value [seq 20140926°1117]
-            oKvps[sCurrKey] = args[i + 2];
+            oKvps[sCurrKey] = args[i2 + 2];
             sCurrKey = '<n?a>';                                        // reset
 
             // [seq 20140926°1118]
-            i++;                                                       // forward to equal sign
-            i++;                                                       // forward to this value
+            i2++;                                                      // forward to equal sign
+            i2++;                                                      // forward to this value
             continue;                                                  // forward to next key
          }
          else {
