@@ -49,20 +49,6 @@
    title :
    ܀
 
-   issue 20190314°0527 'previous image persists'
-   matter : The old picuture persists while the new is fading in.
-   //note : I thought, it had to do with automatically having the
-   //   caption pane opened in the read-settings, and perhaps some
-   //   indirection (as seq 20190314°05259 could help. But no,
-   //   the error persists.
-   finding : I think, it has nothing to do with the caption panel,
-      but is something different. But why was it gone and reappears?
-      The issue did not exist in SlideGear v0.0.7
-   note : Compare issue 20190312°0821 'misguided image'
-   act : ✱ Fight against with line 20190314°0531 -- success
-   status : closed
-   ܀
-
    ref 20190314°0454 'Smashing Magazine → Z-Index Management'
    url : https://www.smashingmagazine.com/2014/06/sassy-z-index-management-for-complex-layouts/
    title : Sassy Z-Index Management For Complex Layouts
@@ -129,9 +115,12 @@
    status : Seems solved by multiple small fixes [log 20190323°0227]
    ܀
 
-   ref 20190210°0245 ''
+   ref 20190210°0245 'stackoverflow → make div height expand with content'
    url : https://stackoverflow.com/questions/1709442/make-divs-height-expand-with-its-content
-   title :
+   title : make div's height expand with its content
+   date : 2009-Nov-10 .. 2019-Jan-15
+   usage :
+   tag : html, javascript
    ܀
 
    ref 20190210°0243 ''
@@ -251,7 +240,7 @@
    todo : Find out whether the following is a good idea or not.
    text : issue 20190106°1937 is about a switch, whether slidegear.js shall
       attatch itself to the onload handler or not. One other source of knowledge
-      were the handler itself. As in func 20190106°0321 windowOnloadDaisychain
+      were the handler itself. As in func 20160614°0331 windowOnloadDaisychain
       the handler could be read, it is a string(!), and we can search this handler
       to see whether our wanted function is already in it or not.
    status : open 
