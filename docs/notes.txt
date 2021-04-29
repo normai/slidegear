@@ -3,6 +3,16 @@
    Issues, references, todos, notes
    ********************************
 
+   issue 20190422°0111 'first image caption is an empty quote'
+   matter : For the very first image shown, independend of the start image
+      number, the caption is just the empty quote from the dummy magazine.
+   finding : The former location of the call to update
+   location : The involved places
+      • func 20190106°0841 oSlideProject (here it is done now)
+      • func 20190108°0331 oSlideProjectNext (there it was done before)
+      • func 20190106°0911 oUpdateImageCaption (this performs the display)
+   status : solved (with line 20190422°0113)
+   ܀
 
    ref 20190323°0436 'MDN → The stacking context'
    url : https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context
@@ -115,19 +125,16 @@
    status : Seems solved by multiple small fixes [log 20190323°0227]
    ܀
 
-   ref 20190210°0245 'stackoverflow → make div height expand with content'
-   url : https://stackoverflow.com/questions/1709442/make-divs-height-expand-with-its-content
-   title : make div's height expand with its content
-   date : 2009-Nov-10 .. 2019-Jan-15
+   ref 20190210°0243 'thesitewizard → Centre a DIV Block Using CSS'
+   objtype : Tutorial
+   url : https://www.thesitewizard.com/css/center-div-block.shtml
+   title : How to Centre a DIV Block Using CSS
+   copyright : © 2008-2018 by Christopher Heng
    usage :
-   tag : html, javascript
+   tags : css
    ܀
 
-   ref 20190210°0243 ''
-   url : https://www.thesitewizard.com/css/center-div-block.shtml
-   title :
-
-   note 20190209°0931 road map
+   note 20190209°0931 'road map'
    Road map or vision
    • Make it applicable for page header slider, as are frequent today
    • Use as data source some webservice with image database

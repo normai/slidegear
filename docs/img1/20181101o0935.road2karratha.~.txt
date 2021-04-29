@@ -1,0 +1,14 @@
+﻿
+   img 20181101°0935
+   objecttype  : image.digitalphoto
+   title       : Road to Karratha
+   location    : Australia [OSM -19.384 121.525]
+   license     : CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0/ [ws 20180503°2122]
+   copyright   : © Wendy Leighton
+   authors     : Wendy Leighton
+   source      : Email 20181108°0353
+   albums      : landscape
+   processing  : copied from 20181101°0934, GIMP262 cut
+   quality     :
+   note        :
+   ܀Ω

@@ -1,6 +1,10 @@
 
 
-   SlideGear v0.1.1 — 20190418°0345 'JSON asynchronous'
+   version 20210428°1131 v0.1.2
+   • Fix issue 20190422°0111 'first slide caption is empty quote' [chg 20190422°0117]
+   • Supplement Phyton build script
+
+   version 20190418°0345 v0.1.1 'JSON asynchronous'
    • No more synchronous JSON reading
 
    version 0.1.0 — 20190323°0951

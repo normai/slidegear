@@ -1,21 +1,27 @@
 /*!
  * This is SlideGear, a small standalone slider library
  *
- * version   : v0.1.1 — 20190418°0345 'JSON asynchronous'
+ * id        : file 20190106°0211 slidegear/slidegear.js
+ * version   : v0.1.2 (20210428°1131)
  * license   : GNU LGPL v3 or later (https://www.gnu.org/licenses/lgpl.html)
- * copyright : (c) 2019 Norbert C. Maier (http://www.trilo.de)
+ * copyright : (c) 2019 - 2021 Norbert C. Maier (http://www.trilo.de)
  * note      : The minified flavour is made with Google Closure Compiler
  */
 /**
- * id        : file 20190106°0211
+ * versions  :
+ *               • ..
+ *               • 20210416°1813 — Start with GoCloCom advanced
+ *               • v0.1.1 — 20190418°0345.. 'JSON asynchronous'
  * encoding  : UTF-8-with-BOM
  * note      : ⇩ ⇦ ⯆ ⯇ △ ▽ ◁ ▷ ◈ ☼ ۞ ✂
+ * note      : See ✂ for the faded-in shared bottom part.
  */
 
 /**
  * This namespace contains the SlideGear code
  *
  * @id 20190106°0221
+ * @const — Namespace
  */
 var Sldgr = Sldgr || {};
 
@@ -25,22 +31,24 @@ var Sldgr = Sldgr || {};
  * @note Defining real constants is not so easy in JS. This constants
  *     are defined per convention, marked by having the underline.
  * @id 20190106°0521
+ * @const — Namespace
  */
 Sldgr.Cnst = Sldgr.Cnst || {};
 
 /**
  * @id 20190315°0541
- * @var {String}
+ * @var {string} —
  */
 Sldgr.Cnst.info = {
-   sVersion : 'v0.1.1'                                 // [const 20190315°0543]
-   , sTimestamp : '20190418°0345'                      // [const 20190315°0545]
+   sVersion      : 'v0.1.2'                                            // [const 20190315°0543]
+   , sTimestamp  : '20210428°1131'                                     // [const 20190315°0545]
 };
 
 /**
  * This namespace contains the SlideGear functions
  *
  * @id 20190106°0223
+ * @const — Namespace
  */
 Sldgr.Func = Sldgr.Func || {};
 
@@ -49,29 +57,30 @@ Sldgr.Func = Sldgr.Func || {};
  *
  * @id 20190108°0131
  * @note This object shall replace the second dimension in the .. array
- * @type {Object} (using prefix d like Ding)
+ * @type {Object} — Using prefix d like Ding
+ * @constructor —
  */
 Sldgr.Func.dSlide = function()
 {
    'use strict';
 
-   // var 20190108°0141 the path to the image
+   // Path to the image [var 20190108°0141]
    // This is read from the user input array
    this.sImgPath = '';
 
-   // var 20190108°0143 modify individual showing time
+   // Modify individual showing time [var 20190108°0143]
    // This is read from the user input array — not yet used
    this.nDurationFactor = 1.0;
 
-   // var  20190108°0145 the image text
+   // Image text [var 20190108°0145]
    // This is read from the user input array
    this.sImgText = '';
 
-   // var  20190108°0147 the created page element
+   // The created page element [var 20190108°0147]
    // This is created during the Slider initialization
    this.eSliDiv = null;
 
-   // var  20190108°0149
+   // [var 20190108°0149]
    // This is calculated after the image is inserted in the slide div
    this.sSizeFactor = 1.0;
 
@@ -94,30 +103,30 @@ Sldgr.Func.dSlide = function()
  *     • Opera 11   : workaround
  *     • Safari     : ?
  * @callers Only • each image onload event
- * @param {Element} elImg The image element from where this handler is called 
+ * @param {Element} elImg — The image element from where this handler is called 
  */
 Sldgr.Func.imageOnloadHandler = function (elImg)
 {
    'use strict';
 
-   // get target [seq 20190108°0222]
+   // Get target [seq 20190108°0222]
    var eDivSlid = elImg.parentNode;
    var iOrgNaturalHi = elImg.naturalHeight;
    var iOrgNaturalWi = elImg.naturalWidth;
    var iDbgImgHeightBefore = elImg.height;
 
-   // calculate [seq 20190108°0223]
+   // Calculate [seq 20190108°0223]
    var iFacWi = eDivSlid.clientWidth / iOrgNaturalWi;
    var iFacHe = eDivSlid.clientHeight / iOrgNaturalHi;
    var iFac = (iFacWi < iFacHe) ? iFacWi : iFacHe;
    var iWi = Math.floor(iOrgNaturalWi * iFac);
    var iHi = Math.floor(iOrgNaturalHi * iFac);
 
-   // adjust [seq 20190108°0224]
+   // Adjust [seq 20190108°0224]
    elImg.height = iHi;
    elImg.width = iWi;
 
-   // debug [seq 20190108°0225]
+   // Debug [seq 20190108°0225]
    if ( Sldgr.Vars.bDbgOut_1_CalcImageSize ) {
       var s = 'img onload'
             + ' slide = ' + eDivSlid.id
@@ -135,13 +144,13 @@ Sldgr.Func.imageOnloadHandler = function (elImg)
  *
  * @id 20190323°0231
  * @callers Only •
- * @returns {void} 
+ * @returns {void} —
  */
 Sldgr.Func.injectStyleRules = function ()
 {
    'use strict';
 
-   // define the rules [seq 20190323°0111]
+   // Define the rules [seq 20190323°0111]
    var sRuls = '';
 
    // [rule 20190323°0113]
@@ -165,7 +174,7 @@ Sldgr.Func.injectStyleRules = function ()
            + ' border:9px solid Red;'
             + ' }';
 
-   // inject the rules [seq 20190323°0117]
+   // Inject the rules [seq 20190323°0117]
    var css = document.createElement("style");
    css.type = "text/css";
    css.innerHTML = sRuls;
@@ -181,13 +190,13 @@ Sldgr.Func.injectStyleRules = function ()
  *        the advantage, that the Slider itself has the control, and can
  *        care that the ID is a valid Slider array index. [todo 20190108°0121]
  * @callers Only • startup
- * @param {integer} iSliderId — Slider ID
+ * @param {number} iSliderId (Integer) — Slider ID
  */
 Sldgr.Func.o1Slideshow = function( iSliderId )
 {
    'use strict';
 
-   // var 20190106°1231 syntax helper
+   // Syntax helper [var 20190106°1231]
    var oSelf = this;
 
    /**
@@ -197,17 +206,17 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     *
     * @note : Remember ref 20190107°0107 'javascript namespace aliases'
     * @id 20190106°1811
-    * @type {Object}
+    * @type {Object} —
     */
     const oCs = {
 
-      // three indices for each button [seq 20190106°1741]
+      // Three indices for each button [seq 20190106°1741]
       // todo : Define this with an Enum (compare 20190106°1151 Sldgr.Cnst.CmdMove)
       iBtAr_Ids : 2                                                    // [prop 20190106°1742]
       , iBtAr_Off : 1                                                  // [prop 20190106°1743]
       , iBtAr_On : 0                                                   // [prop 20190106°1744]
 
-      // indices for the five tools buttons [seq 20190106°1751]
+      // Indices for the five tools buttons [seq 20190106°1751]
       // todo : Define this with an Enum (compare 20190106°1151 Sldgr.Cnst.CmdMove)
       , iBtn_AutoLeft : 2                                              // [prop 20190106°1752]
       , iBtn_AutoRight : 1                                             // [prop 20190106°1753]
@@ -249,92 +258,92 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
       , sId_Src_Image : ( 'ImgSrc_' + iSliderId + '_' )                // prop 20190107°0313
    };
 
-   // var 20190106°1821 user settings
+   // User settings [var 20190106°1821]
    var oSt = {
 
-      // property 20190314°063x image list read from HTML attribute 'data-slidegear'
+      // Image list read from HTML attribute 'data-slidegear' [property 20190314°0636]
       aImgListFromAttrib : Array()
 
-      // property 20190106°1241 user setting
+      // User setting [property 20190106°1241]
       , bAutostart : Sldgr.Cnst.bDefault_Autostart
 
-      // property 20190323°0341 user setting
+      // User setting [property 20190323°0341]
       , bIsVisible01CaptionBox : false // false true
 
-      // property 20190323°0443 user setting
+      // User setting [property 20190323°0443]
       , bIsVisible02NaviBox : false // true
 
-      // property 20190323°0441 user setting
+      // User setting [property 20190323°0441]
       , bIsVisible03ToolsBox : false // true
 
-      // property 20190106°1251 user setting
+      // User setting [property 20190106°1251]
       , bIsVisible04DebugBox : false // Sldgr.Cnst.bDefault_InfoPanelVisible
 
-      // property 20190323°0545 user setting
+      // User setting [property 20190323°0545]
       , bIsVisibleDebugBorders : false // false true
 
-      // property 20190106°1843 user setting
+      // User setting [property 20190106°1843]
       // todo : Not used yet, use it.
       , bRandomOrder : Sldgr.Cnst.bDefault_RandomOrder
 
-      // property 20190106°1845 user setting
+      // User setting [property 20190106°1845]
       // todo : Not used yet, use it.
       , bRandomStart : Sldgr.Cnst.bDefault_RandomStart
 
-      // property 20190314°0521
+      // [property 20190314°0521]
       // note : Not sure yet what exactly to do with those buttons
       , bShow_PanelClosing_CrossButs : false
 
-      // prop 20190106°1321 user setting
+      // User setting [prop 20190106°1321]
       , iControlSetNum : Sldgr.Cnst.iDefault_ControlSet
 
-      // prop 20190106°1311 user setting
+      // User setting [prop 20190106°1311]
       , iFadingDuration : Sldgr.Cnst.nDefault_FadingDuration
 
-      // prop 20190106°1331 user setting
+      // User setting [prop 20190106°1331]
       , iFadingSteps : Sldgr.Cnst.iDefault_FadingSteps
 
-      // prop 20190106°1341 the time to show one slide in milliseconds
+      // The time to show one slide in milliseconds [prop 20190106°1341]
       // note : This is not really an integer, but we would rather prefer
       , iShowingDuration : Sldgr.Cnst.nDefault_ShowingDuration * 1000
 
-      // prop 20190106°1711 user setting
+      // User setting [prop 20190106°1711]
       , sBgColorImage : 'Transparent'
 
-      // prop 20190107°0631 user setting
+      // User setting [prop 20190107°0631]
       , sBgColorSlider : null
 
-      // prop 20190209°0911 user setting
+      // User setting [prop 20190209°0911]
       , sReadFromJson : ''
    };
 
-   // working vars [var 20190106°1831]
+   // Working vars [var 20190106°1831]
    var oVr = {
 
-      // the button set [line 20190106°1725]
+      // The button set [line 20190106°1725]
       aCtrBtns : []
 
       /**
        * This object controls the beamers activity
        *
        * @id 20190108°0111
-       * @type {Object}
+       * @type {Object} —
        */
        , Stage : {
 
-         // prop 20190106°1847 fading counter
+         // Fading counter [prop 20190106°1847]
          iFadeCount : 0
 
-         // prop 20190106°1847 fading algorithm — not yet used
+         // Fading algorithm — not yet used [prop 20190106°1847]
          , iFadingAlgo : Sldgr.Cnst.CmdFade.Soft // Soft Hard
 
-         // prop 20190106°1851 index for current image in the stockpile array
+         // Index for current image in the stockpile array [prop 20190106°1851]
          , iNdxCurr : 0 // -1
 
-         // prop 20190108°0434 the current movement mode
+         // The current movement mode [prop 20190108°0434]
          , iMode : Sldgr.Cnst.Mode.Single
 
-         // prop 20190106°1853 index for previous image in the stockpile array
+         // Index for previous image in the stockpile array [prop 20190106°1853]
          , iNdxPrev : -1
       }
 
@@ -344,26 +353,26 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
        * @id 20190106°1451
        * @note Also called stockpile ringbuffer array [prop 20190106°1715]
        * @summary : This is a multidimensional array consisting of the following
-       * @type {Array}
+       * @type {Array} —
        */
       , aMgz : []
 
-      // prop 20190106°1721 slider panel height
+      // Slider panel height [prop 20190106°1721]
       // note : Remember the difference
       //    • el.style.height yields string "123px"
       //    • el.clientHeight yields a number 123.0 but is read-only
       , iSliderPanelHeight : Sldgr.Vars.arDivSliders[iSliderId].clientHeight
 
-      // prop 20190106°1723 image panel height
+      // Image panel height [prop 20190106°1723]
       , iSliderPanelWidth : Sldgr.Vars.arDivSliders[iSliderId].clientWidth
 
-      // prop 20190106°1411 this controls fading
+      // This controls fading [prop 20190106°1411]
       // note : Acutally one timer were sufficient for the two tasks,
       //    just for sake of easiser code reading, we use two different.
       // note : See ref 20190108°0352 'on timers'
       , timerFade : null
 
-      // prop 20190106°1412 this controls sliding
+      // This controls sliding [prop 20190106°1412]
       , timerSlide : null
    };
 
@@ -383,11 +392,11 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
    {
       'use strict';
 
-      // provide the primordial button set [seq 20190106°1855]
+      // Provide the primordial button set [seq 20190106°1855]
       // note : Note the difference between cloning the array with slice vs. assigning it.
       oVr.aCtrBtns = Sldgr.Cnst.aControls_Shiny.slice(0); // zero means 'clone complete'
 
-      // generate multidim array with button IDs and image URLs [seq 20190106°1745]
+      // Generate multidim array with button IDs and image URLs [seq 20190106°1745]
       var ar = new Array(5);
       for (var i1 = 0; i1 < oVr.aCtrBtns[0].length; i1++) {
          ar[i1] = 'Button_' + iSliderId + '_' + i1;
@@ -396,7 +405,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
 
       Sldgr.Vars.bButtonPathesCompleted_OBSOLETE = true;
 
-      // achieve random order [seq 20190106°1921]
+      // Achieve random order [seq 20190106°1921]
       // todo : Test and fix
       if ( oSt.bRandomOrder ) {
          var iRand1 = Math.floor( Math.random() * oVr.aMgz.length ) ;
@@ -405,13 +414,13 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
          }
       }
 
-      // do random start [seq 20190106°1923]
+      // Do random start [seq 20190106°1923]
       if ( oSt.bRandomStart ) {
          var iRand2 = Math.floor( Math.random() * oVr.aMgz.length ) ;
          oVr.Stage.iNdxCurr = iRand2;
       }
 
-      // debug print all image pathes [debug 20190106°2014]
+      // Debug print all image pathes [debug 20190106°2014]
       if ( Sldgr.Vars.bDbgOut_2_slider_constructor ) {
          var s = 'Hello ' + iSliderId + ' x=' + oVr.iSliderPanelWidth + ' y=' + oVr.iSliderPanelHeight;
          Sldgr.Func.pgOutDebug(s, 'f.2', iSliderId);
@@ -428,12 +437,12 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
    {
       'use strict';
 
-      // retrieve setup command [seq 20190107°0611]
+      // Retrieve setup command [seq 20190107°0611]
       var oProps = {};
       var e = Sldgr.Vars.arDivSliders[iSliderId];
       var sCmd = e.getAttribute(Sldgr.Cnst.sPlate_DataSlidegearAttrib); // 'data-slidegear'
 
-      // primitive parser [seq 20190107°0613]
+      // Primitive parser [seq 20190107°0613]
       if (sCmd) {
          var arEqus = sCmd.split(';');
          for (var i = 0; i < arEqus.length; i++) {
@@ -447,18 +456,18 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
             }
          }
       }
-      // now we have the settings as key/value pairs in oProps
+      // Now we have the settings as key/value pairs in oProps
 
-      // read all keys [seq 20190107°0615]
+      // Read all keys [seq 20190107°0615] (not IE8 forEach)
       //  Modern flavour, no more feature switch since 20190314°0411
       Object.keys(oProps).forEach(function(sKey) {
          oSelf.o2ReadSetup_EvalKeys(sKey, oProps[sKey]);
       });
 
-      // outsourced task
+      // Outsourced task
       oSelf.o2ReadSetup_ImageList();
 
-      // overwrite page HTML style [seq 20190107°0643]
+      // Overwrite page HTML style [seq 20190107°0643]
       if (oSt.sBgColorSlider !== null) {
          Sldgr.Vars.arDivSliders[iSliderId].style.backgroundColor = oSt.sBgColorSlider;
       }
@@ -469,26 +478,26 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     *
     * @id 20190107°0831
     * @caller •
-    * @param {String} sKey The key token
-    * @param {String} sVal The value to set
+    * @param {string} sKey The key token
+    * @param {string} sVal The value to set
     */
    this.o2ReadSetup_EvalKeys = function(sKey, sVal)
    {
       'use strict';
 
-      // debug [seq 20190107°0832]
+      // Debug [seq 20190107°0832]
       if ( Sldgr.Vars.bDbgOut_3_read_setup ) {
          var s = 'process setting ' + sKey + ' = ' + sVal;
          Sldgr.Func.pgOutDebug(s, 'f.3', iSliderId);
       }
 
-      // workaround [seq 20190314°0651]
-      //  quick'n'dirty to be able to read the same key multiple times
+      // Workaround [seq 20190314°0651]
+      //  Quick'n'dirty to be able to read the same key multiple times
       if ( sKey.indexOf('image') === 0 ) {
          sKey = 'image';
       }
 
-      // do job [seq 20190107°0833]
+      // Do job [seq 20190107°0833]
       switch (sKey) {
          case 'autostart' :
             oSt.bAutostart = (sVal === 'yes') ? true : false;
@@ -499,19 +508,19 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
 
          case 'image' :
 
-            // () prologue
+            // () Prologue
             var aToks = sVal.split(' ');
 
-            // (.1) read token one, the path
+            // (.1) Read token one, the path
             var sImg = aToks.shift();
 
-            // (.2) read not-yet-used dummy field
+            // (.2) Read not-yet-used dummy field
             var sDum = '';
             while (sDum === '') {
                sDum = aToks.shift();
             }
 
-            // (.3) read caption
+            // (.3) Read caption
             // issue 20190314°0641 : If the value did contain an equal sign (=),
             //  the sign plus the text behind it will be lost. E.g. "Logo <a href".
             var sCap = '';
@@ -520,7 +529,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
                sCap += aToks.shift();
             }
 
-            // () save result for being processed later
+            // () Save result for being processed later
             oSt.aImgListFromAttrib.push(sImg);
             oSt.aImgListFromAttrib.push(sDum);
             oSt.aImgListFromAttrib.push(sCap);
@@ -564,7 +573,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
             break;
       }
 
-      // quick workaround to enforce valid unfolder order [seq 20190314°0541]
+      // Quick workaround to enforce valid unfolder order [seq 20190314°0541]
       // note : Compare seq 20190314°0545
       if (oSt.bIsVisible04DebugBox === true ) { oSt.bIsVisible03ToolsBox = true; }
       if (oSt.bIsVisible03ToolsBox === true ) { oSt.bIsVisible02NaviBox = true; }
@@ -582,17 +591,17 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
    {
       'use strict';
 
-      // pessimistic predetermination [seq 20190314°0627]
+      // Pessimistic predetermination [seq 20190314°0627]
       var bUseFallback = false;
       var bWorkaroundDidReadFromAttrib = false;
 
-      // image list was already read from HTML attribute [seq 20190314°0631]
+      // Image list was already read from HTML attribute [seq 20190314°0631]
       if ( typeof oSt.aImgListFromAttrib !== 'undefined' ) {
          if ( oSt.aImgListFromAttrib !== null ) {                      // [condi 20190314°0632]
             if ( oSt.aImgListFromAttrib.length > 0  ) {                // [condi 20190314°0633]
-               // list was read from HTML attribute 'data-slidegear'
+               // List was read from HTML attribute 'data-slidegear'
 
-               // debug [seq 20190314°0634]
+               // Rebug [seq 20190314°0634]
                var s = "Image list from attribute, image number*3 = " + oSt.aImgListFromAttrib.length;
                Sldgr.Func.pgOutDebug(s, 'f.x1', iSliderId);
 
@@ -604,39 +613,39 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
                   Sldgr.Func.pgOutDebug(s2, 'f.x2', iSliderId);
                }
 
-               // provide list as below known variable [seq 20190314°0637]
+               // Provide list as below known variable [seq 20190314°0637]
                Sldgr.Vars.arImgImport = oSt.aImgListFromAttrib;
                bWorkaroundDidReadFromAttrib = true;
             }
          }
       }
 
-      // read image list from JSON file [seq 20190106°1441]
+      // Read image list from JSON file [seq 20190106°1441]
       if ( oSt.sReadFromJson !== '' )
       {
          var sFnam = oSt.sReadFromJson;
 
-         // new asynchronous reading [seq 20190418°0311]
+         // New asynchronous reading [seq 20190418°0311]
          // Remember chg 20190418°0331 'all ajax asynchronous, no more synchronous'
          Trekta.Utils.readTextFile2 ( sFnam
                                      , this.o2ReadSetup_3_ImageListConti
                                       );
-         // leave a provisory setting until JSON is read [line 20190418°0313]
+         // Leave a provisory setting until JSON is read [line 20190418°0313]
          bUseFallback = true;
       }
-      // use built-in fallback [seq 20190106°1521]
+      // Use built-in fallback [seq 20190106°1521]
       else {
          if (! bWorkaroundDidReadFromAttrib ) {
             bUseFallback = true;
          }
       }
 
-      // load built-in fallback images [seq 20190106°1523]
+      // Load built-in fallback images [seq 20190106°1523]
       if ( bUseFallback ) {
          Sldgr.Vars.arImgImport = Sldgr.Cnst.aFallbackShow_One;
       }
 
-      // fill user input array into magazine [line 20190418°0323]
+      // Fill user input array into magazine [line 20190418°0323]
       oSelf.o2ReadSetup_4_fillMagazine();
    };
 
@@ -657,18 +666,18 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
          var data = JSON.parse(sJson);
          Sldgr.Vars.arImgImport = data.slideshow;
       } catch (e) {
-         // the above fallback stays active
-         // todo : provide some feedback [todo 20190418°0316]
+         // The above fallback stays active
+         // todo : Provide some feedback [todo 20190418°0316]
       }
 
-      // brute force try while chg 20190418°0331
-      // fill user input array into magazine [line 20190418°0325]
+      // Brute force try while chg 20190418°0331
+      //  Fill user input array into magazine [line 20190418°0325]
       oSelf.o2ReadSetup_4_fillMagazine();
 
-      // rebuild the background div [line 20190418°0317]
+      // Rebuild the background div [line 20190418°0317]
       oSelf.o3Build0Html();
 
-      // ~~connect magazin with background div [line 20190418°0318]
+      // ~~Connect magazin with background div [line 20190418°0318]
       oSelf.o4FillMagazine();
    };
 
@@ -682,13 +691,13 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     *     while chg 20190418°0331 to enable double calling
     * @callers • func 20190106°0615 o2ReadSetup_ImageList
     *           • func 20190418°0211 o2ReadSetup_3_ImageListConti
-    * @returns {void} 
+    * @returns {void} —
     */
    this.o2ReadSetup_4_fillMagazine = function()
    {
       'use strict';
 
-      // () fill flat user input image array into magazine [seq 20190106°1525]
+      // () Fill flat user input image array into magazine [seq 20190106°1525]
       oVr.aMgz = [];
       for (var i2 = 0; i2 < ( Sldgr.Vars.arImgImport.length / Sldgr.Cnst.iRecordWidth_Input ); i2++) {
          var iNdxImpo = i2 * Sldgr.Cnst.iRecordWidth_Input;
@@ -710,7 +719,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
    {
       'use strict';
 
-      // build top level div fragmen [seq 20190106°1551]
+      // Build top level div fragmen [seq 20190106°1551]
       //  • It stretches down with all other panels (by display:table)
       // See note 20190107°0351 'css display-table'
       var sDiv = '<div style="'
@@ -720,35 +729,35 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
                    + '>'
                     ;
 
-      // add top image box [seq 20190106°1552]
+      // Add top image box [seq 20190106°1552]
       //  • Has fixed size after the HTML pages hardcoded div values
       //  • Contains the unfolder button with position absolute right below
       var sFrg = oSelf.o3Build1ImgPanel();
       sDiv += sFrg;
 
-      // add caption box [seq 20190323°0411]
+      // Add caption box [seq 20190323°0411]
       var sFrg2 = oSelf.o3Build2CaptionPanel();
       sDiv += sFrg2;
 
-      // add navigation box [seq 20190323°0413]
+      // Add navigation box [seq 20190323°0413]
       var sFrg3 = oSelf.o3Build3NaviPanel();
       sDiv += sFrg3;
 
-      // add buttons box [seq 20190106°1553]
+      // Add buttons box [seq 20190106°1553]
       var sFrg4 = oSelf.o3Build4ToolsPanel();
       sDiv += sFrg4;
 
-      // add debug box [seq 20190106°1554] this is a table
+      // Add debug box [seq 20190106°1554] this is a table
       var sFrg5 = oSelf.o3Build50DebugPanel();
       sDiv += sFrg5;
 
-      // close the HTML fragment [seq 20190106°1555]
+      // Close the HTML fragment [seq 20190106°1555]
       sDiv += '</div>';
 
-      // attach the built HTML fragment to the target location [seq 20190106°1541]
+      // Attach the built HTML fragment to the target location [seq 20190106°1541]
       Sldgr.Vars.arDivSliders[iSliderId].innerHTML = sDiv;
 
-      // fill stockpile array from recently created image div elements [seq 20190106°1545]
+      // Fill stockpile array from recently created image div elements [seq 20190106°1545]
       for ( var i = 0; i < oVr.aMgz.length; i++ )
       {
          var eDiv = document.getElementById(oCs.sId_Div_Stock + i);
@@ -760,7 +769,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     * This method builds the image sequence HTML fragment
     *
     * @id 20190106°0631
-    * @returns {String} The wanted div HTML fragment
+    * @returns {string} — The wanted div HTML fragment
     */
    this.o3Build1ImgPanel = function()
    {
@@ -778,17 +787,17 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
              + '>'
               ;
 
-      // iterate the images in the magazine [seq 20190106°1611]
+      // Iterate the images in the magazine [seq 20190106°1611]
       for ( var iImg = 0; iImg < oVr.aMgz.length; iImg++ ) {
 
-         // prologue [seq 20190106°1613]
+         // Prologue [seq 20190106°1613]
          //
 
-         // center [seq 20190106°1621]
+         // Center [seq 20190106°1621]
          // note : Remember issue 20190107°0433 'center image vertically'
          var sCenter = 'display:flex; align-items:center; justify-content:center;';
 
-         // build one image div [seq 20190106°1622]
+         // Build one image div [seq 20190106°1622]
          sDiv += '<div id="' + oCs.sId_Div_Stock + (iImg) + '"'
                + ' style="font-size:0; margin:0; padding:0;'
                + ' ' + sCenter
@@ -821,7 +830,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
       }
 
       //-----------------------
-      // primary unfolder control [seq 20190323°0251]
+      // Primary unfolder control [seq 20190323°0251]
       // note : Remember ref 20190323°0313 'css-tricks: absolute positioning'
       // note : Remember note 20190314°0131 'using unicode buttons'
       var sFrg = '<div style="'
@@ -832,7 +841,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
                 + '<a href='
                 + '"javascript:Sldgr.Vars.arObSliders[' + iSliderId + '].oClickUnfolderBtns(\'primary_button\');"'
                 + ' style="'
-                + ' border:0px dotted Gray;'                           // -- [DbgBrdr 3]
+                + ' border:0px dotted Gray;'                           // — [DbgBrdr 3]
                 + ' color:Gray;'
                 + ' font-size:177%;'
                 + ' font-weight:bold;'
@@ -858,7 +867,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
       sDiv += sFrg;
       //-----------------------
 
-      // close this div [line 20190323°0253]
+      // Close this div [line 20190323°0253]
       sDiv += '</div>';
 
       return sDiv;
@@ -869,13 +878,13 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     *
     * @id 20190106°0641
     * @note  Remember important note 20190106°1637 'about style display'
-    * @returns {String} The wanted div HTML fragment
+    * @returns {string} — The wanted div HTML fragment
     */
    this.o3Build2CaptionPanel = function()
    {
       'use strict';
 
-      // open div [seq 20190106°1631]
+      // Open div [seq 20190106°1631]
       var sHt = '';
       sHt += '<div'
             + ' id="' + oCs.sId_Panel2_Caption + '"'
@@ -893,7 +902,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
              + '">'
               ;
 
-      // place to be filled programmatically [seq 20190106°1633]
+      // Place to be filled programmatically [seq 20190106°1633]
       sHt += '<span'
            + ' id="' + oCs.sId_Caption_Text + '"'
             + ' style="'
@@ -908,7 +917,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
               + '"</span>'
                ;
 
-      // caption box unfolder button [seq 20190323°0421]
+      // Caption box unfolder button [seq 20190323°0421]
       var sDv = '<div';
       sDv += ' id="CaptionBox_UnfolderButton_Div_' + iSliderId + '"'
            + ' style="'
@@ -938,7 +947,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
             ;
       sHt += sDv;
 
-      // caption box close button [seq 20190314°0421]
+      // Caption box close button [seq 20190314°0421]
       var sDv2 = '<div';
       sDv2 += 'id="CaptionBox_CloseButton_Div_' + iSliderId + '"'
            + ' style="'
@@ -966,7 +975,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
          sHt += sDv2;
       }
 
-      // close div [seq 20190106°1635]
+      // Close div [seq 20190106°1635]
       sHt += '</div>';
 
       return sHt;
@@ -976,7 +985,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     * This method builds the navigation HTML div fragment
     *
     * @id 20190323°0351
-    * @returns {String} The wanted div HTML fragment
+    * @returns {string} — The wanted div HTML fragment
     */
    this.o3Build3NaviPanel = function()
    {
@@ -986,7 +995,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
       var iSome_Offset_12 = 12;
       var iNaviPanelWidth = (oVr.iSliderPanelWidth - iSome_Offset_12); // 14 is some offset, which must be overflown to the unfolder button
 
-      // build div [seq 20190323°0353]
+      // Build div [seq 20190323°0353]
       var sHt = '<div'
            + ' id="' + oCs.sId_Panel3_Navigation + '"'
            + ' style="'
@@ -1000,7 +1009,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
             + '">'
              ;
 
-      // prepend button auto-backward [seq 20190314°0551]
+      // Prepend button auto-backward [seq 20190314°0551]
       var sFrg1 = '<a'
                  + ' style="'
                   + ' border:1px solid SlateGray;'
@@ -1018,7 +1027,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
                     ;
       sHt += sFrg1;
 
-      // build the single images direct links [seq 20190106°1653]
+      // Build the single images direct links [seq 20190106°1653]
       var sFrg2 = '';
       for ( var iNum = 1; iNum <= oVr.aMgz.length; iNum++ ) {
          sFrg2 += '<a href="' + 'javascript:Sldgr.Vars.arObSliders['
@@ -1040,7 +1049,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
       }
       sHt += sFrg2;
 
-      // append button auto-foward [seq 20190314°0551]
+      // Append button auto-foward [seq 20190314°0551]
       var sFrg = '<a'
                 + ' style="'
                 + ' border:1px solid SlateGray;'
@@ -1056,7 +1065,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
                  ;
       sHt += sFrg;
 
-      // navibox unfolder button [seq 20190323°0423]
+      // Navibox unfolder button [seq 20190323°0423]
       var iPositionRight = -5 - iSome_Offset_12;
       var sDv1 = '<div';
       sDv1 += ' id="Div_UnfolderForNaviBox_' + iSliderId + '"'
@@ -1087,7 +1096,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
                ;
       sHt += sDv1;
 
-      // navibox close button [seq ]
+      // Navibox close button [seq ]
       var sDv2 = '<div';
       sDv2 += ' id="NaviBox_CloseButton_Div_' + iSliderId + '"'
             + ' style="'
@@ -1124,14 +1133,14 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     * This method builds the info panel HTML fragment
     *
     * @id 20190106°0643
-    * @type {String}
+    * @type {string} —
     */
    this.o3Build4ToolsPanel = function()
    {
       'use strict';
       var sHt = '';
 
-      // open the controls div [seq 20190106°0647]
+      // Open the controls div [seq 20190106°0647]
       sHt += '<div class="ToolsPanel_Div"'
            + ' id="' + oCs.sId_Panel4_Tools + '"'
            + ' style="'
@@ -1152,7 +1161,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
            + '</div>'
             ;
 
-      // wrap buttons in a div of their own [seq 20190107°0423]
+      // Wrap buttons in a div of their own [seq 20190107°0423]
       sHt += '<div id="DashboardBox_' + iSliderId + '"'
            + ' style="'
             + ' background-color:Transparent;'                         // LightGray Transparent
@@ -1165,7 +1174,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
              + '">'
               ;
 
-      // toggle debug borders [seq 20190323°0541]
+      // Toggle debug borders [seq 20190323°0541]
       sHt += '<a href="javascript:Sldgr.Vars.arObSliders[' + iSliderId + '].oClickUnfolderBtns(\'toggle_debug_borders\');"'
            + ' id="Button_Toggle_DebugBorders_' + iSliderId + '"'
             + ' style="'
@@ -1180,7 +1189,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
                + '</a>&nbsp;'
                 ;
 
-      // build open/close debug panel [seq 20190106°1641]
+      // Build open/close debug panel [seq 20190106°1641]
       sHt += '<a href="javascript:Sldgr.Vars.arObSliders[' + iSliderId + '].oClickUnfolderBtns(\'buttonsbox_button\');"'
            + ' style="'
        // + ' float:left;'
@@ -1196,7 +1205,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
                   + '</a>&nbsp;'
                    ;
 
-      // build button go-back [seq 20190106°1642]
+      // Build button go-back [seq 20190106°1642]
       sHt += '<a href="javascript:Sldgr.Vars.arObSliders[' + iSliderId + '].oClickGoOneLeft();"'
            + ' style="'
        + ' position:relative;'
@@ -1212,7 +1221,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
                   + '</a>&nbsp;'
                    ;
 
-      // build button stop [seq 20190106°1643]
+      // Build button stop [seq 20190106°1643]
       sHt += '<a href="javascript:Sldgr.Vars.arObSliders[' + iSliderId + '].oClickAutoGoLeft();"'
            + ' style="'
        + ' position:relative;'
@@ -1228,7 +1237,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
                   + '</a>&nbsp;'
                    ;
 
-      // build button start [seq 20190106°1644]
+      // Build button start [seq 20190106°1644]
       sHt += '<a href="javascript:Sldgr.Vars.arObSliders[' + iSliderId + '].oClickAutoGoRight();"'
            + ' style="'
       + ' position:relative;'
@@ -1244,7 +1253,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
                   + '</a>&nbsp;'
                    ;
 
-      // build button go-forward [seq 20190106°1645]
+      // Build button go-forward [seq 20190106°1645]
       sHt += '<a href="javascript:Sldgr.Vars.arObSliders[' + iSliderId + '].oClickGoOneRight();"'
            + ' style="'
           + ' position:relative;'
@@ -1262,7 +1271,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
 
       sHt += '</div>';
 
-      // toolsbox unfolder button [seq 20190323°0451]
+      // Toolbox unfolder button [seq 20190323°0451]
       var sDv1 = '<div';
       sDv1 += ' id="Div_UnfolderForButtonBox_' + iSliderId + '"'
             + ' style="'
@@ -1297,7 +1306,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
                ;
       sHt += sDv1;
 
-      // toolsbox close button [seq 20190314°0425]
+      // Toolbox close button [seq 20190314°0425]
       var sDv2 = '<div';
       sDv2 += ' id="ToolsBox_CloseButton_Div_' + iSliderId + '"'
             + ' style="'
@@ -1322,7 +1331,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
          sHt += sDv2;
       }
 
-      // complete controls div [line 20190107°0427]
+      // Complete controls div [line 20190107°0427]
       sHt += '</div>';
 
       return sHt;
@@ -1332,13 +1341,13 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     * This method builds the info panel HTML fragment
     *
     * @id 20190106°0651
-    * @type {String}
+    * @type {string} —
     */
    this.o3Build50DebugPanel = function()
    {
       'use strict';
 
-      // open div [seq 20190314°0431]
+      // Open div [seq 20190314°0431]
       var sHt = '';
       sHt += '<div'
             + ' id="' + oCs.sId_Panel5_Debug + '"'
@@ -1371,8 +1380,8 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
                    ;
       sHt += sFrag1 + sFrag2;
 
-      // () build debug table [seq 20190106°1651]
-      // (.1) section header
+      // () Build debug table [seq 20190106°1651]
+      // (.1) Section header
       sHt += '<table'
            + ' style="'
            + ' border:0px dotted Orange;'                              // [DbgBrdr 12]
@@ -1383,7 +1392,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
             + '</td></tr>'
              ;
 
-      // (.3) section with fading variables [20190106°0653]
+      // (.3) Section with fading variables [20190106°0653]
       sHt += '<tr><td style="font-size:small;">Current image &nbsp;= <span id="' + oCs.sId_Span_DbgImgShowNow + '">N/A</span></td></tr>'
            + '<tr><td style="font-size:small;">Previous image &nbsp;= <span id="' + oCs.sId_Span_DbgImgFadeOut + '">N/A</span></td></tr>'
             + '<tr><td style="font-size:small;">Fade step &nbsp;= <span id="' + oCs.sId_Span_DbgFadeState + '">N/A</span></td></tr>'
@@ -1393,13 +1402,13 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
             + '<tr><td style="font-size:small;">Fading duration (s) = <span id="' + oCs.sId_Span_DbgFadeDuration + '">N/A</span></td></tr>'
              ;
 
-      // (.4) section for debugging issue 20190312°0821 'misguided image while fading' [line 20190106°0655]
+      // (.4) Section for debugging issue 20190312°0821 'misguided image while fading' [line 20190106°0655]
       sHt += '<tr><td>' + this.o3Build51DebugPanel_2() + '</td></tr>';
 
-      // (.5) table ready [line 20190106°0657]
+      // (.5) Table ready [line 20190106°0657]
       sHt += '</table>';
 
-      // debugbox close button [seq 20190314°0427]
+      // Debugbox close button [seq 20190314°0427]
       var sDv = '<div';
       sDv += ' id="DebugBox_CloseButton_Div_' + iSliderId + '"'
            + ' style="'
@@ -1422,7 +1431,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
          sHt += sDv;
       }
 
-      // close div [seq 20190314°0432]
+      // Close div [seq 20190314°0432]
       sHt += '</div>';
 
       return sHt;
@@ -1433,46 +1442,52 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     *  to debug finished issue 20190312°0821 'misguided image'
     *
     * @id 20190323°0141
-    * @type {String}
+    * @type {string} —
     */
    this.o3Build51DebugPanel_2 = function()
    {
       'use strict';
 
-      // open fragment [line 20190323°0143]
+      // Open fragment [line 20190323°0143]
       var sHt = '<table style="font-size:small;">';
 
-      // iterate over the slides in the magazine [seq 20190323°0145]
+      // Iterate slides in magazine [seq 20190323°0145] (not IE8 forEach)
       oVr.aMgz.forEach( function( elCurr, iNdx, arr) {
          sHt += '<tr><td id=' + oCs.sId_Span_DbgSlideEleCell + iNdx +'>&nbsp';
          sHt += iNdx; // is never seen since overridden by update
          sHt += "&nbsp;</td></tr>";
       }, oSelf);
 
-      // close fragment [line 20190323°0147]
+      // Close fragment [line 20190323°0147]
       sHt  += "</table>";
 
       return sHt;
 
    };
 
+   /*
+   issue 20190418°0331 'something complicated with asynchronous slide loading'
+   matter : While chg 20190418°0331 'all ajax asynchronous, no more synchronous'
+      For filling the magazine in behind, there seem to be not enough
+      sId_Div_Stock elements. Where are those built? In o3Build1ImgPanel.
+   location : Func 20190106°1941 Sldgr.Func.o4FillMagazine
+   status : ?
+   */
+
    /**
     * This method builds the div-stock helper array
     *
     * @id 20190106°1941
+    * @see issue 20190418°0331 'something complicated with asynchronous slide loading'
     * @callers Only • startup
     */
    this.o4FillMagazine = function()
    {
       'use strict';
 
-      // issue while chg 20190418°0331 'all ajax asynchronous, no more synchronous'
-      // For filling the magazine in behind, there seem not enough
-      //  sId_Div_Stock elements. Where are those built? In o3Build1ImgPanel.
-
-      // [seq 20190106°1943]
+      // Iterate the prepared magazine [seq 20190106°1943]
       for ( var iImg = 0; iImg < oVr.aMgz.length; iImg++ ) {
-         // [seq 20190107°0341]
+         // Fill in the page elements [seq 20190107°0341]
          var eDiv = document.getElementById(oCs.sId_Div_Stock + iImg);
          oVr.aMgz[iImg].eSliDiv = eDiv;
       }
@@ -1488,23 +1503,23 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
    {
       'use strict';
 
-      // preparation [seq 20190106°0712]
+      // Preparation [seq 20190106°0712]
       oVr.Stage.iNdxCurr = oSelf.iStartImageNdx;
       oVr.Stage.iNdxPrev = null; // experiment 20190323°0211 works fine
 
-      // obey setting [seq 20190106°0713]
+      // Obey setting [seq 20190106°0713]
       if ( oSt.bAutostart ) {
 
-         // set auto-move direction
+         // Set auto-move direction
          if ( oVr.Stage.iMode !== Sldgr.Cnst.Mode.Left ) {
             oVr.Stage.iMode = Sldgr.Cnst.Mode.Right;
          }
       }
 
-      // set buttons [seq 20190106°0714]
+      // Set buttons [seq 20190106°0714]
       oSelf.oUpdateButtons();
 
-      // show initial slide immediately [seq 20190106°0715]
+      // Show initial slide immediately [seq 20190106°0715]
       oSelf.oSlideProjectNext(oSelf.iStartImageNdx);
    };
 
@@ -1564,7 +1579,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
       oSelf.oUpdateButtons();
       var iGoto = (oVr.Stage.iNdxCurr < 1) ? oVr.aMgz.length - 1 : oVr.Stage.iNdxCurr - 1;
 
-      // ignit movement, here with provisory debug helper flag [seq 20190106°0725]
+      // Ignit movement, here with provisory debug helper flag [seq 20190106°0725]
       oSelf.oSlideProjectNext(iGoto, true); // true = go-without-fading
    };
 
@@ -1588,7 +1603,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     * This method is the event handler for a goto-image link
     *
     * @id 20190106°0741
-    * @param {Integer} iNumSelected The number of the image to trigger
+    * @param {number} iNumSelected (Integer) — The number of the image to trigger
     */
    this.oClickGoSelected = function(iNumSelected)
    {
@@ -1597,7 +1612,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
       // [seq 20190106°0743]
       oVr.Stage.iMode = Sldgr.Cnst.Mode.Single;
       oSelf.oUpdateButtons();
-      oSelf.oSlideProjectNext(iNumSelected - 1, true); // use index (-1) not number, true = go-hard
+      oSelf.oSlideProjectNext(iNumSelected - 1, true); // Use index (-1) not number, true = go-hard
    };
 
    /**
@@ -1605,83 +1620,83 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     *
     * @id 20190323°0331
     * @callers • onclick events in buttons
-    * @param sButtonName {String} The signature of the button which was pressed
-    * @returns {Void} 
+    * @param sButtonName {string} — The signature of the button which was pressed
+    * @returns {Void} —
     */
    this.oClickUnfolderBtns = function(sButtonName)
    {
       'use strict';
 
-      // proglogue [seq 20190323°0511]
+      // Proglogue [seq 20190323°0511]
       //
 
       // [seq 20190323°0512]
       switch (sButtonName) {
 
-         // () process primary unfolder button [seq 20190323°0513]
+         // () Process primary unfolder button [seq 20190323°0513]
          case 'primary_button' :
 
-            // () process flag [seq 20190314°0141]
+            // () Process flag [seq 20190314°0141]
             oSt.bIsVisible01CaptionBox = oSt.bIsVisible01CaptionBox ? false : true;
             break;
 
-         // process caption panel unfolder button [seq 20190323°0514]
+         // Process caption panel unfolder button [seq 20190323°0514]
          case 'captionbox_button' :
 
             // [seq 20190314°0143]
             oSt.bIsVisible02NaviBox = oSt.bIsVisible02NaviBox ? false : true;
             break;
 
-         // process navibox unfolder button [seq 20190323°0515]
+         // Process navibox unfolder button [seq 20190323°0515]
          case 'navibox_button' :
 
             // [seq 20190314°0145]
             oSt.bIsVisible03ToolsBox = oSt.bIsVisible03ToolsBox ? false : true;
             break;
 
-         // process buttonsbox unfolder button [seq 20190323°0516]
+         // Process buttonsbox unfolder button [seq 20190323°0516]
          case 'buttonsbox_button' :
 
             // [seq 20190314°0147]
             oSt.bIsVisible04DebugBox = oSt.bIsVisible04DebugBox ? false : true;
             break;
 
-         // process debug borders button [seq 20190323°0543]
+         // Process debug borders button [seq 20190323°0543]
          case 'toggle_debug_borders' :
 
             oSt.bIsVisibleDebugBorders = oSt.bIsVisibleDebugBorders ? false : true;
             oSelf.oUpdateBorders();
             break;
 
-         // program flow error [seq 20190323°0517]
+         // Program flow error [seq 20190323°0517]
          default :
             break;
       }
 
-      // skip
+      // Skip
       if (sButtonName === 'toggle_debug_borders') {
          return;
       }
 
-      // quick workaround to enforce valid unfolder order [seq 20190314°0545]
+      // Quick workaround to enforce valid unfolder order [seq 20190314°0545]
       // note : Compare seq 20190314°0541
       if (oSt.bIsVisible01CaptionBox === false ) { oSt.bIsVisible02NaviBox = false; }
       if (oSt.bIsVisible02NaviBox === false ) { oSt.bIsVisible03ToolsBox = false; }
       if (oSt.bIsVisible03ToolsBox === false ) { oSt.bIsVisible04DebugBox = false; }
 
-      // [line 20190315°0413] experiment -- success
+      // Successful experiment [line 20190315°0413]
       var sImgSrc = ( oSt.bIsVisible01CaptionBox
                    ? Sldgr.Cnst.sData_Btn_Left_SlateGray
                     : Sldgr.Cnst.sData_Btn_Down_SlateGray
                      );
 
-      // process caption panel unfolder button [seq 20190314°0611]
+      // Process caption panel unfolder button [seq 20190314°0611]
       var eButImg1 = document.getElementById(oCs.sIdImg_Unfolder1_ForCaptionBox);
       eButImg1.src = sImgSrc;
       var ePanel1 = document.getElementById(oCs.sId_Panel2_Caption);
       ePanel1.style.display = oSt.bIsVisible01CaptionBox ? 'block' : 'none';
 
-      // process navigatino panel unfolder button [seq 20190314°0613]
+      // Process navigatino panel unfolder button [seq 20190314°0613]
       var eButImg2 = document.getElementById(oCs.sIdImg_Unfolder2_ForNaviBox);
       eButImg2.src = ( oSt.bIsVisible02NaviBox
                      ? Sldgr.Cnst.sData_Btn_Left_SteelBlue
@@ -1690,7 +1705,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
       var ePanel2 = document.getElementById(oCs.sId_Panel3_Navigation);
       ePanel2.style.display = oSt.bIsVisible02NaviBox ? 'block' : 'none';
 
-      // process tools panel unfolder button [seq 20190314°0615]
+      // Process tools panel unfolder button [seq 20190314°0615]
       var eButImg3 = document.getElementById(oCs.sIdImg_Unfolder3_ForToolsBox);
       eButImg3.src = ( oSt.bIsVisible03ToolsBox
                      ? Sldgr.Cnst.sData_Btn_Left_DarkSeaGreen
@@ -1699,7 +1714,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
       var ePanel3 = document.getElementById(oCs.sId_Panel4_Tools);
       ePanel3.style.display = oSt.bIsVisible03ToolsBox ? 'table' : 'none';
 
-      // process debug panel unfolder button [seq 20190314°0617]
+      // Process debug panel unfolder button [seq 20190314°0617]
       var eButImg4 = document.getElementById(oCs.sIdImg_Unfolder4_ForDebugBox);
       eButImg4.src = ( oSt.bIsVisible04DebugBox
                      ? Sldgr.Cnst.sData_Btn_Left_Tomato
@@ -1708,10 +1723,10 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
       var ePanel4 = document.getElementById(oCs.sId_Panel5_Debug);
       ePanel4.style.display = oSt.bIsVisible04DebugBox ? 'table' : 'none';
 
-      // actualize Toggle-Info-Panel Button [line 20190323Â°0519]
+      // Actualize Toggle-Info-Panel Button [line 20190323Â°0519]
       oSelf.oUpdateButtons();
 
-      // debug [line 20190323°0521]
+      // Debug [line 20190323°0521]
       if ( Sldgr.Vars.bDebugGeneral ) {
          var s = 'Unfolder Button pressed : "' + sButtonName + '"';
          Sldgr.Func.pgOutDebug(s, 'f.5', iSliderId);
@@ -1728,10 +1743,10 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
    {
       'use strict';
 
-      // prologue [seq 20190106°2011]
+      // Prologue [seq 20190106°2011]
       oSelf.iDebugProjectCounter += 1;
 
-      // maintain fading [seq 20190106°0843]
+      // Maintain fading [seq 20190106°0843]
       if (oVr.Stage.iFadeCount > 0) {
          oVr.Stage.iFadeCount -= 1;
       }
@@ -1739,10 +1754,14 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
          clearTimeout(oVr.timerFade);
       }
 
-      // provide debug info [seq 20190106°0845]
+      // Provide debug info [seq 20190106°0845]
       oSelf.oSlideProject_Output();
 
-      // calculate alpha [seq 20190106°2111]
+      // Display caption before fading [line 20190422°0113]
+      // Remember issue 20190422°0111 'first image caption is an empty quote'
+      this.oUpdateImageCaption();
+
+      // Calculate alpha [seq 20190106°2111]
       var nAlphaGrow = 1 - (1 / oSt.iFadingSteps * oVr.Stage.iFadeCount);
       var nAlphaWane = 1 - nAlphaGrow;
 
@@ -1759,20 +1778,21 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
       oVr.aMgz[oVr.Stage.iNdxCurr].eSliDiv.style.MozOpacity = nAlphaGrow;
       oVr.aMgz[oVr.Stage.iNdxCurr].eSliDiv.style.opacity = nAlphaGrow;
 
-      // next slide [condition 20190106°2023]
+      // Next slide [condition 20190106°2023]
       if ( oVr.Stage.iMode !== Sldgr.Cnst.Mode.Single ) {
 
-         // the last fading round is special [condition 20190106°2025]
+         // The last fading round is special [condition 20190106°2025]
          if ((oVr.Stage.iFadeCount < 1) ) {
 
-            // prepare the next slide
+            // Prepare the next slide
             oVr.timerSlide = setTimeout ( function()
                                          { oSelf.oSlideProjectNext(); }
                                           , oSt.iShowingDuration
-                                           );}
+                                           );
+         }
       }
 
-      // maintain direct navigation [line 20190323°0121]
+      // Maintain direct navigation [line 20190323°0121]
       // note : Compare line 20190323°0123 for building the ID attribute
       var sIdPrev = 'DirectNav_' + iSliderId + '_' + (oVr.Stage.iNdxPrev + 1);
       var elPrev = document.getElementById(sIdPrev);
@@ -1796,14 +1816,14 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     * todo : Fix issue 20190312°0821 'misguided image appears while fading'
     * @callers • o5Autostart (timer/immediately) • oClickGoOneLeft • oClickGoOneRight
     *     • oClickGoSelected • oClickAutoGoLeft • oClickAutoGoRight • oSlideProject (timer)
-    * @param iNdxTarget {integer} Mostly null, otherwise explicit image request
-    * @param bGoHard {boolean} Debug helper flag
+    * @param {number} iNdxTarget (Integer) — Mostly null, otherwise explicit image request
+    * @param {boolean} bGoHard — Debug helper flag
     */
    this.oSlideProjectNext = function(iNdxTarget, bGoHard)
    {
       'use strict';
 
-      // if a next image is ordered, any possible fading ends [line 20190108°0332]
+      // If a next image is ordered, any possible fading ends [line 20190108°0332]
       // todo 20190323°0215 : If fading is interrupted, its important final
       //    cycle in condition 20190106°2025 is not executed. That needs to
       //    be replaced somehow otherwise.
@@ -1813,7 +1833,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
       // todo : Can probably be done shorter. Find canonical way to do this.
       bGoHard = (( typeof bGoHard !== 'undefined' ) || (bGoHard === null)) ? bGoHard : false;
 
-      // debug [seq 20190108°0334]
+      // Debug [seq 20190108°0334]
       if ( bGoHard ) { // primitive selection
          if ( Sldgr.Vars.bDbgOut_5_go_next_slide ) {
             var s = "oSlideProjectNext iNdxTarget = " + iNdxTarget;
@@ -1821,16 +1841,16 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
          }
       }
 
-      // retire the now no more involved image [seq 20190323°0221]
+      // Retire the now no more involved image [seq 20190323°0221]
       //  Remember issue 20190312°0821 'misguided image', looks like this helped.
       if ( oVr.Stage.iNdxPrev !== null ) {
          oVr.aMgz[oVr.Stage.iNdxPrev].eSliDiv.style.visibility = 'hidden';
       }
 
-      // maintain cursor prev [line 20190108°0335]
+      // Maintain cursor prev [line 20190108°0335]
       oVr.Stage.iNdxPrev = oVr.Stage.iNdxCurr;
 
-      // maintain cursor curr [seq 20190108°0336]
+      // Maintain cursor curr [seq 20190108°0336]
       if ( ( typeof iNdxTarget !== 'undefined' ) || (iNdxTarget === null) ) {
          oVr.Stage.iNdxCurr = iNdxTarget;
       } else if ( oVr.Stage.iMode === Sldgr.Cnst.Mode.Right ) {
@@ -1839,19 +1859,20 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
          oVr.Stage.iNdxCurr -= 1;
       }
 
-      // wrap cursor [seq 20190108°0337]
+      // Wrap cursor [seq 20190108°0337]
       if ( oVr.Stage.iNdxCurr >= oVr.aMgz.length ) {
          oVr.Stage.iNdxCurr = 0;
       } else if ( oVr.Stage.iNdxCurr < 0 ) {
          oVr.Stage.iNdxCurr = oVr.aMgz.length - 1;
       }
 
-      // maintain image caption [line 20190106°2041]
-      this.oUpdateImageCaption();
+      // Maintain image caption [line 20190106°2041]
+      // Remember issue 20190422°0111 'very first image caption is an empty quote'
+      // // this.oUpdateImageCaption();
 
-      // maintain fading [seq 20190108°0338]
-      oVr.Stage.iFadeCount = 0; // 1; // results in no fading
-      var nFadeStepTime = 0; // 1;
+      // Maintain fading [seq 20190108°0338]
+      oVr.Stage.iFadeCount = 0;                                        // 1; // results in no fading
+      var nFadeStepTime = 0;                                           // 1;
       if ( bGoHard ) {
          clearTimeout(oVr.timerSlide);
       } else {
@@ -1861,12 +1882,12 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
          }
       }
 
-      // start fading [seq 20190323°0243]
+      // Start fading [seq 20190323°0243]
       oVr.timerFade = setInterval ( function()
                                    { oSelf.oSlideProject(); }
                                     , nFadeStepTime
                                      );
-      oSelf.oSlideProject(); // immediate first cycle
+      oSelf.oSlideProject();                                           // Immediate first cycle
    };
 
    /**
@@ -1880,7 +1901,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
    {
       'use strict';
 
-      // optional debug [seq 20190106°2016]
+      // Optional debug [seq 20190106°2016]
       if ( Sldgr.Vars.bDbgOut_6_slide_trigger ) {
          var el = document.getElementById(oCs.sId_Src_Image + oVr.Stage.iNdxCurr);
          var s = 'trigger no ' + (oVr.Stage.iNdxCurr + 1) + ' (' + el.width + ' * ' + el.height + ')'
@@ -1898,7 +1919,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
          default : sMovMod = 'N/A' ;
       }
 
-      // routine debug output [seq 20190106°2017]
+      // Routine debug output [seq 20190106°2017]
       document.getElementById(oCs.sId_Span_DbgFadeState).innerHTML  = '' + oVr.Stage.iFadeCount;
       document.getElementById(oCs.sId_Span_DbgImgFadeOut).innerHTML = (oVr.Stage.iNdxPrev + 1);
       document.getElementById(oCs.sId_Span_DbgImgShowNow).innerHTML = (oVr.Stage.iNdxCurr + 1);
@@ -1907,7 +1928,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
       document.getElementById(oCs.sId_Span_DbgSlideDuration).innerHTML = oSt.iShowingDuration;
       document.getElementById(oCs.sId_Span_DbgFadeDuration).innerHTML = oSt.iFadingDuration;
 
-      // debug magazine [seq 20190323°0153]
+      // Debug magazine [seq 20190323°0153] (not IE8 forEach)
       //  Analyse e.g. solved issue 20190312°0821 'misguided image'
       oVr.aMgz.forEach( function( elCurr, iNdx, arr) {
          // [line 20190108°0514]
@@ -1931,27 +1952,28 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
    {
       'use strict';
 
-      // [seq 20190323°0553]
+      // Create array with borders [seq 20190323°0553]
       var aEls = Array();
-      aEls.push('Sg_SliderPanelOuterDiv_' + iSliderId);   // [DbgBrdr 1] border:3px dotted Tomato;
-      aEls.push('Sg_ImageSequence_' + iSliderId);         // [DbgBrdr 2] border:3px dashed LimeGreen;'
-      aEls.push(oCs.sId_Href_Unfold_1_CaptionBox);        // [DbgBrdr 3] border:3px dotted Gray;
-      aEls.push(oCs.sId_Panel2_Caption);                  // [DbgBrdr 4] border:3px solid LightGreen;
-      aEls.push(oCs.sId_Caption_Text);                    // [DbgBrdr 5] border:2px dotted RoyalBlue;
-      aEls.push(oCs.sId_Href_Unfold_2_NaviBox);           // [DbgBrdr 6] border:1px dotted Gray;
-      aEls.push(oCs.sId_Panel3_Navigation);               // [DbgBrdr 7] border:3px solid Chocolate;
-      aEls.push('Div_UnfolderForNaviBox_' + iSliderId);   // [DbgBrdr 8] border:1px dotted Gray;
-      aEls.push(oCs.sId_Panel4_Tools);                    // [DbgBrdr 9] border:3px solid Yellow;
-      aEls.push('DashboardBox_' + iSliderId);             // [DbgBrdr 10] border:2px solid Red;
-      aEls.push('Div_UnfolderForButtonBox_' + iSliderId); // [DbgBrdr 11] border:1px dotted Gray;
-      aEls.push(oCs.sId_Panel5_Debug);                    // [DbgBrdr 12] border:3px dotted Orange;
+      aEls.push('Sg_SliderPanelOuterDiv_' + iSliderId);                // [DbgBrdr 1] border:3px dotted Tomato;
+      aEls.push('Sg_ImageSequence_' + iSliderId);                      // [DbgBrdr 2] border:3px dashed LimeGreen;'
+      aEls.push(oCs.sId_Href_Unfold_1_CaptionBox);                     // [DbgBrdr 3] border:3px dotted Gray;
+      aEls.push(oCs.sId_Panel2_Caption);                               // [DbgBrdr 4] border:3px solid LightGreen;
+      aEls.push(oCs.sId_Caption_Text);                                 // [DbgBrdr 5] border:2px dotted RoyalBlue;
+      aEls.push(oCs.sId_Href_Unfold_2_NaviBox);                        // [DbgBrdr 6] border:1px dotted Gray;
+      aEls.push(oCs.sId_Panel3_Navigation);                            // [DbgBrdr 7] border:3px solid Chocolate;
+      aEls.push('Div_UnfolderForNaviBox_' + iSliderId);                // [DbgBrdr 8] border:1px dotted Gray;
+      aEls.push(oCs.sId_Panel4_Tools);                                 // [DbgBrdr 9] border:3px solid Yellow;
+      aEls.push('DashboardBox_' + iSliderId);                          // [DbgBrdr 10] border:2px solid Red;
+      aEls.push('Div_UnfolderForButtonBox_' + iSliderId);              // [DbgBrdr 11] border:1px dotted Gray;
+      aEls.push(oCs.sId_Panel5_Debug);                                 // [DbgBrdr 12] border:3px dotted Orange;
 
-      // [seq 20190323°0555]
+      // Set border style [seq 20190323°0555] (not IE8 forEach)
       aEls.forEach( function( sEleId ) {
          var ele = document.getElementById(sEleId);
          ele.style.borderWidth = (oSt.bIsVisibleDebugBorders ? '2px' : '0px');
       }, oSelf);
 
+      // Maintain button [seq 20190323°0557]
       var aBut = document.getElementById('Button_Toggle_DebugBorders_' + iSliderId);
       aBut.innerHTML = (oSt.bIsVisibleDebugBorders ? '☼' : '۞');
 
@@ -1967,14 +1989,14 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
    {
       'use strict';
 
-      // get target elements [seq 0190106°0853]
+      // Get target elements [seq 0190106°0853]
       var el1 = document.getElementById(oVr.aCtrBtns[oCs.iBtAr_Ids][oCs.iBtn_AutoRight]);   // "Button_0_1"
       var el2 = document.getElementById(oVr.aCtrBtns[oCs.iBtAr_Ids][oCs.iBtn_AutoLeft]);    // "Button_0_2"
       var el3 = document.getElementById(oVr.aCtrBtns[oCs.iBtAr_Ids][oCs.iBtn_ToggleInfo]);  //
       var elBk = document.getElementById('NaviPanelButton_AutoBackward_' + iSliderId);
       var elFw = document.getElementById('NaviPanelButton_AutoForward_' + iSliderId);
 
-      // maintain move buttons [seq 0190106°0855]
+      // Maintain move buttons [seq 0190106°0855]
       if (oVr.Stage.iMode === Sldgr.Cnst.Mode.Right) {
          el1.src = oVr.aCtrBtns[oCs.iBtAr_Off][oCs.iBtn_AutoRight];
          el2.src = oVr.aCtrBtns[oCs.iBtAr_On][oCs.iBtn_AutoLeft];
@@ -1998,7 +2020,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
          elFw.title = 'Auto Slide Forward';
       }
 
-      // maintain info button [seq 0190106°0857]
+      // Maintain info button [seq 0190106°0857]
       if ( oSt.bIsVisible04DebugBox ) {
          el3.src = oVr.aCtrBtns[oCs.iBtAr_Off][oCs.iBtn_ToggleInfo];
       }
@@ -2011,6 +2033,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
     * This method updates the image text
     *
     * @id 20190106°0911
+    * @note : Remember issue 20190422°0111 'very first image caption is an empty quote'
     * @callers Only • oSlideProjectNext
     */
    this.oUpdateImageCaption = function()
@@ -2025,10 +2048,10 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
                        ;
    };
 
-   // do some constructor tasks [line 20190106°0915]
+   // Do some constructor tasks [line 20190106°0915]
    oSelf.o1Slideshow_Code();
 
-   // one slider object is constructed but not initialized [note 20190106°0917]
+   // One slider object is constructed but not initialized [note 20190106°0917]
    return;
 };
 
@@ -2039,23 +2062,23 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
  * @todo : This is a page function, not an object method, except for
  *    the prefix calculation. Thus perhaps shift it to script level.
  * @callers • many
- * @param {string} sMsg The message to output
+ * @param {string} sMsg — The message to output
  */
 Sldgr.Func.pgOutDebug = function(sMsg, sDbgId, iSlidrId)
 {
    'use strict';
 
-   // general switch [seq 20190314o0313]
+   // General switch [seq 20190314o0313]
    if (! Sldgr.Vars.bDebugGeneral) {
       return;
    }
 
-   // prologue [seq 20190106°0512]
+   // Prologue [seq 20190106°0512]
    var bRevers = true; // false true
    Sldgr.Vars.iOutputLineCounter += 1;
    var elOut = document.getElementById('SG_Debug_Output_Pane');
 
-   // output is only possible with the area [seq 20190106°0513]
+   // Output is only possible with the area [seq 20190106°0513]
    if (elOut === null) {
 
       elOut = document.createElement("pre");
@@ -2071,11 +2094,11 @@ Sldgr.Func.pgOutDebug = function(sMsg, sDbgId, iSlidrId)
       document.body.insertBefore(elOut, elTgt);
    }
 
-   // primitive encoding [seq 20190314°0711]
+   // Primitive encoding [seq 20190314°0711]
    sMsg = sMsg.replace(/</g , '&lt;');
    sMsg = sMsg.replace(/>/g , '&gt;');
 
-   // build line [seq 20190106°0514]
+   // Build line [seq 20190106°0514]
    var sLine = Sldgr.Vars.iOutputLineCounter + ' [';
    if ( typeof iSlidrId !== 'undefined' ) {
       sLine += 'Gear ' + (iSlidrId + 1);
@@ -2086,7 +2109,7 @@ Sldgr.Func.pgOutDebug = function(sMsg, sDbgId, iSlidrId)
    sLine += ']';
    sLine += ' ' + sMsg;
 
-   // update HTML [seq 20190106°0515]
+   // Update HTML [seq 20190106°0515]
    var sHt = elOut.innerHTML;
    if ( bRevers ) {
       sHt = sLine + '\n' + sHt;
@@ -2107,33 +2130,33 @@ Sldgr.Func.startup = function ()
 {
    'use strict';
 
-   // () smarten page [line 20190106°0242]
+   // () Smarten page [line 20190106°0242]
    Sldgr.Func.injectStyleRules();
 
-   // (1) collect all HTML slider elements on the page [seq 20190106°0243]
+   // (1) Collect all HTML slider elements on the page [seq 20190106°0243]
    // note : See ref 20190323°0323 'MDN → Document.querySelectorAll'
    var sQuSel = 'div[' + Sldgr.Cnst.sPlate_DataSlidegearAttrib + ']'; // 'data-slidegear'
    Sldgr.Vars.arDivSliders = document.querySelectorAll(sQuSel);
 
-   // (2) iterate over the found HTML slider elements [line 20190106°0244]
+   // (2) Iterate over the found HTML slider elements [line 20190106°0244]
    for ( var iSliderId = 0; iSliderId < Sldgr.Vars.arDivSliders.length; iSliderId++ )
    {
-      // (2.1) create Slideshow instance for this HTML slider element
+      // (2.1) Create Slideshow instance for this HTML slider element
       Sldgr.Vars.arObSliders[iSliderId] = new Sldgr.Func.o1Slideshow( iSliderId );
 
-      // comfort
+      // Comfort
       var oSlf = Sldgr.Vars.arObSliders[iSliderId];
 
-      // (2.2) initial setup
+      // (2.2) Initial setup
       oSlf.o2ReadSetup();
 
-      // (2.3) create the HTML
+      // (2.3) Create the HTML
       oSlf.o3Build0Html();
 
-      // (2.4) create the div stock helper array
+      // (2.4) Create the div stock helper array
       oSlf.o4FillMagazine();
 
-      // (2.5) process autostart flag
+      // (2.5) Process autostart flag
       oSlf.o5Autostart();
    }
 
@@ -2144,7 +2167,7 @@ Sldgr.Func.startup = function ()
  * This ~constant tells the default value for the autostart setting
  *
  * @id 20190106°0951
- * @type {Boolean}
+ * @type {Boolean} —
  */
 Sldgr.Cnst.bDefault_Autostart = true; // true false
 
@@ -2152,7 +2175,7 @@ Sldgr.Cnst.bDefault_Autostart = true; // true false
  * This ~constant tells the default value for the random-order setting
  *
  * @id 20190106°1033
- * @type {Boolean}
+ * @type {Boolean} —
  */
 Sldgr.Cnst.bDefault_RandomOrder = false;
 
@@ -2160,7 +2183,7 @@ Sldgr.Cnst.bDefault_RandomOrder = false;
  * This ~constant tells the default value for the random-start setting
  *
  * @id 20190106°1031
- * @type {Boolean}
+ * @type {Boolean} —
  */
 Sldgr.Cnst.bDefault_RandomStart = false;
 
@@ -2169,7 +2192,7 @@ Sldgr.Cnst.bDefault_RandomStart = false;
  *
  * @id 20190314°0521
  * @note Not sure yet what to do
- * @type {Boolean}
+ * @type {Boolean} —
  */
 Sldgr.Cnst.bShow_GrowPanels_CloseButtons = false; // true false
 
@@ -2177,7 +2200,7 @@ Sldgr.Cnst.bShow_GrowPanels_CloseButtons = false; // true false
  * This ~constant tells the default control set number
  *
  * @id 20190106°1531
- * @type {Integer}
+ * @type {number} (Integer) —
  */
 Sldgr.Cnst.iDefault_ControlSet = 2;
 
@@ -2185,7 +2208,7 @@ Sldgr.Cnst.iDefault_ControlSet = 2;
  * This ~constant tells the default fading steps number
  *
  * @id 20190106°1041
- * @type {Integer}
+ * @type {number} (Integer) —
  */
 Sldgr.Cnst.iDefault_FadingSteps = 16;
 
@@ -2193,7 +2216,7 @@ Sldgr.Cnst.iDefault_FadingSteps = 16;
  * This ~constant tells the default start image number
  *
  * @id 20190108°0211iDefault_StartImgNo
- * @type {Integer}
+ * @type {number} (Integer) —
  */
 Sldgr.Cnst.iDefault_StartImgNo = 1;
 
@@ -2201,7 +2224,7 @@ Sldgr.Cnst.iDefault_StartImgNo = 1;
  * This ~constant tells the number of fields in the user input array
  *
  * @id 20190106°1511
- * @type {Integer}
+ * @type {number} (Integer) —
  */
 Sldgr.Cnst.iRecordWidth_Input = 3;
 
@@ -2209,7 +2232,7 @@ Sldgr.Cnst.iRecordWidth_Input = 3;
  * This ~constant tells the number of fields in the stock records array
  *
  * @id 20190107°0337
- * @type {Integer}
+ * @type {number} (Integer) —
  */
 Sldgr.Cnst.iRecordWidth_Stock = 4;
 
@@ -2217,7 +2240,7 @@ Sldgr.Cnst.iRecordWidth_Stock = 4;
  * This ~constant tells the index of field duration-factor
  *
  * @id 20190106°1051
- * @type {Integer}
+ * @type {number} (Integer) —
  */
 Sldgr.Cnst.iStkFld_Factor = 1;
 
@@ -2225,7 +2248,7 @@ Sldgr.Cnst.iStkFld_Factor = 1;
  * This ~constant tells index of field image-path in the record
  *
  * @id 20190106°1111
- * @type {Integer}
+ * @type {number} (Integer) —
  */
 Sldgr.Cnst.iStkFld_Path = 0;
 
@@ -2233,7 +2256,7 @@ Sldgr.Cnst.iStkFld_Path = 0;
  * This ~constant tells the index of field image-text
  *
  * @id 20190106°1121
- * @type {Integer}
+ * @type {number} (Integer) —
  */
 Sldgr.Cnst.iStkFld_Text = 2;
 
@@ -2241,13 +2264,15 @@ Sldgr.Cnst.iStkFld_Text = 2;
  * This ~constant tells the default fading time in seconds
  *
  * @id 20190106°1131
+ * @type {number} (Float) —
  */
-Sldgr.Cnst.nDefault_FadingDuration = 0.9; // 0.9; 1.1;
+Sldgr.Cnst.nDefault_FadingDuration = 0.9;                              // 0.9; 1.1;
 
 /**
  * This ~constant the default fading time in seconds
  *
  * @id 20190106°1141
+ * @type {number} (Float) —
  */
 Sldgr.Cnst.nDefault_ShowingDuration = 2.7;
 
@@ -2257,7 +2282,7 @@ Sldgr.Cnst.nDefault_ShowingDuration = 2.7;
  * @id 20190106°1151
  * @note Use only negative values as commands, positive values mean image numbers
  * @note Do not use zero with 'Enums', it yields trouble with comparisons
- * @type {Object}
+ * @type {Object} —
  */
 Sldgr.Cnst.CmdMove = {
    Next : -2
@@ -2269,7 +2294,7 @@ Sldgr.Cnst.CmdMove = {
  * This Enum defines the fading algorithms (not much implemented)
  *
  * @id 20190107°0711
- * @type {Object}
+ * @type {Object} —
  */
 Sldgr.Cnst.CmdFade = {
    Hard : 1
@@ -2281,7 +2306,7 @@ Sldgr.Cnst.CmdFade = {
  * This Enum tells the current move operation mode
  *
  * @id 20190108°0433
- * @type {Object}
+ * @type {Object} —
  */
 Sldgr.Cnst.Mode = {
    Single : 1
@@ -2293,13 +2318,16 @@ Sldgr.Cnst.Mode = {
  * This namespace holds variables
  *
  * @id 20190106°0225
+ * @type {Object} —
+ * @c_o_n_s_t — Namespace
  */
 Sldgr.Vars = Sldgr.Vars || {};
 
 /**
- * This variable stores the HTML slider div elements -- todo : UNWANTED?!
+ * This variable stores the HTML slider div elements — todo : UNWANTED?!
  *
  * @id 20190106°0231
+ * @type {Array} —
  */
 Sldgr.Vars.arDivSliders = [];
 
@@ -2307,10 +2335,11 @@ Sldgr.Vars.arDivSliders = [];
  * This array serves for the image input via various channels
  *
  * @id 20190106°1211
- * @summary This array onedimensiona, with three fields for each image.
- *     There exists only one single of it, which is processed before a
+ * @summary This is a one-dimensional array with three fields for each image.
+ *     There exists only one single of it, and it is processed before a
  *     Slider object is created. It is then used again with a different
  *     image source before the next Slider is created.
+ * @type {Array} —
  */
 Sldgr.Vars.arImgImport = [];
 
@@ -2320,6 +2349,7 @@ Sldgr.Vars.arImgImport = [];
  * @id 20190106°0233
  * @todo : Possibly merge the two arrays 20190106°0233 Sldgr.Vars.arObSliders
  *    and 20190106°0231 Sldgr.Vars.arDivSliders into one twodimenstional array.
+ * @type {Array} —
  */
 Sldgr.Vars.arObSliders = [];
 
@@ -2327,6 +2357,7 @@ Sldgr.Vars.arObSliders = [];
  * This flag shall tell whether this script runs standalone or was called by other script
  *
  * @id 20190106°1931
+ * @type {boolean} —
  */
 Sldgr.Vars.bCalledFromDaftari = false;
 
@@ -2334,6 +2365,7 @@ Sldgr.Vars.bCalledFromDaftari = false;
  * Flag as quick'n'dirty brute-force fix as long we have no elegant better solution
  *
  * @id 20190210°0211
+ * @type {boolean} —
  */
 Sldgr.Vars.bButtonPathesCompleted_OBSOLETE = false;
 
@@ -2341,51 +2373,52 @@ Sldgr.Vars.bButtonPathesCompleted_OBSOLETE = false;
  * This flag switches debug messages on/off
  *
  * @id 20190108°0251
- * @type {Boolean}
+ * @type {boolean} —
  */
-Sldgr.Vars.bDbgOut_1_CalcImageSize = false; // true false
+Sldgr.Vars.bDbgOut_1_CalcImageSize = false;                            // true false
 
 /**
  * @id 20190107°0353
- * @type {Boolean}
+ * @type {boolean} —
  */
-Sldgr.Vars.bDbgOut_2_slider_constructor = true; // false true
+Sldgr.Vars.bDbgOut_2_slider_constructor = true;                        // false true
 
 /**
  * @id 20190314°0311
- * @type {Boolean}
+ * @type {boolean} —
  */
-Sldgr.Vars.bDebugGeneral = false; // false true
+Sldgr.Vars.bDebugGeneral = false;                                      // false true
 
 
 /**
  * @id 20190107°0641
- * @type {Boolean}
+ * @type {boolean} —
  */
-Sldgr.Vars.bDbgOut_3_read_setup = true; // false true
+Sldgr.Vars.bDbgOut_3_read_setup = true;                                // false true
 
 /**
  * @id 20190107°0355
- * @type {Boolean}
+ * @type {boolean} —
  */
-Sldgr.Vars.bDbgOut_4_build_img_seq = true; // false true
+Sldgr.Vars.bDbgOut_4_build_img_seq = true;                             // false true
 
 /**
  * @id 20190312°0951
- * @type {Boolean}
+ * @type {boolean} —
  */
-Sldgr.Vars.bDbgOut_5_go_next_slide = true; // false true
+Sldgr.Vars.bDbgOut_5_go_next_slide = true;                             // false true
 
 /**
  * @id 20190107°0357
- * @type {Boolean}
+ * @type {boolean} —
  */
-Sldgr.Vars.bDbgOut_6_slide_trigger = false; // false true
+Sldgr.Vars.bDbgOut_6_slide_trigger = false;                            // false true
 
 /**
  * This var counts the lines of the debug output
- *12
+ *
  * @id 20190107°0421
+ * @type {number} (integer) —
  */
 Sldgr.Vars.iOutputLineCounter = 0;
 
@@ -2394,7 +2427,7 @@ Sldgr.Vars.iOutputLineCounter = 0;
  *
  * @id 20190210°0133
  * @note E.g. "file:///G:/work/slidegeardev/trunk/slidegear/"
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.s_ThisScriptFolderAbs_NOTUSED = '';
 
@@ -2408,7 +2441,7 @@ Sldgr.Cnst.s_ThisScriptFolderAbs_NOTUSED = '';
  *       script,e.g. buttons and the fallback images.
  *    • After we replaced those by base64 embedding, the path is *no more wanted*.
  *    • Func 20190315°0211 scriptPathInfo is now also not needed but should stay
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.s_ThisScriptFolderRel = '';
 
@@ -2416,7 +2449,7 @@ Sldgr.Cnst.s_ThisScriptFolderRel = '';
  * This constant provides the image source prefix
  *
  * @id 20190315°0351
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sImgSrc_Prefix = 'data:image/png;base64,';
 
@@ -2424,7 +2457,7 @@ Sldgr.Cnst.sImgSrc_Prefix = 'data:image/png;base64,';
  * This constant holds the data from file 20190323o0725.leftdarkseagreen.v0.png
  *
  * @id 20190315°0335
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sData_Btn_Cross_DarkSeaGreen = Sldgr.Cnst.sImgSrc_Prefix
            + 'iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A'
@@ -2448,7 +2481,7 @@ Sldgr.Cnst.sData_Btn_Cross_DarkSeaGreen = Sldgr.Cnst.sImgSrc_Prefix
  * This constant holds the data from file 20190323o0722.leftslategray.v0.png
  *
  * @id 20190315°0336
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sData_Btn_Cross_SlateGray = Sldgr.Cnst.sImgSrc_Prefix
            + 'iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A'
@@ -2472,7 +2505,7 @@ Sldgr.Cnst.sData_Btn_Cross_SlateGray = Sldgr.Cnst.sImgSrc_Prefix
  * This constant holds the data from file 20190323o0724.leftsteelblue.v0.png
  *
  * @id 20190315°0337
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sData_Btn_Cross_SteelBlue = Sldgr.Cnst.sImgSrc_Prefix
            + 'iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A'
@@ -2496,7 +2529,7 @@ Sldgr.Cnst.sData_Btn_Cross_SteelBlue = Sldgr.Cnst.sImgSrc_Prefix
  * This constant constitutes the data from file 20190323o0723.lefttomato.v0.png
  *
  * @id 20190315°0338
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sData_Btn_Cross_Tomato = Sldgr.Cnst.sImgSrc_Prefix
            + 'iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A'
@@ -2520,7 +2553,7 @@ Sldgr.Cnst.sData_Btn_Cross_Tomato = Sldgr.Cnst.sImgSrc_Prefix
  * This constant holds the data from file 20190323o0715.downdarkseagreen.v0.png
  *
  * @id 20190315°0341
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sData_Btn_Down_DarkSeaGreen = Sldgr.Cnst.sImgSrc_Prefix
            + 'iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A'
@@ -2544,7 +2577,7 @@ Sldgr.Cnst.sData_Btn_Down_DarkSeaGreen = Sldgr.Cnst.sImgSrc_Prefix
  * @id 20190315°0331
  * @note Base64 encoding file 20190315°0316
  * @note Encoding was done by https://www.base64encode.org/ [ref 20190315°0313]
- * @type String [sImgSrcBut_Down_Gray]
+ * @type {string} — (sImgSrcBut_Down_Gray)
  */
 Sldgr.Cnst.sData_Btn_Down_SlateGray = Sldgr.Cnst.sImgSrc_Prefix
            + 'iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A'
@@ -2566,7 +2599,7 @@ Sldgr.Cnst.sData_Btn_Down_SlateGray = Sldgr.Cnst.sImgSrc_Prefix
  * This constant holds the data from file 20190323o0714.downsteelblue.v0.png
  *
  * @id 20190315°0342
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sData_Btn_Down_SteelBlue = Sldgr.Cnst.sImgSrc_Prefix
            + 'iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A'
@@ -2588,7 +2621,7 @@ Sldgr.Cnst.sData_Btn_Down_SteelBlue = Sldgr.Cnst.sImgSrc_Prefix
  * This constant holds the data from file 20190323o0713.downtomato.v0.png
  *
  * @id 20190315°0343
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sData_Btn_Down_Tomato = Sldgr.Cnst.sImgSrc_Prefix
            + 'iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A'
@@ -2610,7 +2643,7 @@ Sldgr.Cnst.sData_Btn_Down_Tomato = Sldgr.Cnst.sImgSrc_Prefix
  * This constant holds the data from file 20190323o0725.leftdarkseagreen.v0.png
  *
  * @id 20190315°0344
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sData_Btn_Left_DarkSeaGreen = Sldgr.Cnst.sImgSrc_Prefix
            + 'iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A'
@@ -2630,7 +2663,7 @@ Sldgr.Cnst.sData_Btn_Left_DarkSeaGreen = Sldgr.Cnst.sImgSrc_Prefix
  *
  * @id 20190315°0333
  * @note Base64 encoding file 20190315°0317
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sData_Btn_Left_SlateGray = Sldgr.Cnst.sImgSrc_Prefix
            + 'iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A'
@@ -2649,7 +2682,7 @@ Sldgr.Cnst.sData_Btn_Left_SlateGray = Sldgr.Cnst.sImgSrc_Prefix
  * This constant holds the data from file 20190323o0724.leftsteelblue.v0.png
  *
  * @id 20190315°0345
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sData_Btn_Left_SteelBlue = Sldgr.Cnst.sImgSrc_Prefix
            + 'iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A'
@@ -2668,7 +2701,7 @@ Sldgr.Cnst.sData_Btn_Left_SteelBlue = Sldgr.Cnst.sImgSrc_Prefix
  * This constant holds the data from file 20190323o0723.lefttomato.v0.png
  *
  * @id 20190315°0346
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sData_Btn_Left_Tomato = Sldgr.Cnst.sImgSrc_Prefix
            + 'iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A'
@@ -2688,6 +2721,7 @@ Sldgr.Cnst.sData_Btn_Left_Tomato = Sldgr.Cnst.sImgSrc_Prefix
  *
  * @todo : Not yet used. It is intended as initial background
  * @id 20190107°0331
+ * @type {string} —
  */
 Sldgr.Cnst.sDefault_DummyImageOne = 'docs/img1/20090504o2215.grainydummy180sq.v0.x0360y0360q66.jpg';
 
@@ -2696,6 +2730,7 @@ Sldgr.Cnst.sDefault_DummyImageOne = 'docs/img1/20090504o2215.grainydummy180sq.v0
  *
  * @todo : Not yet used. It is intended as initial background
  * @id 20190107°0335
+ * @type {string} —
  */
 Sldgr.Cnst.sDefault_DummyImageThree = 'docs/img1/20130304o1422.grainydummy480prt.v0.x0270y0360q66.jpg';
 
@@ -2704,6 +2739,7 @@ Sldgr.Cnst.sDefault_DummyImageThree = 'docs/img1/20130304o1422.grainydummy480prt
  *
  * @todo : Not yet used. It is intended as initial background
  * @id 20190107°0333
+ * @type {string} —
  */
 Sldgr.Cnst.sDefault_DummyImageTwo = 'docs/img1/20130304o1421.grainydummy640ls.v0.x0360y0270q66.jpg';
 
@@ -2711,7 +2747,7 @@ Sldgr.Cnst.sDefault_DummyImageTwo = 'docs/img1/20130304o1421.grainydummy640ls.v0
  * This constant embeds file 20190104o2153.drawarrowback1.v0.x0048y0048.png.b64
  *
  * @id 20190315°0443
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sImgSrc_DrawArrowBack1 = Sldgr.Cnst.sImgSrc_Prefix
            + 'iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A'
@@ -2796,7 +2832,7 @@ Sldgr.Cnst.sImgSrc_DrawArrowBack1 = Sldgr.Cnst.sImgSrc_Prefix
  * This constant embeds file 20190104o2151.drawarrowforward1.v0.x0048y0048.png.b64
  *
  * @id 20190315°0441
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sImgSrc_DrawArrowForward1 = Sldgr.Cnst.sImgSrc_Prefix
            + 'iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A'
@@ -2884,7 +2920,7 @@ Sldgr.Cnst.sImgSrc_DrawArrowForward1 = Sldgr.Cnst.sImgSrc_Prefix
  * This constant embeds file 20190104o2141.kdeinfo1.v0.x0048y0048.png.b64
  *
  * @id 20190315°0435
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sImgSrc_KdeInfo1 = Sldgr.Cnst.sImgSrc_Prefix
            + 'iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A'
@@ -2981,7 +3017,7 @@ Sldgr.Cnst.sImgSrc_KdeInfo1 = Sldgr.Cnst.sImgSrc_Prefix
  * This constant embeds file 20190104o2142.kdeinfo2.v1.x0048y0048.png.b64
  *
  * @id 20190315°0437
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sImgSrc_KdeInfo2 = Sldgr.Cnst.sImgSrc_Prefix
            + 'iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A'
@@ -3072,7 +3108,7 @@ Sldgr.Cnst.sImgSrc_KdeInfo2 = Sldgr.Cnst.sImgSrc_Prefix
  * This constant embeds file 20190104o2131.kdeleft1.v0.x0048y0048.png.b64
  *
  * @id 20190315°0423
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sImgSrc_KdeLeft1 = Sldgr.Cnst.sImgSrc_Prefix
            + 'iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A'
@@ -3156,7 +3192,7 @@ Sldgr.Cnst.sImgSrc_KdeLeft1 = Sldgr.Cnst.sImgSrc_Prefix
  * This constant embeds file 20190104o2133.kderight1.v0.x0048y0048.png.b64
  *
  * @id 20190315°0427
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sImgSrc_KdeRight1 = Sldgr.Cnst.sImgSrc_Prefix
            + 'iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A'
@@ -3241,7 +3277,7 @@ Sldgr.Cnst.sImgSrc_KdeRight1 = Sldgr.Cnst.sImgSrc_Prefix
  * This constant embeds file 20190104o2137.kdestop1.v0.x0048y0048.png.b64
  *
  * @id 20190315°0433
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sImgSrc_KdeStop1 = Sldgr.Cnst.sImgSrc_Prefix
            + 'iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A'
@@ -3319,7 +3355,7 @@ Sldgr.Cnst.sImgSrc_KdeStop1 = Sldgr.Cnst.sImgSrc_Prefix
  * This constant embeds file 20190209o0737.lgplv3-147x51.v0.png.b64
  *
  * @id 20190315°0421
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sImgSrc_LogoLgpl = Sldgr.Cnst.sImgSrc_Prefix
            + 'iVBORw0KGgoAAAANSUhEUgAAAJMAAAAzCAYAAACT+Tr7AAAABHNCSVQICAgIfAhkiAAAAAlwSFlz'
@@ -3387,7 +3423,7 @@ Sldgr.Cnst.sImgSrc_LogoLgpl = Sldgr.Cnst.sImgSrc_Prefix
  * This constant embeds file 20190123o1126.plasticineprojector.v2.x0192y0112.png.b64
  *
  * @id 20190315°0445
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sImgSrc_PlasticineProjector = Sldgr.Cnst.sImgSrc_Prefix
            + 'iVBORw0KGgoAAAANSUhEUgAAAMAAAABwCAMAAAB/yI9AAAAAAXNSR0IArs4c6QAAAvdQTFRFYmBR'
@@ -3449,7 +3485,7 @@ Sldgr.Cnst.sImgSrc_PlasticineProjector = Sldgr.Cnst.sImgSrc_Prefix
  * This constant holds the data from file 20160612o0135.slidefive.v1.p25.png.b64 (7 726 bytes)
  *
  * @id 20190315°0521
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sImgSrc_SlideFive = Sldgr.Cnst.sImgSrc_Prefix
            + 'iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A'
@@ -3558,7 +3594,7 @@ Sldgr.Cnst.sImgSrc_SlideFive = Sldgr.Cnst.sImgSrc_Prefix
  * This constant holds the data from file 20160612o0134.slidefour.v1.p25.png.b64 (8 776 bytes)
  *
  * @id 20190315°0522
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sImgSrc_SlideFour = Sldgr.Cnst.sImgSrc_Prefix
            + 'iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A'
@@ -3680,7 +3716,7 @@ Sldgr.Cnst.sImgSrc_SlideFour = Sldgr.Cnst.sImgSrc_Prefix
  * This constant holds the data from file 20160612o0131.slideone.v1.p25.png.b64 (6 868 bytes)
  *
  * @id 20190315°0523
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sImgSrc_SlideOne = Sldgr.Cnst.sImgSrc_Prefix
            + 'iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A'
@@ -3778,7 +3814,7 @@ Sldgr.Cnst.sImgSrc_SlideOne = Sldgr.Cnst.sImgSrc_Prefix
  * This constant holds the data from file 20160612o0133.slidethree.v0.p25.png.b64 (7 492 bytes)
  *
  * @id 20190315°0524
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sImgSrc_SlideThree = Sldgr.Cnst.sImgSrc_Prefix
            + 'iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A'
@@ -3884,7 +3920,7 @@ Sldgr.Cnst.sImgSrc_SlideThree = Sldgr.Cnst.sImgSrc_Prefix
  * This constant holds the data from file 20160612o0132.slidetwo.v1.p17.png.b64 (13 904 bytes)
  *
  * @id 20190315°0525
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sImgSrc_SlideTwo = Sldgr.Cnst.sImgSrc_Prefix
            + 'iVBORw0KGgoAAAANSUhEUgAAAHoAAAB6CAYAAABwWUfkAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A'
@@ -4073,7 +4109,7 @@ Sldgr.Cnst.sImgSrc_SlideTwo = Sldgr.Cnst.sImgSrc_Prefix
  *
  * @id 20190106°1421
  * @note Must be located behind the image data definitions
- * @@type Array
+ * @type {Array} —
  */
 Sldgr.Cnst.aFallbackShow_One = new Array
                (  Sldgr.Cnst.sImgSrc_SlideOne, '', 'Slide One'
@@ -4094,7 +4130,7 @@ Sldgr.Cnst.aFallbackShow_One = new Array
  *    path has to be prepended. Otherwise the exchange is straight forward, e.g:
  *     • linked   : Sldgr.Cnst.s_ThisScriptFolderRel + 'img/20190104o2131.kdeleft1.v0.x0048y0048.png'
  *     • embedded : Sldgr.Cnst.sImgSrc_KdeInfo1
- * @type {Array[String]}
+ * @type {Array[String]} —
  */
 Sldgr.Cnst.aControls_Shiny = new Array // revamped 20190315°0511
                ( new Array
@@ -4117,28 +4153,38 @@ Sldgr.Cnst.aControls_Shiny = new Array // revamped 20190315°0511
  * This ~constant tells the marker for one SlideGear div
  *
  * @id 20190106°0531
- * @type String
+ * @type {string} —
  */
 Sldgr.Cnst.sPlate_DataSlidegearAttrib = 'data-slidegear';
 
-// ~ ~ ~ ✂ ~ ~ ~ ~ ~ ~ area 20190106°0307 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-/*!
- * This area Trekta.Utils holds low level functions for standalone scripts
+// ~ ✂ ~ ~ ~ ~ ~ ~ ~ area 20190106°0307 start ~ ~ ~ ~ ~ ~ ~ ~ ~
+/**!
+ * This area Trekta.Utils holds low level functions to be pasted into standalone scripts
  *
- * version : v0.1.2 — 20190418°0343 'only asynchronous Ajax anymore'
- * copyright : © 2019 Norbert C. Maier
+ * file : 20190105°1717 daftari/jsi/trektautils.js
+ * version : v0.2.5 (20210428°1031)
+ * copyright : © 2019 - 2021 Norbert C. Maier
  * license : GNU AGPL v3
  */
 /**
- * This area is shared via cut-n-paste by the following scripts
- *   • daftari.js • canvasgear.js • fadeinfiles.js • slidegear.js
+ * This area is shared via cut-n-paste by the following scripts :
+ *   • daftari.js • canvasgear.js • fadeinfiles.js • slidegear.js • trekta-utils.js
+ * Note : It is not really clear how to handle the propagation. Possibly
+ *       use trekta-utils.js as the master, since it is a standalone file?
+ * Note: Not sure about the script duplication in fadeinfiles/doc/demo.html.
+ *
+ * versions :
+ *    • v0.2.5 (20210428°1031) — Streamlining
+ *    • 20210418°1111 — Little streamlining
+ *    • 20201228°1511
+ *    • 20190418°0343
  */
 
 /**
  * This shall be the root namespace
  *
  * @id 20190106°0311
- * @callers
+ * @c_o_n_s_t — Namespace                                              // [marker 20210427°1212]
  */
 var Trekta = Trekta || {};
 
@@ -4149,6 +4195,8 @@ var Trekta = Trekta || {};
  *  and pasted to other scripts to provide them independent standalone basics.
  *
  * @id 20190106°0313
+ * @c_o_n_s_t — Namespace
+ * @const — Namespace // [marker 20210427°1212]
  */
 Trekta.Utils = Trekta.Utils || {
 
@@ -4162,35 +4210,43 @@ Trekta.Utils = Trekta.Utils || {
     *    why does it work here? The answer is: here we retrieve the index
     *    of a char in a string, not an element in an array.
     * @param {string} sCookieName — The name of the cookie to be read
-    * @returns
+    * @return {string} —
     */
-   getCookie : function(sCookieName) { // fullyquali ⇒ Trekta.Utils.getCookie
-
+   getCookie : function(sCookieName) // fullyquali ⇒ Trekta.Utils.getCookie
+   {
       'use strict';
-      var i, sNam, sVal;
-      var aCookies = document.cookie.split(';');
-      for (i = 0; i < aCookies.length; i++) {
-         sNam = aCookies[i].substr(0, aCookies[i].indexOf('='));
-         sVal = aCookies[i].substr(aCookies[i].indexOf('=')+1);
-         sNam = sNam.replace(/^\s+|\s+$/g, '');
-         if (sNam === sCookieName) {
-            sVal = unescape(sVal);
-            return sVal;
+
+      // Prologue [seq 20110510°2128] Still using 'var' instead 'let'
+      var i = 0;
+      var sNam = '';
+      var sRet = '';
+      var sVal = '';
+      var sCookies = document.cookie; // semicolon-delimited string
+
+      // [condi 20201228°1331]
+      // See issue 20201228°1311 'cookie setting with file protocol'
+      // Todo 20201228°1332 : Detection is quick'n'dirty, should be done in a more 'official' way
+      if (sCookies.length > 0) {
+
+         // Find value [seq 20110510°2129]
+         var aCookies = document.cookie.split(';');
+         for (i = 0; i < aCookies.length; i++) {
+            sNam = aCookies[i].substr(0, aCookies[i].indexOf('='));
+            sVal = aCookies[i].substr(aCookies[i].indexOf('=')+1);
+            sNam = sNam.replace(/^\s+|\s+$/g, '');
+            if (sNam === sCookieName) {
+               // Function unescape is deprecated, I boldly replace it by decodeURI [chg 20190423°0641]
+               sRet = decodeURI(sVal);
+               break;
+            }
          }
+      } else {
+
+         // Provide fallback for possibly failing cookies [seq 20201228°1333]
+         sRet = localStorage.getItem(sCookieName);
       }
 
-      // set default values [seq 20120828°1941] provisory placed here
-      // todo 20120828°1943 : It may be not the best idea to use hardcoded
-      //    constants here. Softcode them. Only this is not so easy, since
-      //    they are defined in Daf.Dash, which maybe not yet available.
-      sVal = '';
-      switch (sCookieName) {
-         case 'checkbox_inlineedit'             : sVal = 'true' ; break;  // see  prop 20150319°0434
-         case Daf.Const.sCookieName_pinLoginWindow : sVal = 'true' ; break; // see prop 20150319°0432
-         case 'debug_DialogBeforeTransmit'      : sVal = 'false' ; break; // see prop 20150319°0441
-         default :
-      }
-      return sVal;
+      return sRet;
    }
 
    /**
@@ -4198,32 +4254,61 @@ Trekta.Utils = Trekta.Utils || {
     *
     * @id 20120828°2021
     * @note This function is a wrapper for Trekta.Utils.getCookie().
-    * @ref
-    * @callers •
-    * @param sCookieName {string} The name of the cookie to be read
-    * @param bDefaultVal {boolean} The default value
-    * @returns
+    * @callers • many
+    * @param {string} sCookieName — The name of the cookie to be read
+    * @param {boolean|null} bDefault — The default value
+    * @return {boolean} — The wanted cookie value
     */
-   , getCookieBool : function(sCookieName, bDefaultVal) { // fullyquali ⇒ Trekta.Utils.getCookieBool
+   , getCookieBool : function(sCookieName, bDefault) // fullyquali ⇒ Trekta.Utils.getCookieBool
+   {
       'use strict';
 
-      // establish optional parameter
-      bDefaultVal = bDefaultVal || false;
+      // Establish optional parameter [line 20120828°2022]
+      bDefault = bDefault || false;
 
-      // forward to cookie reading function
+      // Forward to cookie reading function [line 20120828°2023]
       var sVal = Trekta.Utils.getCookie(sCookieName);
 
-      // postprocess value
-      var b = bDefaultVal;
+      // Postprocess value [line 20120828°2024]
+      var bReturn = bDefault;
       if (sVal === 'true') {
-         b = true;
+         bReturn = true;
       } else if (sVal === 'false') {
-         b = false;
+         bReturn = false;
       } else {
-         Trekta.Utils.setCookie(sCookieName, bDefaultVal.toString() , 7); // iExpirationDays
+         //Trekta.Utils.setCookie(sCookieName, bDefault.toString() , 7); // iExpirationDays
+         bReturn = bDefault;
       }
 
-      return b;
+      return bReturn;
+   }
+
+   /**
+    * This function reads a cookie as integer
+    *
+    * @id 20190420°0311
+    * @callers •
+    * @param sCookieName {string} The name of the cookie to be read
+    * @param iDefault {boolean} The default value
+    * @return {number} (integer) — The wanted cookie value
+    */
+   , getCookieInt : function(sCookieName, iDefault) // fullyquali ⇒ Trekta.Utils.getCookieInt
+   {
+      'use strict';
+
+      // Establish optional parameter [line 20190420°0312]
+      iDefault = iDefault || 0;
+
+      // Forward to cookie reading function [line 20190420°0313]
+      var sVal = Trekta.Utils.getCookie(sCookieName);
+
+      // Postprocess value [line 20190420°0314]
+      var iReturn = iDefault;
+      if (sVal !== '') {
+         iReturn = parseInt(sVal, 10);
+      }
+
+      return iReturn;
    }
 
    /**
@@ -4233,22 +4318,28 @@ Trekta.Utils = Trekta.Utils || {
     * @note Remember issue 20110901°1741 'get self filename for default page'
     * @callers • 20120827°1511 getFilenamePlain • 20150411°0651 provideCornerstonePathes
     *           • 20120830°0451 editFinishTransmit
-    * @returns {String} e.g. 'daftari/daftari/login.html' (with Firefox)
+    * @return {string} — E.g. 'daftari/panels/login.html' (with Firefox)
     */
    , getFileNameFull : function() // fullyquali ⇒ Trekta.Utils.getFileNameFull
    {
-      'use strict'; // [line 20190329°0847]
+      'use strict';
 
-      // read URL of this page, values are e.g.
+      // read URL of this page, values are e.g. [line 20110820°1742]
+      //   • 'http://localhost/'
       //   • 'http://localhost/eps/index.html?XDEBUG_SESSION_START=netbeans-xdebug#'
-      //   • 'file:///G:/work/daftaridev/trunk/daftari/moonwalk/moonwalk.html' (not yet working)
+      //   • 'file:///G:/work/daftaridev/trunk/daftari/docs/moonwalk.html' (not yet working)
       var sUrl = document.location.href;
 
-      // remove possible query after the file name
+      // Remove possible query after the file name [line 20110820°1743]
       sUrl = sUrl.substring(0, (sUrl.indexOf('?') === -1) ? sUrl.length : sUrl.indexOf('?'));
 
-      // remove possible anchor at the end
+      // Remove possible anchor at the end [line 20110820°1744]
       sUrl = sUrl.substring(0, (sUrl.indexOf('#') === -1) ? sUrl.length : sUrl.indexOf('#'));
+
+      // Possibly supplement page name 'index.html' [seq 20190419°0133] (analogy to seq 20181228°0935)
+      if ( sUrl.indexOf('/', sUrl.length - 1) !== -1 ) {
+         sUrl += 'index.html';
+      }
 
       return sUrl;
    }
@@ -4258,33 +4349,28 @@ Trekta.Utils = Trekta.Utils || {
     *
     * @id 20120827°1511
     * @callers E.g. • dafdispatch.js::workoff_Cake_0_go
-    * @returns {String} The plainfilename, e.g. 'help.html'
+    * @return {string} — The plainfilename, e.g. 'help.html'
     */
    , getFilenamePlain : function() // fullyquali ⇒ Trekta.Utils.getFilenamePlain
    {
       'use strict';
 
-      var sUrl = Trekta.Utils.getFileNameFull(); // e.g 'daftari/daftari/login.html' (in FF)
-
-      // fix issue 20181228°0931 'slideshow fails' [seq 20181228°0935]
-      if ( sUrl.indexOf('/', sUrl.length - 1) !== -1 ) { // 'endswith' replacement, see howto 20181228°0936
-         sUrl += 'index.html';
-      }
-
+      var sUrl = Trekta.Utils.getFileNameFull();                       // e.g 'daftari/panels/login.html'
       var a = sUrl.split('/');
       sUrl = a[a.length - 1];
+
       return sUrl;
    }
 
    /**
     * This function escapes a string to be used as HTML output
     *
-    * @id : 20140926°1431
-    * @callers : • Cvgr.Func.executeFrame
+    * @id 20140926°1431
+    * @callers • Cvgr.Func.executeFrame
     * @todo  In FadeInFiles seq 20151106°1822 and seq 20151106°1821
     *            shall use this function here. [todo 20190328°0943]
-    * @param sHtml {String} The HTML fragment to be escaped
-    * @returns {String} The wanted escaped HTML fragment
+    * @param {string} sHtml — The HTML fragment to be escaped
+    * @return {string} — The wanted escaped HTML fragment
     */
    , htmlEscape : function(sHtml) // fullyquali ⇒ Trekta.Utils.htmlEscape
    {
@@ -4305,7 +4391,7 @@ Trekta.Utils = Trekta.Utils || {
     * @status unfaithful
     * @callers ..
     * @param {string} sWantedScript — The plain name of the wanted script (not a complete path)
-    * @returns {boolean} Flag telling whether the script is loaded or not.
+    * @return {boolean} — Flag telling whether the script is loaded or not.
     */
    , isScriptAlreadyLoaded : function (sWantedScript) // fullyquali ⇒ Trekta.Utils.isScriptAlreadyLoaded
    {
@@ -4313,7 +4399,7 @@ Trekta.Utils = Trekta.Utils || {
 
       var regexp = null;
 
-      // build the appropriate regex variable [seq 20160623°0311]
+      // Build the appropriate regex variable [seq 20160623°0311]
       // note : See howto 20160621°0141 'programmatically build regex'
       // note : "/" seems automatically replaced by "\/"!
       var s = sWantedScript.replace(/\./g, "\\.");                     // e.g. '/slidegear.js' to '/slidegear\.js$'
@@ -4323,9 +4409,10 @@ Trekta.Utils = Trekta.Utils || {
       // do the job [algo 20160503°0241 (like algo 20110820°2042 'find specific script')]
       var scripts = document.getElementsByTagName('SCRIPT');
       if (scripts && scripts.length > 0) {
-         for (var i in scripts) {
-            if (scripts[i].src) {
-               if (scripts[i].src.match(regexp)) {
+         for (var i1 in scripts) {
+            var i2 = Number.parseInt(i1,10);
+            if (scripts[i2]) {  // [marker 20210416°1633`58 GoCloCom] restricted index type
+               if (scripts[i2].src.match(regexp)) {
                   return true;
                }
             }
@@ -4334,32 +4421,32 @@ Trekta.Utils = Trekta.Utils || {
       return false;
    }
 
-
    /**
     * This function outputs a string to some default 'shell' div
     *
     * @id 20150321°0311
     * @note chg 20190412°0253 Shift func outDbgMsg() from dafmenu.js to Trekta.Utils
     * @param {string} sOut — The text to be output
+    * @return {undefined} —
     */
-   , outDbgMsg : function (sOut) { // fullyquali => Trekta.Utils.outDbgMsg
-
+   , outDbgMsg : function (sOut) // fullyquali => Trekta.Utils.outDbgMsg
+   {
       'use strict';
 
-      // obey flag [seq 20150814°0241]
-      if ( ! Trekta.Utils.getCookieBool('checkbox_yellowdebugpane')) {
+      // Obey flag [seq 20150814°0241]
+      if ( ! Trekta.Utils.getCookieBool('checkbox_yellowdebugpane', null)) { // [marker 20210416°1633`34 GoCloCom] added parameter two
          return;
       }
 
-      // test page for availability, otherwise cache the message [seq 20150516°0431]
+      // Test page for availability, otherwise cache the message [seq 20150516°0431]
       if ( document.readyState !== "complete" ) {
          Trekta.Utils.InitialMessageCache.push(sOut);
          return;
       }
 
-      // provide target element [line 20150321°0312]
+      // Provide target element [line 20150321°0312]
       // See issue 20160618°0431 'HTML class and id set the same'
-      // '<div class="id20150321o0231_StandardOutputDiv" id="id20150321o0231_StandardOutputDiv"></div>'
+      // '<div class="i20150321o0231_StandardOutputDiv" id="i20150321o0231_StandardOutputDiv"></div>'
       var ele = Trekta.Utils.outDbgMsg_GuaranteeParentElement();
 
       // [seq 20150411°0151]
@@ -4377,7 +4464,7 @@ Trekta.Utils = Trekta.Utils || {
       var sMsgDbg = "[Dbg 20150324°0321] Run function Trekta.Utils.outDbgMsg().";
       sMsgDbg += "\n ele.id = " + ele.id + "\n outerHTML = " + ele.outerHTML;
 
-      // possibly prepend cached messages [seq 20150516°0441]
+      // Possibly prepend cached messages [seq 20150516°0441]
       if (Trekta.Utils.InitialMessageCache.length > 0) {
          var sOut22 = '';
          for ( var i = Trekta.Utils.InitialMessageCache.length - 1; i >= 0; i-- ) {
@@ -4386,28 +4473,27 @@ Trekta.Utils = Trekta.Utils || {
          }
          Trekta.Utils.InitialMessageCache.length = 0;
 
-         // expeimental cosmetics [seq 20190412°0241]
+         // Expeimental cosmetics [seq 20190412°0241]
          sOut22 = '<div style="background-color:LightGreen; margin:1.1em; padding:0.7em;">' + sOut22 + '</div>';
          sOut = sOut22 + "\n\n" + sOut;
-
       }
 
-      // algo 20150322°0221 'replace textfile linebreaks by html tags'
+      // [algo 20150322°0221] 'replace textfile linebreaks by html tags'
       //  Just replace the linebreak characters by HTML linebreak tags,
       //  this is easier than converting them to paragraphs.
       var sPayload = sOut.replace(/\n/g, '<br />');
 
-      // wrap output in paragraph [seq 20150321°0314]
+      // Wrap output in paragraph [seq 20150321°0314]
       var s = '<span style="font-size:72%;">' + sTimestamp + '</span>';
       var sAppend = '<p>' + s + ' ' + sPayload + '</p>';
 
       // [seq 20150321°0316]
-      var eTarget = document.getElementById(Daf.Dspat.Config.sFurniture_OutputArea_Id); // "id20150321o0231_StandardOutputDiv"
+      var eTarget = document.getElementById(Daf.Dspat.Config.sFurniture_OutputArea_Id); // "i20150321o0231_StandardOutputDiv"
 
-      // assemble new element content [seq 20150321°0317]
+      // Assemble new element content [seq 20150321°0317]
       sAppend = '\n' + sAppend;
       eTarget.insertAdjacentHTML('beforeend', sAppend);
-   } // end function Trekta.Utils.outDbgMsg
+   }
 
    /**
     * This function guarantees an element
@@ -4416,18 +4502,18 @@ Trekta.Utils = Trekta.Utils || {
     * @id 20150323°0321
     * @status Working
     * @callers • func Trekta.Utils.outDbgMsg
-    * @returns The wanted target element
+    * @return {Object|Node} — The wanted target element
     */
    , outDbgMsg_GuaranteeParentElement : function () // fullyquali Trekta.Utils.outDbgMsg_GuaranteeParentElement
    {
       'use strict';
 
       // todo : Replace detection by not using index number
-      var sTargetId = Daf.Dspat.Config.sFurniture_OutputArea_Id; // "id20150321o0231_StandardOutputDiv"
+      var sTargetId = Daf.Dspat.Config.sFurniture_OutputArea_Id; // "i20150321o0231_StandardOutputDiv"
 
       var sMsg = "[Dbg 20150323°0411] Helper function Trekta.Utils.outDbgMsg_GuaranteeParentElement().";
 
-      var ele = document.getElementById(sTargetId); // 'id20150321o0231_...'
+      var ele = document.getElementById(sTargetId); // 'i20150321o0231_...'
 
       sMsg += "\n Target ID = '" + sTargetId + "'";
 
@@ -4457,17 +4543,17 @@ Trekta.Utils = Trekta.Utils || {
                     + '</div>'
                      ;
 
-         // integrate created fragment
-         var eBody = document.getElementsByTagName('body')[0];         // quickfix 20190404°0657
+         // Integrate created fragment
+         var eBody = document.getElementsByTagName('body')[0];
          var eDiv = document.createElement('div');
          eDiv.innerHTML = sHtml;
          eBody.appendChild(eDiv);
 
-         // retry, now mostly successful
-         ele = document.getElementById(sTargetId);                     // 'id20150321o0231_StandardOutputDiv'
+         // Retry, now mostly successful
+         ele = document.getElementById(sTargetId);                     // 'i20150321o0231_StandardOutputDiv'
       }
       return ele;
-   } // end function Trekta.Utils.outDbgMsg_GuaranteeParentElement
+   }
 
 
    /**
@@ -4480,63 +4566,83 @@ Trekta.Utils = Trekta.Utils || {
     * @see howto 20181229°1943 'summary on pullbehind'
     * @callers • dafmenu.js::callCanarySqueak • daftari.js::pull-behind slides
     *    • daftari.js::pull-behind fancytree • canvasgear.js::..
-    * @param sScLoad {string} The path from page to script, e.g. "./../../daftari/js/daftaro/dafcanary.js", 'js/daftaro/dafcanary.js'
-    * @param callbackOnLoad {function} Optional. Callback function for the script onload event
-    * @param callbackOnError {function} Optional. Callback function for the script onerror event
-    * @param sJobs {object} Optional. Some identifiyer string or object to be passed
-    *     from initiator to the callbacks (experimentally introduced 20190403°0215)
-    * @returns {boolean} Success flag (just a dummy, always true)
+    * @param {string} sScLoad — The path from page to script, e.g. "./../../daftari/jsi/dafcanary.js", jsi/dafcanary.js'
+    * @param {Function} callbackOnLoad — Optional. Callback function for the script onload event
+    * @param {Function} callbackOnError — Optional. Callback function for the script onerror event
+    * @param {Object} oJobs — Optional. Some identifiyer string or object to be
+    *      passed from initiator to the callbacks (introduced 20190403°0215)
+    * @return {boolean|undefined} — Success flag (just a dummy, always true)
     */
    , pullScriptBehind : function ( sScLoad, callbackOnLoad, callbackOnError, oJobs ) // fullyquali ⇒ Trekta.Utils.pullScriptBehind
    {
       'use strict';
+ ///debugger;
 
-      // remedy when using minified scripts [seq 20190408°0135] hardcoded
+      /*
+      todo 20210426°1011 'let pullScriptBehind caller calculate minification flavour'
+      location : seq 20190408°0135 Process script names considering minification
+      do : Don't calculate minification flavour inside pullScriptBehind, let it the caller do.
+      why : The matter is not that strict, but more complicated, has too many exceptions.
+      status : Open
+      */
+
+      // Process script names considering minification [seq 20190408°0135] [marker 20190408°0137 Two redundant sequences]
       // note : Three identical seqences 20190408°0131, 20190408°0133 and 20190408°0135
+      // See todo 20210426°1011 'let pullScriptBehind caller calculate minification flavour'
       if ( Trekta.Utils.bUseMinified ) {                               // [mark 20190408°0147`01]
-         var b1 = /.*\/highlight.pack.js$/.test(sScLoad);
-         var b2 = /.*\/showdown.min.js$/.test(sScLoad);
-         var b3 = /.*\/sitmapdaf.js$/.test(sScLoad);
-         if ( ! (b1 || b2 || b3 )) {
+
+         var b1 = /.*\/fadeinfiles.combi.js$/.test(sScLoad);
+         var b2 = /.*\/highlight.pack.js$/.test(sScLoad);
+         var b3 = /.*\/showdown.min.js$/.test(sScLoad);
+         var b4 = /.*\/sitmapdaf.js$/.test(sScLoad);
+         var b5 = /.*\/sitmaplangs.js$/.test(sScLoad);
+         var b6 = /.*\/canvasgear.combi.js$/.test(sScLoad);
+         if ( ! (b1 || b2 || b3 || b4 || b5 || b6 )) {
             sScLoad = sScLoad.replace(/\.js$/, '.min.js');
          }
+
       }
 
-      // avoid multiple loading [seq 20110821°0122]
+      // Avoid multiple loading [seq 20110821°0122]
       // Remember issue 20190405°0331 'isScriptAlreadyLoaded unfaithful'
       if ( Trekta.Utils.aPulled.indexOf(sScLoad) >= 0 ) {
-         callbackOnLoad(sScLoad, oJobs, true);
+         callbackOnLoad ( sScLoad                                      //
+                         , oJobs                                       //
+                          , true                                       // was already loaded
+                           );
          return;
       }
 
-      // prepare the involved elements [seq 20110821°0123]
+      // Prepare the involved elements [seq 20110821°0123]
       var head = document.getElementsByTagName('head')[0];
       var script = document.createElement('script');
 
-      // set the trivial properties [seq 20110821°0124]
+      // Set the trivial properties [seq 20110821°0124]
       script.type = 'text/javascript';
       script.src = sScLoad;
 
-      // possibly work without callback [condition 20190404°0831] 
+      // Possibly work without callback [condi 20190404°0831]
       // This condition was wanted for loading fadeinfiles.js in seq 20190404°0827.
       //  No, it is not wanted from there. But hm.. the paranoia may be nice anyway.
       //  Finally, I am not sure now, whether the condition is useful or not.
       if (typeof callbackOnLoad !== 'undefined') {
 
-         // set the non-trivial but crucial property [line 20181229°1932]
+         // Set the non-trivial but crucial property [line 20181229°1932]
          // The custom callback goes piggyback with the mandatory one
-         // note : Remember todo 20181229°1931 'make pullbehind state-of-the-art'
-         var cbkCustom = function () { callbackOnLoad(sScLoad, oJobs, false); };
-         script.onload = ( function () { Trekta.Utils.pullScript_onload(sScLoad, cbkCustom); } );
+         var cbkCustom = function () { callbackOnLoad ( sScLoad
+                                                       , oJobs
+                                                        , false // flag 'was already loaded'
+                                                         ); };
+         script.onload = function () { Trekta.Utils.pullScript_onload(sScLoad, cbkCustom); };
       }
 
-      // attach onerror handler [condition 20190331°0242]
+      // Attach onerror handler [condi 20190331°0242]
       callbackOnError = callbackOnError || null;
       if ( callbackOnError !== null) {
          script.onerror =  ( function () { callbackOnError (sScLoad, oJobs); } );
       }
 
-      // ignit the pulling [seq 20110821°0125]
+      // Ignit the pulling [seq 20110821°0125]
       head.appendChild(script);
 
       return true;
@@ -4548,8 +4654,9 @@ Trekta.Utils = Trekta.Utils || {
     * @id 20190405°0341
     * @summary This method is introduced to fix issue 20190405°0331 'isScriptAlreadyLoaded unfaithful'
     * @callers Onyl • onload event from pullScriptBehind
-    * @param sScript {strin} The script to be pulled behind
-    * @param cbkCustom {function} The callback to be executed after script is loaded
+    * @param {string} sScript — The script to be pulled behind
+    * @param  {Function} cbkCustom — The callback to be executed after script is loaded
+    * @return {undefined} —
     */
    , pullScript_onload : function ( sScript, cbkCustom ) // fullyquali ⇒ Trekta.Utils.pullScript_onload
    {
@@ -4562,17 +4669,18 @@ Trekta.Utils = Trekta.Utils || {
     * This function reads a file via asynchronous Ajax
     *
     * @id 20190417°0311
-    * @note Remember todo 20150517°0121 'implement local file reading after Dean Edwards 20150516°0612'
-    * @note Remember issue 20140713°1121 'ajax read file via filesystem protocol'
-    * @see ref 20160611°0341 'stackoverflow → read an external local JSON file'
-    * @see ref 20140704°0842 'stackoverflow → read local text file'
-    * @see ref 20140627°1111 'stackoverflow → load div from one page and show in other'
-    * @see ref 20140625°1731 'stackoverflow → jQuery to load text file data'
-    * @callers • func 20180512°0711 execPage11OpenLocalEditor1Reqest
-    * @param sUrl {string} File to be read
-    * @param cbkLoad {function} Callback function for the case of success, taking one string parameter with the read content
-    * @param cbkFail {function} Callback function for the case of fail, taking one string parameter
-    * @returns {void}
+    * @status  Not really tested
+    * @note    Remember todo 20150517°0121 'implement local file reading after Dean Edwards 20150516°0612'
+    * @note    Remember issue 20140713°1121 'ajax read file via filesystem protocol'
+    * @see     ref 20160611°0341 'stackoverflow → read an external local JSON file'
+    * @see     ref 20140704°0842 'stackoverflow → read local text file'
+    * @see     ref 20140627°1111 'stackoverflow → load div from one page and show in other'
+    * @see     ref 20140625°1731 'stackoverflow → jQuery to load text file data'
+    * @callers • func 20190106°0615 slidegear.js::o2ReadSetup_ImageList
+    * @param   {string} sUrl — File to be read
+    * @param   {Function} cbkLoad — Callback function for the case of success, taking one string parameter with the read content
+    * @param   {Function} cbkFail — Callback function for the case of fail, taking one string parameter
+    * @return  {undefined} —
     */
    , readTextFile2 : function(sUrl, cbkLoad, cbkFail) // fullyquali ⇒ Trekta.Utils.readTextFile2
    {
@@ -4587,30 +4695,30 @@ Trekta.Utils = Trekta.Utils || {
     * @callers • Trekta.Utils.readTextFile2
     * @param sMethod {string} — Either 'GET' or 'POST' ("GET", "POST", "PUT", "DELETE")
     * @param sUrl {string} — The request URL
-    * @param sPayload {string} — The data to transmit, only used with a POST request
-    * @param cbkLoad {function} — Callback function for the case of success, taking one string parameter
-    * @param cbkFail {function} — Callback function for the case of fail, taking one string parameter
-    * @returns {void}
+    * @param {string} sPayload — The data to transmit, only used with a POST request
+    * @param {Function} cbkLoad — Callback function for the case of success, taking one string parameter
+    * @param {Function} cbkFail — Callback function for the case of fail, taking one string parameter
+    * @return {undefined} —
     */
    , ajax3Send : function(sMethod, sUrl, sPayload, cbkLoad, cbkFail) // fullyquali ⇒ Trekta.Utils.ajax3Send
    {
       'use strict';
 
-      // () prologue [line 20140704°1013]
+      // () Prologue [line 20140704°1013]
       // todo : This must be refined .. e.g. with default callbacks
       cbkLoad = (typeof cbkLoad === 'undefined') ? null : cbkLoad ;
       cbkFail = (typeof cbkFail === 'undefined') ? null : cbkFail ;
 
-      // get the XMLHttpRequest object [line 20190417°0111]
+      // Get the XMLHttpRequest object [line 20190417°0111]
       // See todo 20190209°0836 'XMLHttpRequest availability'
       var xmlHttp = new XMLHttpRequest();
 
-      // () set request parameters [line 20140704°1015]
+      // () Set request parameters [line 20140704°1015]
       xmlHttp.open(sMethod, sUrl, true); // true means asynchronous
 
-      // () probe the ongoing [line 20140704°1016]
-      xmlHttp.onreadystatechange = function () {
-
+      // () Probe the ongoing [line 20140704°1016]
+      xmlHttp.onreadystatechange = function ()
+      {
          // List after ref 20190412°0132 'MDN → XMLHttp​Request​.ready​State'
          if ( xmlHttp.readyState === 0 ) {
             // State = UNSENT	— Client has been created. open() not called yet
@@ -4629,7 +4737,7 @@ Trekta.Utils = Trekta.Utils || {
             // Below the list after ref 20190412°0133 'MDN → HTTP response status codes'
             var bSuccess = false; // pessimistic predetermination
             switch (xmlHttp.status) {
-               // case '0' may happen e.g. if • HTML file containing the
+               // Case '0' may happen e.g. if • HTML file containing the
                //   script is opened in the browser via the file scheme
                //  • too much time passes before the server responds
                case   0 : bSuccess = true; break;
@@ -4691,17 +4799,18 @@ Trekta.Utils = Trekta.Utils || {
                // xmlHttp.status is 0 or 200
                cbkLoad(xmlHttp.responseText);
             } else {
-               // all other xmlHttp.status values
+               // All other xmlHttp.status values
                cbkFail(xmlHttp.responseText);
             }
          }
       };
 
-      // () finally perform the request [seq 20140704°1017]
+      // () Finally perform the request [seq 20140704°1017]
       try {
          // If file to read does not exist, we get exception "Failed to load
          //  resource: the server responded with a status of 404 (Not Found)"
          // See issue 20181228°0937 'try to look for file but without error 404'
+         // See issue 20200103°0252 'Chrome → AJAX fails with file protocol'
          xmlHttp.send(null);
       }
       catch (ex)
@@ -4739,7 +4848,7 @@ Trekta.Utils = Trekta.Utils || {
             sMsg += '\n [info 20160622°0131] Failed sending request ' + sUrl + '.';
          }
 
-         // use callback to deliver error message [line 20190405°0233]
+         // Use callback to deliver error message [line 20190405°0233]
          cbkLoad(sMsg); // hm .. perhaps better just use a plain alert()
       }
    }
@@ -4751,53 +4860,82 @@ Trekta.Utils = Trekta.Utils || {
     * @status working
     * @see todo 20190316°0141 'call retrieveDafBaseFolderRel without canary'
     * @see howto 20190209°0131 'retrieve this script path'
-    * @note There mighty be browser differences with the return value, e.g.
+    * @note There might be browser differences with the return value, e.g.
     *     - FF etc : scripts[i].src = 'http://localhost/manual/daftari/daftari.js'
     *     - IE     : scripts[i].src = '../daftari/daftari.js'
     * @callers e.g. • CanvasGear func 20140815°1221 executeFrame • • •
-    * @param sCanary {String} The name of the canary script, e.g. '/sitmapdaf.js'.
-    * @returns {String} The wanted path, where the given script resides or empty string
+    * @param {string} sScCanary — The name of the canary script, e.g. '/sitmapdaf.js'.
+    * @return {string} — The wanted path, where the given script resides or empty string
     */
-   , retrieveDafBaseFolderAbs : function (sCanary) // fullyquali ⇒ Trekta.Utils.retrieveDafBaseFolderAbs
+   , retrieveDafBaseFolderAbs : function (sScCanary)                   // fullyquali ⇒ Trekta.Utils.retrieveDafBaseFolderAbs
    {
       'use strict';
 
-      // remedy when using minified scripts [seq 20190408°0133]
+      // Process script names considering minification [seq 20190408°0133] [marker 20190408°0137 Two redundant sequences]
       // note : Three identical seqences 20190408°0131, 20190408°0133 and 20190408°0135
       if ( Trekta.Utils.bUseMinified ) {                               //  [mark 20190408°0147`02 'minification']
-         var b1 = /.*\/highlight.pack.js$/.test(sCanary);
-         var b2 = /.*\/showdown.min.js$/.test(sCanary);
-         var b3 = /.*\/sitmapdaf.js$/.test(sCanary);
-         if ( ! (b1 || b2 || b3 )) {
-            sCanary = sCanary.replace(/\.js$/, '.min.js');
+
+         var b1 = /.*\/fadeinfiles.combi.js$/.test(sScCanary);
+         var b2 = /.*\/highlight.pack.js$/.test(sScCanary);
+         var b3 = /.*\/showdown.min.js$/.test(sScCanary);
+         var b4 = /.*\/sitmapdaf.js$/.test(sScCanary);
+         var b5 = /.*\/sitmaplangs.js$/.test(sScCanary);
+         var b6 = /.*\/canvasgear.combi.js$/.test(sScCanary);
+         if ( ! (b1 || b2 || b3 || b4 || b5 || b6 )) {
+            sScCanary = sScCanary.replace(/\.js$/, '.min.js');
          }
       }
 
-      // () prepare regex [seq 20160621°0142]
+      // () Prepare regex [seq 20160621°0142]
       var regexMatch = / /;                                            // space between slashes prevents a syntax error
       var regexReplace = / /;
-      var s = sCanary.replace(/\./g, "\\.") + "$";                     // e.g. 'dafutils.js' to 'dafutils\.js$'
+      var s = sScCanary.replace(/\./g, "\\.") + "$";                   // e.g. 'dafutils.js' to 'dafutils\.js$'
       regexMatch = new RegExp(s, '');                                  // e.g. /dafutils\.js$/
       s = '(.*)' + s;                                                  // prepend group
       regexReplace = new RegExp(s, '');                                // e.g. /(.*)dafutils\.js$/ ('/' seems automatically replaced by '\/')
 
-      // () do the job [algo 20110820°2042 'find specific script' prototype]
+      // () Do the job [algo 20110820°2042 'find specific script' prototype]
       var sPath = '';
       var scripts = document.getElementsByTagName('SCRIPT');           // or 'script'
       if (scripts && scripts.length > 0) {
-         for ( var i in scripts ) {
+         for ( var i1 in scripts ) {
+            var i2 = Number.parseInt(i1,10); // serve 'restricted index type' [line 20210416°1741]
             // note : There are browser differences, e.g.
             //    • FF etc : scripts[i].src = 'http://localhost/manual/daftari/daftari.js'
             //    • IE     : scripts[i].src = '../daftari/daftari.js'
-            if (scripts[i].src) {
-               if ( scripts[i].src.match(regexMatch) ) {               // e.g. /dafmenu\.js$/
-                  sPath = scripts[i].src.replace(regexReplace, '$1');  // e.g. /(.*)dafmenu.js$/
+            if (scripts[i2]) { // If i2 is NaN, this evaluates to False // [marker 20210416°1633`59 GoCloCom] restricted index type
+               if ( scripts[i2].src.match(regexMatch) ) {              // e.g. /dafmenu\.js$/
+                  sPath = scripts[i2].src.replace(regexReplace, '$1'); // e.g. /(.*)dafmenu.js$/
                }
             }
          }
       }
 
-      return sPath; // e.g. "http://localhost/daftaridev/trunk/daftari/js/daftaro/"
+      return sPath; // e.g. "http://localhost/daftaridev/trunk/daftari/jsi"
+   }
+
+   /**
+    * This function shortens a long string by placing ellipsis in the middle
+    *
+    * @id ~20201203°1441
+    * @callers • 20110811°1921 Daf.Mnu.Meo.execElementEdit
+    * @param {string} sOrig — The string to be shortened
+    * @param {number} iMaxLen (integer) — The maximum lenght of the output string
+    * @return {string} — The wanted shortened string
+    */
+   , sConfine : function(sOrig, iMaxLen) // fullyquali ⇒ Trekta.Utils.sConfine
+   {
+      var sRet = '';
+      if (sOrig.length > iMaxLen) {
+         sRet = sOrig.substring(0, iMaxLen / 2)
+               + ' … '
+                + sOrig.substring(sOrig.length - iMaxLen / 2)
+                 ;
+      }
+      sRet = sRet.split('\n').join('☼'); // [line 20190424°0728] replaces func 20120830°1521 Daf.Utlis.convertLinebreaksToHtml
+      sRet = sRet.split('<').join('&lt;');
+      sRet = sRet.split('>').join('&gt;');
+      return sRet;
    }
 
    /**
@@ -4810,23 +4948,34 @@ Trekta.Utils = Trekta.Utils || {
     * @param {string} sCookieName — iExpirationDays is number of days until the cookie expires
     * @param {string} sCookieValue — iExpirationDays is number of days until the cookie expires
     * @param {number} iExpirationDays — iExpirationDays is number of days until the cookie expires
-    * @returns nothing
+    * @return {undefined} —
     */
-   , setCookie : function(sCookieName, sCookieValue, iExpirationDays) { // fullyquali ⇒ Trekta.Utils.setCookie
-
+   , setCookie : function(sCookieName, sCookieValue, iExpirationDays) // fullyquali ⇒ Trekta.Utils.setCookie
+   {
       'use strict';
 
       var dExDate = new Date();
       dExDate.setDate(dExDate.getDate() + iExpirationDays);
-      var sValue = escape(sCookieValue) + ((iExpirationDays === null) ? '' : '; Expires = ' + dExDate.toUTCString());
+
+      // Escape is deprecated, I boldly replace it by encodeURI [note 20190423°0641`03]
+      var sValue = ( encodeURI(sCookieValue) + ((iExpirationDays === null)
+                    ? ''
+                     : '; Expires = ' + dExDate.toUTCString())
+                      );
 
       var sCookie = sCookieName + '=' + sValue;
 
-      // [line 20120828°1932] make it valid for the whole site, not only a subdir
+      // [line 20120828°1932] Make it valid for the whole site, not only a subdir
       sCookie += '; path=/';
 
       //alert('Trekta.Utils.setCookie() = ' + sCookie);
       document.cookie = sCookie;
+
+      // Detect cookie availability and provide fallback [seq 20201228°1321]
+      // See issue 20201228°1311 'cookie setting with file protocol'
+      if (document.cookie.length < 1) {
+         localStorage.setItem(sCookieName, sCookieValue);
+      }
    }
 
    /**
@@ -4837,24 +4986,24 @@ Trekta.Utils = Trekta.Utils || {
     *    The function supports below IE9, add​Event​Listener supports IE9 and above.
     * @see ref 20190328°0953 'mdn → addEventListener'
     * @callers
-    * @param funczion {function} The function to be appended to the window.onload event
-    * @returns nothing
+    * @param {Function} funczion — The function to be appended to the window.onload event
+    * @return {undefined} —
     */
    , windowOnloadDaisychain : function(funczion) // fullyquali ⇒ Trekta.Utils.windowOnloadDaisychain
    {
       'use strict';
 
-      // is the onload handler already used?
+      // Is the onload handler already used?
       if ( window.onload ) {
-         // preserve existing function(s) and append our additional function
+         // Preserve existing function(s) and append our additional function
          var ld = window.onload;
          window.onload = function() {
-            ld();
+            ld(null); // [marker 20210416°1633`26 GoCloCom] Function requires 1 argument
             funczion();
          };
       }
       else {
-         // no other handlers are registered yet
+         // No other handlers are registered yet
          window.onload = function() {
             funczion();
          };
@@ -4864,7 +5013,7 @@ Trekta.Utils = Trekta.Utils || {
    /**
     * This caches any output messages as long the page is not yet loaded
     * @id 20150516°0451
-    * @type {array}
+    * @type {Array} —
     */
    , InitialMessageCache : Array() // fullyqualí ⇒ Trekta.Utils.InitialMessageCache
 
@@ -4873,7 +5022,7 @@ Trekta.Utils = Trekta.Utils || {
     *
     * @id 20190405°0345
     * @note This flags solves issue 20190405°0331 'isScriptAlreadyLoaded unfaithful'
-    * @type Array
+    * @type {Array} —
     */
    , aPulled : [] // fullyquali ⇒ Trekta.Utils.aPulled
 
@@ -4886,10 +5035,10 @@ Trekta.Utils = Trekta.Utils || {
     *  True or False. This is achieved by wrapping the expression in the
     *  ternary operator, manually replacing Null by false.
     *
+    * @id 20160622°0221
     * @todo 20190209°0833 : For browser detection, Inconsequently for some we use
     *    navigator.userAgent, for some we use navigator.appName. Standardize this.
-    * @id 20160622°0221
-    * @type Boolean
+    * @type {boolean} —
     */
    , bIs_Browser_Chrome : ( navigator.userAgent.match(/Chrome/) ? true : false ) // fullyquali ⇒ Trekta.Utils.bIs_Browser_Chrome
 
@@ -4897,7 +5046,7 @@ Trekta.Utils = Trekta.Utils || {
     * This ~constant provides a flag whether the browser is Edge or not
     *
     * @id 20190417°0217
-    * @type Boolean
+    * @type {boolean} —
     */
    , bIs_Browser_Edge : ( navigator.userAgent.match(/Edge/) ? true : false ) // fullyquali ⇒ Trekta.Utils.bIs_Browser_Edge
 
@@ -4909,9 +5058,9 @@ Trekta.Utils = Trekta.Utils || {
     *    comparison 'if ( navigator.appName === "Microsoft Internet Explorer" )'.
     *    For code, compare function getBrowserInfo() in jquery.fancytree.logger.js.
     *    For code, compare function getIEVersion() in canvasgearexcanvas.js.
-    * @type Boolean
+    * @type {boolean} —
     */
-   , bIs_Browser_Explorer : (                             // fullyquali ⇒ Trekta.Utils.bIs_Browser_Explorer
+   , bIs_Browser_Explorer : ( // fullyquali ⇒ Trekta.Utils.bIs_Browser_Explorer
        ( navigator.appName.match(/Explorer/)
         || window.msCrypto // only IE11 has this [line 20190417°0215] IE11 has different user agent string than other IE
          ) ? true : false )
@@ -4920,7 +5069,7 @@ Trekta.Utils = Trekta.Utils || {
     * This ~constant provides a flag whether the browser is Firefox or not
     *
     * @id 20160624°0121
-    * @type Boolean
+    * @type {boolean} —
     */
    , bIs_Browser_Firefox : ( navigator.userAgent.match(/Firefox/) ? true : false ) // fullyquali ⇒ Trekta.Utils.bIs_Browser_Firefox
 
@@ -4933,31 +5082,31 @@ Trekta.Utils = Trekta.Utils || {
     *     • "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
     *       (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36 OPR/58.0.3135.118"
     * @id 20190107°0821
-    * @type Boolean
+    * @type {boolean} —
     */
    , bIs_Browser_Opera : ( navigator.userAgent.match(/(Opera)|(OPR)/) ? true : false ) // fullyquali ⇒ Trekta.Utils.bIs_Browser_Opera
 
    /**
-    * This ~constant tells whether to pop up debug messages or not
+    * This property tells whether to pop up debug messages or not
     *
     * @id 20190311°1521
-    * @type Boolean
+    * @type {boolean} —
     */
    , bShow_Debug_Dialogs : false // fullyquali ⇒ Trekta.Utils.bShow_Debug_Dialogs
 
    /**
-    * This constant provides a constant false value
+    * This property provides a constant false value
     *
     * @id 20190407°0121
-    * @type Boolean
+    * @type {boolean} —
     */
    , bToggle_FALSE : false // fullyquali ⇒ Trekta.Utils.bToggle_FALSE
 
    /**
-    * This constant provides a constant false value
+    * This property provides a constant false value
     *
     * @id 20190407°0122
-    * @type Boolean
+    * @type {boolean} —
     */
    , bToggle_TRUE : true // fullyquali ⇒ Trekta.Utils.bToggle_TRUE
 
@@ -4966,23 +5115,23 @@ Trekta.Utils = Trekta.Utils || {
     *
     * @id 20190408°0115
     * @callers •
-    * @type Boolean
+    * @type {boolean} —
     */
    , bUseMinified : false // fullyquali ⇒ Trekta.Utils.bUseMinified
 
    /**
     * This const provides the ID for the general output area (yellow pane)
     * @id 20160618°0421
-    * @type String
+    * @type {string} —
     */
-   , sFurniture_OutputArea_Id : "id20150321o0231_StandardOutputDiv" // fullyquali ⇒ Trekta.Utils.sFurniture_OutputArea_Id
+   , sFurniture_OutputArea_Id : "i20150321o0231_StandardOutputDiv" // fullyquali ⇒ Trekta.Utils.sFurniture_OutputArea_Id
 
    /**
     * This tells ..
     *
     * @id 20160501°1622
     * @callers •
-    * @type String
+    * @type {string} —
     */
    , s_DaftariBaseFolderAbs : '' // fullyquali ⇒ Trekta.Utils.s_DaftariBaseFolderAbs
 
@@ -4991,23 +5140,24 @@ Trekta.Utils = Trekta.Utils || {
     *
     * @id 20160501°1623
     * @callers •
-    * @type String
+    * @type {string} —
     */
    , s_DaftariBaseFolderRel : '' // fullyquali ⇒ Trekta.Utils.s_DaftariBaseFolderRel
 
 };
 
 /**
- * This ~static ~class provides a method to parse a commandstring
+ * This ~static ~class provides a method to parse a command string
  *
  * @id 20140926°0641
  * @status Works
  * @note Remember todo 20180618°0751 'make func parse appear in namespace instead global'
  * @chg 20190405°0517 Allow whitespaces
  * @chg 20190405°0507 Accept single quotes as well as double quotes
- * @callers • CanvasGear • page 20150210°0311 moonwalk/testing.html
+ * @callers • CanvasGear • page 20150210°0311 docs/testing.html
  * @note Code inspired by ref 20140926°0621 'Krasimir: Simple command line parser in JS'
  * @note See also ref 20140828°0832 'majstro: tokenizing with split'
+ * @return {undefined} —
  */
 Trekta.Utils.CmdlinParser = ( function()
 {
@@ -5018,40 +5168,40 @@ Trekta.Utils.CmdlinParser = ( function()
     *
     * @id 20140926°0642
     * @param sCmdlin {string} The string to be parsed
-    * @returns {object} Object with the read key-value-pairs
+    * @return {Object} — Object with the read key-value-pairs
     */
    Trekta.Utils.parse = function(sCmdlin)
    {
-      // paranoia — advisably [seq 20140926°0653]
+      // Paranoia — advisably [seq 20140926°0653]
       if ( typeof sCmdlin === 'undefined' ) {
          sCmdlin = '';
       }
 
-      // prologue [loop 20140926°0654]
+      // Prologue [loop 20140926°0654]
       var args = []; // this accumulates the found tokens
       var sQuoting = ''; // stores quote while inside quoted area
       var sToken = ''; // this accumulates characters to one token
 
-      // scan characters [loop 20140926°0643]
+      // Scan characters [loop 20140926°0643]
       for ( var i1 = 0; i1 < sCmdlin.length; i1++ )
       {
-         // convenience [line 20190405°0512]
+         // Convenience [line 20190405°0512]
          var sChar = sCmdlin.charAt(i1);
 
-         // process blank [condition 20140926°0644]
+         // Process blank [condi 20140926°0644]
          if ( (sChar === ' ') && (sQuoting === '') ) {
 
-            // ignore whitespace [seq 20190405°0513]
+            // Ignore whitespace [seq 20190405°0513]
             if (sToken === '') {
                continue;
             }
 
-            // finish current token [seq 20140926°0645]
+            // Finish current token [seq 20140926°0645]
             args.push(sToken);
             sToken = '';
 
          }
-         // [condition 20190405°0514] experimental
+         // [condi 20190405°0514] experimental
          else if ( (sChar === '=') && (sQuoting === '') ) {
 
             // [seq 20190405°0515]
@@ -5060,13 +5210,13 @@ Trekta.Utils.CmdlinParser = ( function()
                sToken = '';
             }
 
-            // found token delimiter, finish current token [seq 20190405°0516]
+            // Found token delimiter, finish current token [seq 20190405°0516]
             args.push('=');
 
          }
          else {
 
-            // accumulate one token [seq 20140926°0646]
+            // Accumulate one token [seq 20140926°0646]
             if ((sChar === "'") || (sChar === '"')) {
                sQuoting = (sQuoting === '') ? sChar : ''; // toggle quoting flag
             }
@@ -5076,37 +5226,37 @@ Trekta.Utils.CmdlinParser = ( function()
          }
       }
       args.push(sToken);
-      // now the plain token array is ready, the equal sign is also a token.
+      // Now the plain token array is ready, the equal sign is also a token.
 
-      // (B) parse the found tokens [seq 20140926°1111]
+      // (B) Parse the found tokens [seq 20140926°1111]
       // summary : This algo points to the first token, then looks ahead for
       //  an equal sign. This has the advantage, that any solitary token is
       //  treated like a key as well, just later it will no more receive a value.
       // hint : One loop finishes one CmdsHash element/cell.
 
-      // (B.1) prologue [seq 20140926°1112]
+      // (B.1) Prologue [seq 20140926°1112]
       var oKvps = [];
       var sCurrKey = '';
 
-      // (B.1) loop over the token array  [seq 20140926°1113]
+      // (B.1) Loop over the token array  [seq 20140926°1113]
       //  Assemble key/value pairs from the equal signs
       for (var i2 = 0; i2 < args.length; i2++) {
 
-         // (B.2) possibly skip empty elements [seq 20140926°1114]
+         // (B.2) Possibly skip empty elements [seq 20140926°1114]
          // note : This cleaning could be done separately before the loop. As
          //    well it is not yet exactly clear, what happens with blank values.
          if (args[i2] === '') {                                        // experimental
             continue;
          }
 
-         // (B.3) read key name and create key with empty value [seq 20140926°1115]
+         // (B.3) Read key name and create key with empty value [seq 20140926°1115]
          sCurrKey = args[i2];
          oKvps[sCurrKey] = '<n/a>';                                    // '<n/a>' is a maker, may be replaced by null or the like
 
-         // (B.4) is next token an equal sign? [seq 20140926°1116]
+         // (B.4) Is next token an equal sign? [seq 20140926°1116]
          if ( args[i2 + 1] === '=' ) {
 
-            // complete current key/value pair with value [seq 20140926°1117]
+            // Complete current key/value pair with value [seq 20140926°1117]
             oKvps[sCurrKey] = args[i2 + 2];
             sCurrKey = '<n?a>';                                        // reset
 
@@ -5124,17 +5274,16 @@ Trekta.Utils.CmdlinParser = ( function()
       return oKvps;
    };
 
-   // Curiously, if you place the opening curly bracket not behind return
+   // Curiously, if you place the opening curly bracket not behind the return
    //  but on the next line, the script will be broken [note 20160416°1311]
    return {
       parse : Trekta.Utils.parse
    };
 })();
-// ~ ~ ~ ✂ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+// ~ ✂ ~ ~ ~ ~ ~ ~ ~ area 20190106°0307 stop ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-// starting mechanism [seq 20190106°0245]
-//  This only works automatically, if slidegear.js is loaded via
-//  script tag. If loaded via pull-behind, the pages onload event
-//  is already gone, and you must call Sldgr.Func.startup() manually
-//  like in Daftari, func 20190417°0531 Daf.Dspat.process_slideshow.
+// Starting mechanism [seq 20190106°0245]
+//  Daisychain only works, if slidegear.js is loaded via script tag. If loaded
+//  via pull-behind, the onload event is gone, thus call Sldgr.Func.startup()
+//  manually like in Daftari func 20190417°0531 Daf.Dspat.process_slideshow.
 Trekta.Utils.windowOnloadDaisychain(Sldgr.Func.startup);

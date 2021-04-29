@@ -11,7 +11,7 @@
 - Has some controls for a bit of interactivity
 - Documentation
 
-**Demo** : <a href="http://www.trekta.biz/svn/slidegeardev/trunk/slidegear/docs/demo.html" target="_blank">www.trekta.biz/../slidegear/docs/demo.html</a>
+**Demo** : <a href="https://www.trekta.biz/svn/slidegeardev/trunk/slidegear/docs/demo.html" target="_blank">www.trekta.biz/../slidegear/docs/demo.html</a>
 
 **License** : GNU LGPL v3
 
@@ -19,4 +19,4 @@
 
 2019-Mar-28
 
-<sup><sub>Ω</sub></sup><!-- file 20190106°0132 -->
+<sup><sub>Ω</sub></sup><!-- project 20190106°0131 folder 20190106°0132 file 20190106°0133 -->

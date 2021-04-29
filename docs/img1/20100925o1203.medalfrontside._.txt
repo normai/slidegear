@@ -1,0 +1,22 @@
+﻿
+   img 20100925°120301
+   objecttype  : img.digitalphoto
+   title       : Medal Frontside
+   location    : Rome
+   policy      : public and redistributable under conditions
+   license     : Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0) 
+                  http://creativecommons.org/licenses/by-sa/3.0 [ref 20110922°2121]
+   copyright   : Norbert C. Maier
+   authors     : ncm
+   source      : present
+   album       : samples
+   storage     : box
+   recordtype  : img
+   objecttype  : object
+   objectsize  : 65 x 65 mm
+   camera      :
+   scan        : 20101130°1928 HP-PSC-1110 600 dpi
+   processing  :
+   quality     :
+   note        :
+   ◦Ω
