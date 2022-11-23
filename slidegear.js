@@ -2,7 +2,7 @@
  * This is SlideGear, a small standalone slider library
  *
  * id        : file 20190106°0211 slidegear/slidegear.js
- * version   : v0.1.2 (20210428°1131)
+ * version   : v0.1.4 — 20210517°1231
  * license   : GNU LGPL v3 or later (https://www.gnu.org/licenses/lgpl.html)
  * copyright : (c) 2019 - 2021 Norbert C. Maier (http://www.trilo.de)
  * note      : The minified flavour is made with Google Closure Compiler
@@ -40,8 +40,8 @@ Sldgr.Cnst = Sldgr.Cnst || {};
  * @var {string} —
  */
 Sldgr.Cnst.info = {
-   sVersion      : 'v0.1.2'                                            // [const 20190315°0543]
-   , sTimestamp  : '20210428°1131'                                     // [const 20190315°0545]
+   sVersion      : 'v0.1.4'                                            // [const 20190315°0543]
+   , sTimestamp  : '20210517°1231'                                     // [const 20190315°0545]
 };
 
 /**
@@ -596,7 +596,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
       var bWorkaroundDidReadFromAttrib = false;
 
       // Image list was already read from HTML attribute [seq 20190314°0631]
-      if ( typeof oSt.aImgListFromAttrib !== 'undefined' ) {
+      if ( typeof oSt.aImgListFromAttrib !== 'undefined' ) {           // [mark 20210517°1111`zz] Undefined check
          if ( oSt.aImgListFromAttrib !== null ) {                      // [condi 20190314°0632]
             if ( oSt.aImgListFromAttrib.length > 0  ) {                // [condi 20190314°0633]
                // List was read from HTML attribute 'data-slidegear'
@@ -1831,7 +1831,10 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
 
       // [line 20190108°0333]
       // todo : Can probably be done shorter. Find canonical way to do this.
-      bGoHard = (( typeof bGoHard !== 'undefined' ) || (bGoHard === null)) ? bGoHard : false;
+      bGoHard = (( typeof bGoHard !== 'undefined' ) || (bGoHard === null)) // [mark 20210517°1111`zz] Undefined check
+               ? bGoHard
+                : false
+                 ;
 
       // Debug [seq 20190108°0334]
       if ( bGoHard ) { // primitive selection
@@ -1851,7 +1854,7 @@ Sldgr.Func.o1Slideshow = function( iSliderId )
       oVr.Stage.iNdxPrev = oVr.Stage.iNdxCurr;
 
       // Maintain cursor curr [seq 20190108°0336]
-      if ( ( typeof iNdxTarget !== 'undefined' ) || (iNdxTarget === null) ) {
+      if ( ( typeof iNdxTarget !== 'undefined' ) || (iNdxTarget === null) ) { // [mark 20210517°1111`zz] Undefined check
          oVr.Stage.iNdxCurr = iNdxTarget;
       } else if ( oVr.Stage.iMode === Sldgr.Cnst.Mode.Right ) {
          oVr.Stage.iNdxCurr += 1;
@@ -2100,10 +2103,10 @@ Sldgr.Func.pgOutDebug = function(sMsg, sDbgId, iSlidrId)
 
    // Build line [seq 20190106°0514]
    var sLine = Sldgr.Vars.iOutputLineCounter + ' [';
-   if ( typeof iSlidrId !== 'undefined' ) {
+   if ( typeof iSlidrId !== 'undefined' ) {                            // [mark 20210517°1111`zz] Undefined check
       sLine += 'Gear ' + (iSlidrId + 1);
    }
-   if ( typeof sDbgId !== 'undefined' ) {
+   if ( typeof sDbgId !== 'undefined' ) {                              // [mark 20210517°1111`zz] Undefined check
       sLine += ' ' + sDbgId;
    }
    sLine += ']';
@@ -4159,21 +4162,28 @@ Sldgr.Cnst.sPlate_DataSlidegearAttrib = 'data-slidegear';
 
 // ~ ✂ ~ ~ ~ ~ ~ ~ ~ area 20190106°0307 start ~ ~ ~ ~ ~ ~ ~ ~ ~
 /**!
- * This area Trekta.Utils holds low level functions to be pasted into standalone scripts
+ *  This area Trekta.Utils holds low level functions to be pasted into standalone scripts
  *
- * file : 20190105°1717 daftari/jsi/trektautils.js
- * version : v0.2.5 (20210428°1031)
- * copyright : © 2019 - 2021 Norbert C. Maier
- * license : GNU AGPL v3
+ * File        : 20190105°1717 daftari/jsi/trektautils.js
+ * Version     : v0.2.7 — 20210517°1121
+ * Copyright   : © 2019 - 2021 Norbert C. Maier
+ * License     : GNU AGPL v3
  */
 /**
- * This area is shared via cut-n-paste by the following scripts :
- *   • daftari.js • canvasgear.js • fadeinfiles.js • slidegear.js • trekta-utils.js
- * Note : It is not really clear how to handle the propagation. Possibly
- *       use trekta-utils.js as the master, since it is a standalone file?
- * Note: Not sure about the script duplication in fadeinfiles/doc/demo.html.
+ *  This area is goes via cut-n-paste to the following scripts :
+ *   • canvasgear.js
+ *   • daftari.js
+ *   • fadeinfiles.js
+ *   • slidegear.js
+ *   • trektautils.js
+ * Issue : Think about some better propagation or sharing mechanism but
+ *   without sacrificing the single-file principle [issue 20210516°1321].
+ *     
  *
  * versions :
+ *    • 20210517°1121 — v0.2.7 — Streamline 'undefined' usage [chg 20210517°1111]
+ *    • 20210516°1331 — v0.2.6 — Cleanup
+ *    • 20210516°0951 — Callers of pullScriptBehind must decide on minification [chg 20210516°0941]
  *    • v0.2.5 (20210428°1031) — Streamlining
  *    • 20210418°1111 — Little streamlining
  *    • 20201228°1511
@@ -4181,50 +4191,45 @@ Sldgr.Cnst.sPlate_DataSlidegearAttrib = 'data-slidegear';
  */
 
 /**
- * This shall be the root namespace
+ *  This shall be the root namespace
  *
  * @id 20190106°0311
- * @c_o_n_s_t — Namespace                                              // [marker 20210427°1212]
+ * @c_o_n_s_t — Namespace
  */
 var Trekta = Trekta || {};
 
 /**
- * This namespace shall provide some general basic functionalities
+ *  This namespace shall provide some general basic functionalities
  *
  *  The section between ~~~ Schnippel ~~~ and ~~~ Schnappel ~~~ can be cut
  *  and pasted to other scripts to provide them independent standalone basics.
  *
  * @id 20190106°0313
  * @c_o_n_s_t — Namespace
- * @const — Namespace // [marker 20210427°1212]
+ * @const — Namespace
  */
 Trekta.Utils = Trekta.Utils || {
 
    /**
-    * This function reads a cookie value
+    *  This function reads a cookie value
     *
     * @id 20110510°2127
-    * @ref ref 20110510°2125 'w3schools → JavaScript Cookies'
-    * @callers •
-    * @note See issue 20120902°1221 'Not all browsers have e.indexOf(),
-    *    why does it work here? The answer is: here we retrieve the index
-    *    of a char in a string, not an element in an array.
+    * @note Remember finished issue 20201228°1311 'Cookie setting with file protocol'
     * @param {string} sCookieName — The name of the cookie to be read
     * @return {string} —
     */
-   getCookie : function(sCookieName) // fullyquali ⇒ Trekta.Utils.getCookie
+   getCookie : function(sCookieName)
    {
       'use strict';
 
-      // Prologue [seq 20110510°2128] Still using 'var' instead 'let'
+      // Prologue [seq 20110510°2128]
       var i = 0;
       var sNam = '';
       var sRet = '';
       var sVal = '';
-      var sCookies = document.cookie; // semicolon-delimited string
+      var sCookies = document.cookie;                                  // Semicolon-delimited string
 
       // [condi 20201228°1331]
-      // See issue 20201228°1311 'cookie setting with file protocol'
       // Todo 20201228°1332 : Detection is quick'n'dirty, should be done in a more 'official' way
       if (sCookies.length > 0) {
 
@@ -4250,16 +4255,16 @@ Trekta.Utils = Trekta.Utils || {
    }
 
    /**
-    * This function reads a cookie as boolean
+    *  This function reads a cookie as boolean
     *
     * @id 20120828°2021
-    * @note This function is a wrapper for Trekta.Utils.getCookie().
+    * @note This function is a wrapper for Trekta.Utils.getCookie()
     * @callers • many
     * @param {string} sCookieName — The name of the cookie to be read
     * @param {boolean|null} bDefault — The default value
     * @return {boolean} — The wanted cookie value
     */
-   , getCookieBool : function(sCookieName, bDefault) // fullyquali ⇒ Trekta.Utils.getCookieBool
+   , getCookieBool : function(sCookieName, bDefault)
    {
       'use strict';
 
@@ -4284,7 +4289,7 @@ Trekta.Utils = Trekta.Utils || {
    }
 
    /**
-    * This function reads a cookie as integer
+    *  This function reads a cookie as integer
     *
     * @id 20190420°0311
     * @callers •
@@ -4292,7 +4297,7 @@ Trekta.Utils = Trekta.Utils || {
     * @param iDefault {boolean} The default value
     * @return {number} (integer) — The wanted cookie value
     */
-   , getCookieInt : function(sCookieName, iDefault) // fullyquali ⇒ Trekta.Utils.getCookieInt
+   , getCookieInt : function(sCookieName, iDefault)
    {
       'use strict';
 
@@ -4312,19 +4317,18 @@ Trekta.Utils = Trekta.Utils || {
    }
 
    /**
-    * This function retrieves the filename of the page to be edited
+    *  This function retrieves the filename of the page to be edited
     *
     * @id 20110820°1741
-    * @note Remember issue 20110901°1741 'get self filename for default page'
     * @callers • 20120827°1511 getFilenamePlain • 20150411°0651 provideCornerstonePathes
     *           • 20120830°0451 editFinishTransmit
     * @return {string} — E.g. 'daftari/panels/login.html' (with Firefox)
     */
-   , getFileNameFull : function() // fullyquali ⇒ Trekta.Utils.getFileNameFull
+   , getFileNameFull : function()
    {
       'use strict';
 
-      // read URL of this page, values are e.g. [line 20110820°1742]
+      // Read URL of this page, values are e.g. [line 20110820°1742]
       //   • 'http://localhost/'
       //   • 'http://localhost/eps/index.html?XDEBUG_SESSION_START=netbeans-xdebug#'
       //   • 'file:///G:/work/daftaridev/trunk/daftari/docs/moonwalk.html' (not yet working)
@@ -4336,7 +4340,7 @@ Trekta.Utils = Trekta.Utils || {
       // Remove possible anchor at the end [line 20110820°1744]
       sUrl = sUrl.substring(0, (sUrl.indexOf('#') === -1) ? sUrl.length : sUrl.indexOf('#'));
 
-      // Possibly supplement page name 'index.html' [seq 20190419°0133] (analogy to seq 20181228°0935)
+      // Possibly supplement page name 'index.html' [seq 20190419°0133] Note the analogy to seq 20181228°0935
       if ( sUrl.indexOf('/', sUrl.length - 1) !== -1 ) {
          sUrl += 'index.html';
       }
@@ -4345,17 +4349,17 @@ Trekta.Utils = Trekta.Utils || {
    }
 
    /**
-    * This function gets the plain filename of the page, e.g. 'help.html'
+    *  This function gets the plain filename of the page, e.g. 'help.html'
     *
     * @id 20120827°1511
     * @callers E.g. • dafdispatch.js::workoff_Cake_0_go
     * @return {string} — The plainfilename, e.g. 'help.html'
     */
-   , getFilenamePlain : function() // fullyquali ⇒ Trekta.Utils.getFilenamePlain
+   , getFilenamePlain : function()
    {
       'use strict';
 
-      var sUrl = Trekta.Utils.getFileNameFull();                       // e.g 'daftari/panels/login.html'
+      var sUrl = Trekta.Utils.getFileNameFull();
       var a = sUrl.split('/');
       sUrl = a[a.length - 1];
 
@@ -4363,7 +4367,7 @@ Trekta.Utils = Trekta.Utils || {
    }
 
    /**
-    * This function escapes a string to be used as HTML output
+    *  This function escapes a string to be used as HTML output
     *
     * @id 20140926°1431
     * @callers • Cvgr.Func.executeFrame
@@ -4372,46 +4376,44 @@ Trekta.Utils = Trekta.Utils || {
     * @param {string} sHtml — The HTML fragment to be escaped
     * @return {string} — The wanted escaped HTML fragment
     */
-   , htmlEscape : function(sHtml) // fullyquali ⇒ Trekta.Utils.htmlEscape
+   , htmlEscape : function(sHtml)
    {
       'use strict';
 
-      sHtml = sHtml.replace(/</g, '&lt;'); // g = replace all hits, not only the first
+      sHtml = sHtml.replace(/</g, '&lt;');                             // g = replace all hits, not only the first
       sHtml = sHtml.replace(/>/g, '&gt;');
 
       return sHtml;
    }
 
    /**
-    * This function tests, whether the given script is already loaded
+    *  This function tests, whether the given script is already loaded
     *  or not. This function is unfaithful during the loading phase
     *
     * @id 20160503°0231
-    * @note Mind issue 20190405°0331 'isScriptAlreadyLoaded unfaithful'
-    * @status unfaithful
     * @callers ..
     * @param {string} sWantedScript — The plain name of the wanted script (not a complete path)
     * @return {boolean} — Flag telling whether the script is loaded or not.
     */
-   , isScriptAlreadyLoaded : function (sWantedScript) // fullyquali ⇒ Trekta.Utils.isScriptAlreadyLoaded
+   , isScriptAlreadyLoaded : function (sWantedScript)
    {
       'use strict';
 
       var regexp = null;
 
       // Build the appropriate regex variable [seq 20160623°0311]
-      // note : See howto 20160621°0141 'programmatically build regex'
+      // note : See howto 20160621°0141 'Programmatically build regex'
       // note : "/" seems automatically replaced by "\/"!
-      var s = sWantedScript.replace(/\./g, "\\.");                     // e.g. '/slidegear.js' to '/slidegear\.js$'
+      var s = sWantedScript.replace(/\./g, "\\.");                     // E.g. '/slidegear.js' to '/slidegear\.js$'
       s = s + '$';
-      regexp = new RegExp(s, '');                                      // e.g. /dafutils\.js$/
+      regexp = new RegExp(s, '');                                      // E.g. /dafutils\.js$/
 
-      // do the job [algo 20160503°0241 (like algo 20110820°2042 'find specific script')]
+      // Do the job [algo 20160503°0241 (like algo 20110820°2042 'Find specific script')]
       var scripts = document.getElementsByTagName('SCRIPT');
       if (scripts && scripts.length > 0) {
          for (var i1 in scripts) {
             var i2 = Number.parseInt(i1,10);
-            if (scripts[i2]) {  // [marker 20210416°1633`58 GoCloCom] restricted index type
+            if (scripts[i2]) {                                         // [marker 20210416°1633`58 GoCloCom] Restricted index type
                if (scripts[i2].src.match(regexp)) {
                   return true;
                }
@@ -4422,19 +4424,19 @@ Trekta.Utils = Trekta.Utils || {
    }
 
    /**
-    * This function outputs a string to some default 'shell' div
+    *  This function outputs a string to some default 'shell' div
     *
     * @id 20150321°0311
     * @note chg 20190412°0253 Shift func outDbgMsg() from dafmenu.js to Trekta.Utils
     * @param {string} sOut — The text to be output
     * @return {undefined} —
     */
-   , outDbgMsg : function (sOut) // fullyquali => Trekta.Utils.outDbgMsg
+   , outDbgMsg : function (sOut)
    {
       'use strict';
 
       // Obey flag [seq 20150814°0241]
-      if ( ! Trekta.Utils.getCookieBool('checkbox_yellowdebugpane', null)) { // [marker 20210416°1633`34 GoCloCom] added parameter two
+      if ( ! Trekta.Utils.getCookieBool('checkbox_yellowdebugpane', null)) {
          return;
       }
 
@@ -4449,9 +4451,9 @@ Trekta.Utils = Trekta.Utils || {
       // '<div class="i20150321o0231_StandardOutputDiv" id="i20150321o0231_StandardOutputDiv"></div>'
       var ele = Trekta.Utils.outDbgMsg_GuaranteeParentElement();
 
-      // [seq 20150411°0151]
-      // summary : Shim for IE8, which does not know Date.now like other browsers.
-      // see : ref 20150411°0141 'stackoverflow → get timestamp in javascript'
+      // Shim for IE8 [seq 20150411°0151]
+      // Summary : IE8 does not know Date.now like other browsers
+      // Chain : todo 20210516°1241 'Dismantle IE8 shim' {Daftari}
       if (! Date.now) {
          Date.now = function () {
             return new Date().getTime();
@@ -4474,7 +4476,10 @@ Trekta.Utils = Trekta.Utils || {
          Trekta.Utils.InitialMessageCache.length = 0;
 
          // Expeimental cosmetics [seq 20190412°0241]
-         sOut22 = '<div style="background-color:LightGreen; margin:1.1em; padding:0.7em;">' + sOut22 + '</div>';
+         sOut22 = '<div style="'
+                 + 'background-color:LightGreen; margin:1.1em; padding:0.7em;'
+                  + '">' + sOut22 + '</div>'
+                   ;
          sOut = sOut22 + "\n\n" + sOut;
       }
 
@@ -4496,7 +4501,7 @@ Trekta.Utils = Trekta.Utils || {
    }
 
    /**
-    * This function guarantees an element
+    *  This function guarantees an element
     *  If the wanted element does not exist, it is created newly.
     *
     * @id 20150323°0321
@@ -4504,33 +4509,24 @@ Trekta.Utils = Trekta.Utils || {
     * @callers • func Trekta.Utils.outDbgMsg
     * @return {Object|Node} — The wanted target element
     */
-   , outDbgMsg_GuaranteeParentElement : function () // fullyquali Trekta.Utils.outDbgMsg_GuaranteeParentElement
+   , outDbgMsg_GuaranteeParentElement : function ()
    {
       'use strict';
 
-      // todo : Replace detection by not using index number
-      var sTargetId = Daf.Dspat.Config.sFurniture_OutputArea_Id; // "i20150321o0231_StandardOutputDiv"
+      // (1) Seek target output element
+      var sTargetId = Daf.Dspat.Config.sFurniture_OutputArea_Id;       // "i20150321o0231_StandardOutputDiv"
+      var ele = document.getElementById(sTargetId);                    // 'i20150321o0231_...'
 
-      var sMsg = "[Dbg 20150323°0411] Helper function Trekta.Utils.outDbgMsg_GuaranteeParentElement().";
+      // (2) Create element if not exists
+      if (! ele) {
 
-      var ele = document.getElementById(sTargetId); // 'i20150321o0231_...'
-
-      sMsg += "\n Target ID = '" + sTargetId + "'";
-
-      if (ele) {
-         sMsg += "\n Element does exists.";
-      } else {
-         sMsg += "\n (Msg 20150323°0431 in dafmenu.js)";
-         sMsg += "\n Element does not exist : id=\"" + sTargetId + "\".";
-         sMsg += "\n Element shall be created.";
-
-         // Create HTML fragment [seq 20150325°0311]
-         // note : Here we put '<br />', because this string is immediate, and
-         //    it will not be passed trough the string mangling engine of Trekta.Utils.outDbgMsg(),
+         // (Q.2) Create HTML fragment [seq 20150325°0311]
+         // note : We put '<br />', because this string is immediate, and will not
+         //    be passed trough the string mangling engine of Trekta.Utils.outDbgMsg(),
          //    which would have replaced automatically a newline by a br tag.
-         // note : The '&nbsp;' is used, because in a html paragraph, leading
-         //    blanks have no effect. As opposed to being in a pre tag block.
-         //    Perhaps console output were better done in a pre instead a p block?
+         // note : The '&nbsp;' is used, because in a HTML paragraph, leading
+         //    blanks have no effect, as opposed to being in a pre tag block.
+         //    Perhaps output were better done in a pre instead a p block?
          var sHtml = '<div'
                     + ' id="' + sTargetId + '"'
                     + ' class="dafBoxDebugOutput"'                     // daftari.css style=".. background-color:LemonChiffon; .."
@@ -4543,29 +4539,30 @@ Trekta.Utils = Trekta.Utils || {
                     + '</div>'
                      ;
 
-         // Integrate created fragment
+         // (Q.3) Integrate created fragment
          var eBody = document.getElementsByTagName('body')[0];
          var eDiv = document.createElement('div');
          eDiv.innerHTML = sHtml;
          eBody.appendChild(eDiv);
 
-         // Retry, now mostly successful
+         // (Q.4) Retry, now mostly successful
          ele = document.getElementById(sTargetId);                     // 'i20150321o0231_StandardOutputDiv'
       }
+
       return ele;
    }
 
 
    /**
-    * This function loads the given script then calls the given function
+    *  This function loads the given script then calls the given function
     *
     * @id 20110821°0121
+    * @version 20210516°0941 No more minification service, caller must decide (chg 20210516°0941)
     * @version 20190405°0347 Refine onload callback (finished issue 20190405°0333)
     * @version 20190331°0241 Added parameter for onError callback
     * @version 20181229°1941 Now with parameter for onload callback function
     * @see howto 20181229°1943 'summary on pullbehind'
-    * @callers • dafmenu.js::callCanarySqueak • daftari.js::pull-behind slides
-    *    • daftari.js::pull-behind fancytree • canvasgear.js::..
+    * @callers • Many
     * @param {string} sScLoad — The path from page to script, e.g. "./../../daftari/jsi/dafcanary.js", jsi/dafcanary.js'
     * @param {Function} callbackOnLoad — Optional. Callback function for the script onload event
     * @param {Function} callbackOnError — Optional. Callback function for the script onerror event
@@ -4573,35 +4570,10 @@ Trekta.Utils = Trekta.Utils || {
     *      passed from initiator to the callbacks (introduced 20190403°0215)
     * @return {boolean|undefined} — Success flag (just a dummy, always true)
     */
-   , pullScriptBehind : function ( sScLoad, callbackOnLoad, callbackOnError, oJobs ) // fullyquali ⇒ Trekta.Utils.pullScriptBehind
+   , pullScriptBehind : function ( sScLoad, callbackOnLoad, callbackOnError, oJobs )
    {
       'use strict';
- ///debugger;
-
-      /*
-      todo 20210426°1011 'let pullScriptBehind caller calculate minification flavour'
-      location : seq 20190408°0135 Process script names considering minification
-      do : Don't calculate minification flavour inside pullScriptBehind, let it the caller do.
-      why : The matter is not that strict, but more complicated, has too many exceptions.
-      status : Open
-      */
-
-      // Process script names considering minification [seq 20190408°0135] [marker 20190408°0137 Two redundant sequences]
-      // note : Three identical seqences 20190408°0131, 20190408°0133 and 20190408°0135
-      // See todo 20210426°1011 'let pullScriptBehind caller calculate minification flavour'
-      if ( Trekta.Utils.bUseMinified ) {                               // [mark 20190408°0147`01]
-
-         var b1 = /.*\/fadeinfiles.combi.js$/.test(sScLoad);
-         var b2 = /.*\/highlight.pack.js$/.test(sScLoad);
-         var b3 = /.*\/showdown.min.js$/.test(sScLoad);
-         var b4 = /.*\/sitmapdaf.js$/.test(sScLoad);
-         var b5 = /.*\/sitmaplangs.js$/.test(sScLoad);
-         var b6 = /.*\/canvasgear.combi.js$/.test(sScLoad);
-         if ( ! (b1 || b2 || b3 || b4 || b5 || b6 )) {
-            sScLoad = sScLoad.replace(/\.js$/, '.min.js');
-         }
-
-      }
+      /// debugger;
 
       // Avoid multiple loading [seq 20110821°0122]
       // Remember issue 20190405°0331 'isScriptAlreadyLoaded unfaithful'
@@ -4625,13 +4597,13 @@ Trekta.Utils = Trekta.Utils || {
       // This condition was wanted for loading fadeinfiles.js in seq 20190404°0827.
       //  No, it is not wanted from there. But hm.. the paranoia may be nice anyway.
       //  Finally, I am not sure now, whether the condition is useful or not.
-      if (typeof callbackOnLoad !== 'undefined') {
+      if (typeof callbackOnLoad !== 'undefined') {                     // [chg 20210517°1111`01]
 
          // Set the non-trivial but crucial property [line 20181229°1932]
          // The custom callback goes piggyback with the mandatory one
          var cbkCustom = function () { callbackOnLoad ( sScLoad
                                                        , oJobs
-                                                        , false // flag 'was already loaded'
+                                                        , false        // flag 'was already loaded'
                                                          ); };
          script.onload = function () { Trekta.Utils.pullScript_onload(sScLoad, cbkCustom); };
       }
@@ -4649,16 +4621,15 @@ Trekta.Utils = Trekta.Utils || {
    }
 
    /**
-    * This function constitutes the unconditional onload handler
+    *  This function constitutes the unconditional onload handler
     *
     * @id 20190405°0341
-    * @summary This method is introduced to fix issue 20190405°0331 'isScriptAlreadyLoaded unfaithful'
     * @callers Onyl • onload event from pullScriptBehind
     * @param {string} sScript — The script to be pulled behind
     * @param  {Function} cbkCustom — The callback to be executed after script is loaded
     * @return {undefined} —
     */
-   , pullScript_onload : function ( sScript, cbkCustom ) // fullyquali ⇒ Trekta.Utils.pullScript_onload
+   , pullScript_onload : function ( sScript, cbkCustom )
    {
       'use strict';
       Trekta.Utils.aPulled.push(sScript);
@@ -4666,48 +4637,44 @@ Trekta.Utils = Trekta.Utils || {
    }
 
    /**
-    * This function reads a file via asynchronous Ajax
+    *  This function reads a file via asynchronous Ajax
     *
     * @id 20190417°0311
-    * @status  Not really tested
-    * @note    Remember todo 20150517°0121 'implement local file reading after Dean Edwards 20150516°0612'
-    * @note    Remember issue 20140713°1121 'ajax read file via filesystem protocol'
-    * @see     ref 20160611°0341 'stackoverflow → read an external local JSON file'
-    * @see     ref 20140704°0842 'stackoverflow → read local text file'
-    * @see     ref 20140627°1111 'stackoverflow → load div from one page and show in other'
-    * @see     ref 20140625°1731 'stackoverflow → jQuery to load text file data'
-    * @callers • func 20190106°0615 slidegear.js::o2ReadSetup_ImageList
+    * @status  Not really tested(?)
+    * @id      Rmember todo 20210516°1251 'Clear readTextFile2/ajax3Send status' {Daftari}
+    * @note    Remember issue 20140713°1121 'Ajax read file via file protocol' {FadeInFiles}
+    * @callers • E.g. func 20190106°0615 slidegear.js::o2ReadSetup_ImageList
     * @param   {string} sUrl — File to be read
     * @param   {Function} cbkLoad — Callback function for the case of success, taking one string parameter with the read content
     * @param   {Function} cbkFail — Callback function for the case of fail, taking one string parameter
     * @return  {undefined} —
     */
-   , readTextFile2 : function(sUrl, cbkLoad, cbkFail) // fullyquali ⇒ Trekta.Utils.readTextFile2
+   , readTextFile2 : function(sUrl, cbkLoad, cbkFail)
    {
       'use strict';
       Trekta.Utils.ajax3Send('GET', sUrl, '', cbkLoad, cbkFail);
    }
 
    /**
-    * Sends asynchronous Ajax request
+    *  This function sends an Ajax request
     *
     * @id 20190405°0231 (after 20140704°1011)
-    * @callers • Trekta.Utils.readTextFile2
+    * @callers • E.g. Trekta.Utils.readTextFile2
     * @param sMethod {string} — Either 'GET' or 'POST' ("GET", "POST", "PUT", "DELETE")
     * @param sUrl {string} — The request URL
-    * @param {string} sPayload — The data to transmit, only used with a POST request
+    * @param {string} sPayload — The data to transmit, only used with a POST request — SEEMS UNUSED
     * @param {Function} cbkLoad — Callback function for the case of success, taking one string parameter
     * @param {Function} cbkFail — Callback function for the case of fail, taking one string parameter
     * @return {undefined} —
     */
-   , ajax3Send : function(sMethod, sUrl, sPayload, cbkLoad, cbkFail) // fullyquali ⇒ Trekta.Utils.ajax3Send
+   , ajax3Send : function(sMethod, sUrl, sPayload, cbkLoad, cbkFail)
    {
       'use strict';
 
       // () Prologue [line 20140704°1013]
       // todo : This must be refined .. e.g. with default callbacks
-      cbkLoad = (typeof cbkLoad === 'undefined') ? null : cbkLoad ;
-      cbkFail = (typeof cbkFail === 'undefined') ? null : cbkFail ;
+      cbkLoad = (typeof cbkLoad === 'undefined') ? null : cbkLoad ;    // [chg 20210517°1111`02]
+      cbkFail = (typeof cbkFail === 'undefined') ? null : cbkFail ;    // [chg 20210517°1111`03]
 
       // Get the XMLHttpRequest object [line 20190417°0111]
       // See todo 20190209°0836 'XMLHttpRequest availability'
@@ -4734,66 +4701,66 @@ Trekta.Utils = Trekta.Utils || {
          }
          else if ( xmlHttp.readyState === 4 ) {
             // State = DONE — The operation is complete
-            // Below the list after ref 20190412°0133 'MDN → HTTP response status codes'
-            var bSuccess = false; // pessimistic predetermination
+            // Below list after ref 20190412°0133 'MDN → HTTP response status codes'
+            var bSuccess = false;                                      // pessimistic predetermination
             switch (xmlHttp.status) {
-               // Case '0' may happen e.g. if • HTML file containing the
-               //   script is opened in the browser via the file scheme
-               //  • too much time passes before the server responds
-               case   0 : bSuccess = true; break;
-               case 100 : break; // "Continue"
-               case 101 : break; // "Switching Protocol"
-               case 102 : break; // "Processing (WebDAV)"
-               case 103 : break; // "Early Hints"
-               case 200 : bSuccess = true; break; // "OK"
-               case 201 : break; // "Created"
-               case 202 : break; // "Accepted"
-               case 203 : break; // "Non-Authoritative Information"
-               case 204 : break; // "No Content"
-               case 205 : break; // "Reset Content"
-               case 206 : break; // "Partial Content"
-               case 207 : break; // "Multi-Status (WebDAV)"
-               case 208 : break; // "Multi-Status (WebDAV)"
-               case 226 : break; // "IM Used (HTTP Delta encoding)"
-               case 300 : break; // "Multiple Choice"
-               case 301 : break; // "Moved Permanently"
-               case 302 : break; // "Found"
-               case 303 : break; // "See Other"
-               case 304 : break; // "Not Modified"
-               case 305 : break; // "Use Proxy 👎"
-               case 306 : break; // "unused"
-               case 307 : break; // "Temporary Redirect"
-               case 308 : break; // "Permanent Redirect"
-               case 400 : break; // "Bad Request"
-               case 401 : break; // "Unauthorized"
-               case 402 : break; // "Payment Required"
-               case 403 : break; // "Forbidden"
-               case 404 : break; // "Not Found"
-               case 405 : break; // "Method Not Allowed"
-               case 406 : break; // "Not Acceptable"
-               case 407 : break; // "Proxy Authentication Required"
-               case 408 : break; // "Request Timeout"
-               case 409 : break; // "Conflict"
-               case 410 : break; // "Gone"
-               case 411 : break; // "Length Required"
-               case 412 : break; // "Precondition Failed"
-               case 413 : break; // "Payload Too Large"
-               case 414 : break; // "URI Too Long"
-               case 415 : break; // "Unsupported Media Type"
-               case 416 : break; // "Requested Range Not Satisfiable"
-               case 417 : break; // "Expectation Failed"
-               case 418 : break; // "I"m a teapot"
-               case 421 : break; // "Misdirected Request"
-               case 422 : break; // "Unprocessable Entity (WebDAV)"
-               case 423 : break; // "Locked (WebDAV)"
-               case 424 : break; // "Failed Dependency (WebDAV)"
-               case 425 : break; // "Too Early"
-               case 426 : break; // "Upgrade Required"
-               case 428 : break; // "Precondition Required"
-               case 429 : break; // "Too Many Requests"
-               case 431 : break; // "Request Header Fields Too Large"
-               case 451 : break; // "Unavailable For Legal Reasons"
-               default  : break; // (should never happen)
+               // Case '0' may happen e.g. if • Page is opened via the file
+               //  scheme or • Too much time passes before the server responds
+               //  Is setting success true really a good idea?
+               case   0 : bSuccess = true; break;                      //
+               case 100 : break;                                       // "Continue"
+               case 101 : break;                                       // "Switching Protocol"
+               case 102 : break;                                       // "Processing (WebDAV)"
+               case 103 : break;                                       // "Early Hints"
+               case 200 : bSuccess = true; break;                      // "OK"
+               case 201 : break;                                       // "Created"
+               case 202 : break;                                       // "Accepted"
+               case 203 : break;                                       // "Non-Authoritative Information"
+               case 204 : break;                                       // "No Content"
+               case 205 : break;                                       // "Reset Content"
+               case 206 : break;                                       // "Partial Content"
+               case 207 : break;                                       // "Multi-Status (WebDAV)"
+               case 208 : break;                                       // "Multi-Status (WebDAV)"
+               case 226 : break;                                       // "IM Used (HTTP Delta encoding)"
+               case 300 : break;                                       // "Multiple Choice"
+               case 301 : break;                                       // "Moved Permanently"
+               case 302 : break;                                       // "Found"
+               case 303 : break;                                       // "See Other"
+               case 304 : break;                                       // "Not Modified"
+               case 305 : break;                                       // "Use Proxy 👎"
+               case 306 : break;                                       // "unused"
+               case 307 : break;                                       // "Temporary Redirect"
+               case 308 : break;                                       // "Permanent Redirect"
+               case 400 : break;                                       // "Bad Request"
+               case 401 : break;                                       // "Unauthorized"
+               case 402 : break;                                       // "Payment Required"
+               case 403 : break;                                       // "Forbidden"
+               case 404 : break;                                       // "Not Found"
+               case 405 : break;                                       // "Method Not Allowed"
+               case 406 : break;                                       // "Not Acceptable"
+               case 407 : break;                                       // "Proxy Authentication Required"
+               case 408 : break;                                       // "Request Timeout"
+               case 409 : break;                                       // "Conflict"
+               case 410 : break;                                       // "Gone"
+               case 411 : break;                                       // "Length Required"
+               case 412 : break;                                       // "Precondition Failed"
+               case 413 : break;                                       // "Payload Too Large"
+               case 414 : break;                                       // "URI Too Long"
+               case 415 : break;                                       // "Unsupported Media Type"
+               case 416 : break;                                       // "Requested Range Not Satisfiable"
+               case 417 : break;                                       // "Expectation Failed"
+               case 418 : break;                                       // "I"m a teapot"
+               case 421 : break;                                       // "Misdirected Request"
+               case 422 : break;                                       // "Unprocessable Entity (WebDAV)"
+               case 423 : break;                                       // "Locked (WebDAV)"
+               case 424 : break;                                       // "Failed Dependency (WebDAV)"
+               case 425 : break;                                       // "Too Early"
+               case 426 : break;                                       // "Upgrade Required"
+               case 428 : break;                                       // "Precondition Required"
+               case 429 : break;                                       // "Too Many Requests"
+               case 431 : break;                                       // "Request Header Fields Too Large"
+               case 451 : break;                                       // "Unavailable For Legal Reasons"
+               default  : break;                                       // Should never happen
             }
             if ( bSuccess ) {
                // xmlHttp.status is 0 or 200
@@ -4807,10 +4774,8 @@ Trekta.Utils = Trekta.Utils || {
 
       // () Finally perform the request [seq 20140704°1017]
       try {
-         // If file to read does not exist, we get exception "Failed to load
-         //  resource: the server responded with a status of 404 (Not Found)"
-         // See issue 20181228°0937 'try to look for file but without error 404'
-         // See issue 20200103°0252 'Chrome → AJAX fails with file protocol'
+         // If file to read does not exist, or we are on file system, we get
+         //  exception "Failed to load resource: .. status of 404 (Not Found)"
          xmlHttp.send(null);
       }
       catch (ex)
@@ -4822,13 +4787,13 @@ Trekta.Utils = Trekta.Utils || {
          var sMsg = "<b>Sorry, some feature on this page does not work.</b>"
                    + '\nFile <tt>' + sUrl + '</tt> ~~could not be read.'
                     + "\nYour browser said: "
-                     + '<tt>' + ex.message + '</tt>.' // e.g. "A network error occurred".
+                     + '<tt>' + ex.message + '</tt>.'                  // E.g. "A network error occurred".
                       ;
 
          // [condi 20140704°1104]
-         // ref : screenshot 20160911°1221 'Chrome debugger showing exception'
-         // ref : issue 20150516°0531 'Chrome cannot load local files'
+         // Process todo 20210516°1311 'Dismantle browser switch' {Daftari}
          if ( Trekta.Utils.bIs_Browser_Chrome && (location.protocol === 'file:') ) {
+
             // [line 20140704°1105]
             sMsg += "\nYour browser seems to be Chrome, and this does not ~~read files via file protocol."
                   + "\nThere are two <b>solutions</b>: (1) Use a different browser, e.g. Firefox or IE"
@@ -4836,6 +4801,7 @@ Trekta.Utils = Trekta.Utils || {
                     ;
          }
          else if ( Trekta.Utils.bIs_Browser_Firefox && (location.protocol === 'file:') ) {
+
             // [line 20140704°1106]
             sMsg += "\nYour browser seems to be <b>Firefox</b>, and this does not ~~read files"
                   + "\nwith a path going below the current directory via file protocol."
@@ -4844,17 +4810,16 @@ Trekta.Utils = Trekta.Utils || {
                      ;
          }
          else {
-            // [line 20140704°1107]
-            sMsg += '\n [info 20160622°0131] Failed sending request ' + sUrl + '.';
+            sMsg += '\n [info 20160622°0131] Failed sending request ' + sUrl + '.'; // [line 20140704°1107]
          }
 
          // Use callback to deliver error message [line 20190405°0233]
-         cbkLoad(sMsg); // hm .. perhaps better just use a plain alert()
+         cbkLoad(sMsg);                                                // Perhaps better just use a plain alert()?
       }
    }
 
    /**
-    * This function returns the path to the given script .. using regex
+    *  This function returns the path to the given script .. using regex
     *
     * @id 20110820°2041
     * @status working
@@ -4867,63 +4832,48 @@ Trekta.Utils = Trekta.Utils || {
     * @param {string} sScCanary — The name of the canary script, e.g. '/sitmapdaf.js'.
     * @return {string} — The wanted path, where the given script resides or empty string
     */
-   , retrieveDafBaseFolderAbs : function (sScCanary)                   // fullyquali ⇒ Trekta.Utils.retrieveDafBaseFolderAbs
+   , retrieveDafBaseFolderAbs : function (sScCanary)
    {
       'use strict';
 
-      // Process script names considering minification [seq 20190408°0133] [marker 20190408°0137 Two redundant sequences]
-      // note : Three identical seqences 20190408°0131, 20190408°0133 and 20190408°0135
-      if ( Trekta.Utils.bUseMinified ) {                               //  [mark 20190408°0147`02 'minification']
-
-         var b1 = /.*\/fadeinfiles.combi.js$/.test(sScCanary);
-         var b2 = /.*\/highlight.pack.js$/.test(sScCanary);
-         var b3 = /.*\/showdown.min.js$/.test(sScCanary);
-         var b4 = /.*\/sitmapdaf.js$/.test(sScCanary);
-         var b5 = /.*\/sitmaplangs.js$/.test(sScCanary);
-         var b6 = /.*\/canvasgear.combi.js$/.test(sScCanary);
-         if ( ! (b1 || b2 || b3 || b4 || b5 || b6 )) {
-            sScCanary = sScCanary.replace(/\.js$/, '.min.js');
-         }
-      }
-
       // () Prepare regex [seq 20160621°0142]
-      var regexMatch = / /;                                            // space between slashes prevents a syntax error
+      var regexMatch = / /;                                            // Space between slashes prevents a syntax error
       var regexReplace = / /;
-      var s = sScCanary.replace(/\./g, "\\.") + "$";                   // e.g. 'dafutils.js' to 'dafutils\.js$'
-      regexMatch = new RegExp(s, '');                                  // e.g. /dafutils\.js$/
-      s = '(.*)' + s;                                                  // prepend group
-      regexReplace = new RegExp(s, '');                                // e.g. /(.*)dafutils\.js$/ ('/' seems automatically replaced by '\/')
+      var s = sScCanary.replace(/\./g, "\\.") + "$";                   // E.g. 'dafutils.js' to 'dafutils\.js$'
+      regexMatch = new RegExp(s, '');                                  // E.g. /dafutils\.js$/
+      s = '(.*)' + s;                                                  // Prepend group
+      regexReplace = new RegExp(s, '');                                // E.g. /(.*)dafutils\.js$/ ('/' seems automatically replaced by '\/')
 
       // () Do the job [algo 20110820°2042 'find specific script' prototype]
       var sPath = '';
-      var scripts = document.getElementsByTagName('SCRIPT');           // or 'script'
+      var scripts = document.getElementsByTagName('SCRIPT');           // Or 'script'
       if (scripts && scripts.length > 0) {
          for ( var i1 in scripts ) {
-            var i2 = Number.parseInt(i1,10); // serve 'restricted index type' [line 20210416°1741]
+            var i2 = Number.parseInt(i1,10);                           // [marker 20210416°1633`xx GoCloCom] Serve 'restricted index type' // [line 20210416°1741]
             // note : There are browser differences, e.g.
             //    • FF etc : scripts[i].src = 'http://localhost/manual/daftari/daftari.js'
             //    • IE     : scripts[i].src = '../daftari/daftari.js'
-            if (scripts[i2]) { // If i2 is NaN, this evaluates to False // [marker 20210416°1633`59 GoCloCom] restricted index type
-               if ( scripts[i2].src.match(regexMatch) ) {              // e.g. /dafmenu\.js$/
-                  sPath = scripts[i2].src.replace(regexReplace, '$1'); // e.g. /(.*)dafmenu.js$/
+            if (scripts[i2]) {                                         // If i2 is NaN, this evaluates to False // [marker 20210416°1633`59 GoCloCom] Restricted index type
+               if ( scripts[i2].src.match(regexMatch) ) {              // E.g. /dafmenu\.js$/
+                  sPath = scripts[i2].src.replace(regexReplace, '$1'); // E.g. /(.*)dafmenu.js$/
                }
             }
          }
       }
 
-      return sPath; // e.g. "http://localhost/daftaridev/trunk/daftari/jsi"
+      return sPath;                                                    // R.g. "http://localhost/daftaridev/trunk/daftari/jsi"
    }
 
    /**
-    * This function shortens a long string by placing ellipsis in the middle
+    *  This function shortens a long string by placing ellipsis in the middle
     *
-    * @id ~20201203°1441
+    * @id 20201203°1445
     * @callers • 20110811°1921 Daf.Mnu.Meo.execElementEdit
     * @param {string} sOrig — The string to be shortened
     * @param {number} iMaxLen (integer) — The maximum lenght of the output string
     * @return {string} — The wanted shortened string
     */
-   , sConfine : function(sOrig, iMaxLen) // fullyquali ⇒ Trekta.Utils.sConfine
+   , sConfine : function(sOrig, iMaxLen)
    {
       var sRet = '';
       if (sOrig.length > iMaxLen) {
@@ -4932,25 +4882,24 @@ Trekta.Utils = Trekta.Utils || {
                 + sOrig.substring(sOrig.length - iMaxLen / 2)
                  ;
       }
-      sRet = sRet.split('\n').join('☼'); // [line 20190424°0728] replaces func 20120830°1521 Daf.Utlis.convertLinebreaksToHtml
+      sRet = sRet.split('\n').join('☼');
       sRet = sRet.split('<').join('&lt;');
       sRet = sRet.split('>').join('&gt;');
       return sRet;
    }
 
    /**
-    * This function sets a cookie
+    *  This function sets a cookie
     *
     * @id 20110510°2126
-    * @ref ref 20120828°1931 'quirksmode → Cookies'
-    * @note chg 20190412°0253 Shift func get/setCookie from dafutils.js to Trekta.Utils
+    * @See ref 20120828°1931 'QuirksMode → Cookies'
     * @callers •
     * @param {string} sCookieName — iExpirationDays is number of days until the cookie expires
     * @param {string} sCookieValue — iExpirationDays is number of days until the cookie expires
     * @param {number} iExpirationDays — iExpirationDays is number of days until the cookie expires
     * @return {undefined} —
     */
-   , setCookie : function(sCookieName, sCookieValue, iExpirationDays) // fullyquali ⇒ Trekta.Utils.setCookie
+   , setCookie : function(sCookieName, sCookieValue, iExpirationDays)
    {
       'use strict';
 
@@ -4972,24 +4921,24 @@ Trekta.Utils = Trekta.Utils || {
       document.cookie = sCookie;
 
       // Detect cookie availability and provide fallback [seq 20201228°1321]
-      // See issue 20201228°1311 'cookie setting with file protocol'
       if (document.cookie.length < 1) {
          localStorage.setItem(sCookieName, sCookieValue);
       }
    }
 
    /**
-    * This function daisychains the given function on the windows.onload events
+    *  This function daisychains the given function on the windows.onload events
     *
     * @id 20160614°0331
-    * @todo This bulky function may be obsolet by function Event​Target​.add​Event​Listener.
-    *    The function supports below IE9, add​Event​Listener supports IE9 and above.
-    * @see ref 20190328°0953 'mdn → addEventListener'
+    * @todo This bulky function may be obsolet by function add​Event​Listener.
+    *    The present function supports below IE9, whereas add​Event​Listener
+    *    supports only IE9 and above, but that is enough [todo 20190328°0947].
+    * @see ref 20190328°0953 'MDN → addEventListener'
     * @callers
-    * @param {Function} funczion — The function to be appended to the window.onload event
+    * @param {Function} function — The function to be appended to the window.onload event
     * @return {undefined} —
     */
-   , windowOnloadDaisychain : function(funczion) // fullyquali ⇒ Trekta.Utils.windowOnloadDaisychain
+   , windowOnloadDaisychain : function(funczion)
    {
       'use strict';
 
@@ -4998,7 +4947,7 @@ Trekta.Utils = Trekta.Utils || {
          // Preserve existing function(s) and append our additional function
          var ld = window.onload;
          window.onload = function() {
-            ld(null); // [marker 20210416°1633`26 GoCloCom] Function requires 1 argument
+            ld(null);
             funczion();
          };
       }
@@ -5011,24 +4960,25 @@ Trekta.Utils = Trekta.Utils || {
    }
 
    /**
-    * This caches any output messages as long the page is not yet loaded
+    *  This caches any output messages as long the page is not yet loaded
+    *
     * @id 20150516°0451
     * @type {Array} —
     */
-   , InitialMessageCache : Array() // fullyqualí ⇒ Trekta.Utils.InitialMessageCache
+   , InitialMessageCache : Array()
 
    /**
-    * This variable constitutes the onload ready flags for pullScriptBehind
+    *  This variable constitutes the onload ready flags for pullScriptBehind
     *
     * @id 20190405°0345
     * @note This flags solves issue 20190405°0331 'isScriptAlreadyLoaded unfaithful'
     * @type {Array} —
     */
-   , aPulled : [] // fullyquali ⇒ Trekta.Utils.aPulled
+   , aPulled : []
 
 
    /**
-    * This ~constant provides a flag whether the browser is Chrome or not
+    *  This ~constant provides a flag whether the browser is Chrome or not
     *
     *  Explanation. The plain expression "navigator.appName.match(/Chrome/)"
     *  results in either True or Null. But I prefere the result being either
@@ -5036,45 +4986,42 @@ Trekta.Utils = Trekta.Utils || {
     *  ternary operator, manually replacing Null by false.
     *
     * @id 20160622°0221
-    * @todo 20190209°0833 : For browser detection, Inconsequently for some we use
-    *    navigator.userAgent, for some we use navigator.appName. Standardize this.
+    * @todo : Browser detection inconsequently sometimes uses navigator.userAgent
+    *    sometimes navigator.appName. Standardize this. [todo 20190209°0833]
     * @type {boolean} —
     */
-   , bIs_Browser_Chrome : ( navigator.userAgent.match(/Chrome/) ? true : false ) // fullyquali ⇒ Trekta.Utils.bIs_Browser_Chrome
+   , bIs_Browser_Chrome : ( navigator.userAgent.match(/Chrome/) ? true : false )
 
    /**
-    * This ~constant provides a flag whether the browser is Edge or not
+    *  This ~constant provides a flag whether the browser is Edge or not
     *
     * @id 20190417°0217
     * @type {boolean} —
     */
-   , bIs_Browser_Edge : ( navigator.userAgent.match(/Edge/) ? true : false ) // fullyquali ⇒ Trekta.Utils.bIs_Browser_Edge
+   , bIs_Browser_Edge : ( navigator.userAgent.match(/Edge/) ? true : false )
 
    /**
-    * This ~constant provides a flag whether the browser is Internet Exporer or not
+    *  This ~constant provides a flag whether the browser is Internet Exporer or not
     *
     * @id 20150209°0941
-    * @todo 20190209°0837 : Refine algo. Formerly we used the plain
-    *    comparison 'if ( navigator.appName === "Microsoft Internet Explorer" )'.
-    *    For code, compare function getBrowserInfo() in jquery.fancytree.logger.js.
-    *    For code, compare function getIEVersion() in canvasgearexcanvas.js.
+    * @see todo 20190209°0837 'Refine IE detection algo' {Daftari}
     * @type {boolean} —
     */
-   , bIs_Browser_Explorer : ( // fullyquali ⇒ Trekta.Utils.bIs_Browser_Explorer
+   , bIs_Browser_Explorer : (
        ( navigator.appName.match(/Explorer/)
-        || window.msCrypto // only IE11 has this [line 20190417°0215] IE11 has different user agent string than other IE
+        || window.msCrypto                                             // Only IE11 has this [line 20190417°0215] IE11 has different user agent string than other IE
          ) ? true : false )
 
    /**
-    * This ~constant provides a flag whether the browser is Firefox or not
+    *  This ~constant provides a flag whether the browser is Firefox or not
     *
     * @id 20160624°0121
     * @type {boolean} —
     */
-   , bIs_Browser_Firefox : ( navigator.userAgent.match(/Firefox/) ? true : false ) // fullyquali ⇒ Trekta.Utils.bIs_Browser_Firefox
+   , bIs_Browser_Firefox : ( navigator.userAgent.match(/Firefox/) ? true : false )
 
    /**
-    * This property provides a flag whether the browser is Opera or not.
+    *  This property provides a flag whether the browser is Opera or not.
     *  Just nice to know, Opera seems to need no more extras anymore (2019).
     *
     * @note 20190314°0411 : Opera 58 seem to need no more extra treatment.
@@ -5084,76 +5031,76 @@ Trekta.Utils = Trekta.Utils || {
     * @id 20190107°0821
     * @type {boolean} —
     */
-   , bIs_Browser_Opera : ( navigator.userAgent.match(/(Opera)|(OPR)/) ? true : false ) // fullyquali ⇒ Trekta.Utils.bIs_Browser_Opera
+   , bIs_Browser_Opera : ( navigator.userAgent.match(/(Opera)|(OPR)/) ? true : false )
 
    /**
-    * This property tells whether to pop up debug messages or not
+    *  This property tells whether to pop up debug messages or not
     *
     * @id 20190311°1521
     * @type {boolean} —
     */
-   , bShow_Debug_Dialogs : false // fullyquali ⇒ Trekta.Utils.bShow_Debug_Dialogs
+   , bShow_Debug_Dialogs : false
 
    /**
-    * This property provides a constant false value
+    *  This property provides a constant false value
     *
     * @id 20190407°0121
     * @type {boolean} —
     */
-   , bToggle_FALSE : false // fullyquali ⇒ Trekta.Utils.bToggle_FALSE
+   , bToggle_FALSE : false
 
    /**
-    * This property provides a constant false value
+    *  This property provides a constant false value
     *
     * @id 20190407°0122
     * @type {boolean} —
     */
-   , bToggle_TRUE : true // fullyquali ⇒ Trekta.Utils.bToggle_TRUE
+   , bToggle_TRUE : true
 
    /**
-    * This flag tells whether to pull-behind minified scripts or not
+    *  This flag tells whether to pull-behind minified scripts or not
     *
     * @id 20190408°0115
     * @callers •
     * @type {boolean} —
     */
-   , bUseMinified : false // fullyquali ⇒ Trekta.Utils.bUseMinified
+   , bUseMinified : false
 
    /**
-    * This const provides the ID for the general output area (yellow pane)
+    *  This const provides the ID for the general output area (yellow pane)
     * @id 20160618°0421
     * @type {string} —
     */
-   , sFurniture_OutputArea_Id : "i20150321o0231_StandardOutputDiv" // fullyquali ⇒ Trekta.Utils.sFurniture_OutputArea_Id
+   , sFurniture_OutputArea_Id : "i20150321o0231_StandardOutputDiv"
 
    /**
-    * This tells ..
+    *  This tells ..
     *
     * @id 20160501°1622
     * @callers •
     * @type {string} —
     */
-   , s_DaftariBaseFolderAbs : '' // fullyquali ⇒ Trekta.Utils.s_DaftariBaseFolderAbs
+   , s_DaftariBaseFolderAbs : ''
 
    /**
-    * This tells ..
+    *  This tells ..
     *
     * @id 20160501°1623
     * @callers •
     * @type {string} —
     */
-   , s_DaftariBaseFolderRel : '' // fullyquali ⇒ Trekta.Utils.s_DaftariBaseFolderRel
+   , s_DaftariBaseFolderRel : ''
 
 };
 
 /**
- * This ~static ~class provides a method to parse a command string
+ *  This ~static ~class provides a method to parse a command string
  *
  * @id 20140926°0641
  * @status Works
- * @note Remember todo 20180618°0751 'make func parse appear in namespace instead global'
- * @chg 20190405°0517 Allow whitespaces
- * @chg 20190405°0507 Accept single quotes as well as double quotes
+ * @note Features :
+ *    • Allow whitespaces [chg 20190405°0517]
+ *    • Accept single quotes as well as double quotes [chg 20190405°0507]
  * @callers • CanvasGear • page 20150210°0311 docs/testing.html
  * @note Code inspired by ref 20140926°0621 'Krasimir: Simple command line parser in JS'
  * @note See also ref 20140828°0832 'majstro: tokenizing with split'
@@ -5164,7 +5111,7 @@ Trekta.Utils.CmdlinParser = ( function()
    'use strict';
 
    /**
-    * This function parses a commandline
+    *  This function parses a commandline
     *
     * @id 20140926°0642
     * @param sCmdlin {string} The string to be parsed
@@ -5173,14 +5120,14 @@ Trekta.Utils.CmdlinParser = ( function()
    Trekta.Utils.parse = function(sCmdlin)
    {
       // Paranoia — advisably [seq 20140926°0653]
-      if ( typeof sCmdlin === 'undefined' ) {
+      if ( typeof sCmdlin === 'undefined' ) {                            // [chg 20210517°1111`04]
          sCmdlin = '';
       }
 
       // Prologue [loop 20140926°0654]
-      var args = []; // this accumulates the found tokens
-      var sQuoting = ''; // stores quote while inside quoted area
-      var sToken = ''; // this accumulates characters to one token
+      var args = [];                                                   // Accumulates the found tokens
+      var sQuoting = '';                                               // Stores quote while inside quoted area
+      var sToken = '';                                                 // Accumulates characters to one token
 
       // Scan characters [loop 20140926°0643]
       for ( var i1 = 0; i1 < sCmdlin.length; i1++ )
@@ -5218,7 +5165,7 @@ Trekta.Utils.CmdlinParser = ( function()
 
             // Accumulate one token [seq 20140926°0646]
             if ((sChar === "'") || (sChar === '"')) {
-               sQuoting = (sQuoting === '') ? sChar : ''; // toggle quoting flag
+               sQuoting = (sQuoting === '') ? sChar : '';              // Toggle quoting flag
             }
             else {
                sToken += sChar;
@@ -5245,7 +5192,7 @@ Trekta.Utils.CmdlinParser = ( function()
          // (B.2) Possibly skip empty elements [seq 20140926°1114]
          // note : This cleaning could be done separately before the loop. As
          //    well it is not yet exactly clear, what happens with blank values.
-         if (args[i2] === '') {                                        // experimental
+         if (args[i2] === '') {                                        // Experimental
             continue;
          }
 
@@ -5258,16 +5205,16 @@ Trekta.Utils.CmdlinParser = ( function()
 
             // Complete current key/value pair with value [seq 20140926°1117]
             oKvps[sCurrKey] = args[i2 + 2];
-            sCurrKey = '<n?a>';                                        // reset
+            sCurrKey = '<n?a>';                                        // Reset
 
             // [seq 20140926°1118]
-            i2++;                                                      // forward to equal sign
-            i2++;                                                      // forward to this value
-            continue;                                                  // forward to next key
+            i2++;                                                      // Forward to equal sign
+            i2++;                                                      // Forward to this value
+            continue;                                                  // Forward to next key
          }
          else {
             // [seq 20140926°1119]
-            continue;                                                  // forward to next key
+            continue;                                                  // Forward to next key
          }
       }
 
