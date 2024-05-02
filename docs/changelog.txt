@@ -1,5 +1,11 @@
 
 
+   version v0.1.6 — 20240502°2123 'Intermediate'
+   • Edit pages a bit
+
+   version v0.1.5 — 20240428°1951 'Intermediate'
+   • Update Trekta.Utils from v0.2.7.d to v0.2.9 'Saveguard' [chg 20240428°1905]
+
    version 20210517°1231 — v0.1.4 — Streamline 'undefined' use
 
    version 20210516°1431 — v0.1.3 — Refresh trektautils
@@ -26,4 +32,4 @@
    log 20190106°0131 start project Slidegear
 
    ———————————————————————
-   [file 20190106°0133] ܀Ω
+   [file 20190106°0133] ⬞Ω

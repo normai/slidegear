@@ -37,3 +37,5 @@ else :
    print(' - is up-to-date')
 
 print('SlideGear ready.')
+
+input("Press anykey to exit.")
